@@ -1,0 +1,49 @@
+name: StepGo City - Qualitaetschecks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app.js"
+      - "index.html"
+      - "styles.css"
+      - "tests/**"
+      - "package.json"
+      - ".github/workflows/quality-check.yml"
+  pull_request:
+    paths:
+      - "app.js"
+      - "index.html"
+      - "tests/**"
+      - "package.json"
+      - ".github/workflows/quality-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  web-tests:
+    name: Coins, Stadt und Health-Eingaben pruefen
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Repository laden
+        uses: actions/checkout@v4
+      - name: Node.js einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: JavaScript Syntax pruefen
+        run: npm run test:check
+      - name: Automatisierte Funktionstests
+        run: npm test
+      - name: Vertrauliche Daten im Quellcode
+        shell: bash
+        run: |
+          if grep -RInE '(-----BEGIN (RSA|OPENSSH|EC|PRIVATE) KEY-----)' \
+              app.js index.html styles.css native-ios scripts 2>/dev/null; then
+            echo 'Private Keys im Repository gefunden'
+            exit 1
+          fi
+          echo 'Keine bekannten privaten Schluessel-Marker in den geprueften Quellen.'
