@@ -50,24 +50,22 @@ File.open(storyboard,'w') { |f| REXML::Formatters::Pretty.new(2).write(xml, f) }
 
 info_path = File.join(app, 'Info.plist')
 raise 'Info.plist not found' unless File.file?(info_path)
-info = REXML::Document.new(File.read(info_path))
-info_dict = REXML::XPath.first(info, '/plist/dict')
-raise 'Info.plist does not contain dict' unless info_dict
-# Eine installierbare iOS-App muss ihren Bundle Identifier in Info.plist tragen.
-# Fuer den Simulator-Build ersetzt Xcode den Build-Wert durch die echte App-ID.
-if !info_dict.get_elements('key').any? { |e| e.text == 'CFBundleIdentifier' }
-  key = info_dict.add_element('key')
-  key.text = 'CFBundleIdentifier'
-  value = info_dict.add_element('string')
-  value.text = '$(PRODUCT_BUNDLE_IDENTIFIER)'
+# Plist niemals per REXML::Formatters::Pretty schreiben:
+# Dieser Formatter verschiebt Text im <key> und macht Bundle Identifier unlesbar.
+# PlistBuddy aktualisiert die Apple-Plist strukturerhaltend.
+plistbuddy = '/usr/libexec/PlistBuddy'
+def set_plist_string(plistbuddy, file_path, key, value)
+  readable = system(plistbuddy, '-c', "Print :#{key}", file_path, out: File::NULL, err: File::NULL)
+  command = readable ? "Set :#{key} #{value}" : "Add :#{key} string #{value}"
+  raise "Cannot set #{key} in #{file_path}" unless system(plistbuddy, '-c', command, file_path)
 end
-if !info_dict.get_elements('key').any? { |e| e.text == 'NSHealthShareUsageDescription' }
-  key = info_dict.add_element('key')
-  key.text = 'NSHealthShareUsageDescription'
-  desc = info_dict.add_element('string')
-  desc.text = 'StepGo City liest deine heutigen Schritte fuer deinen Fortschritt, virtuelle Coins und Baupunkte.'
-end
-File.open(info_path,'w') { |f| REXML::Formatters::Pretty.new(2).write(info, f) }
+set_plist_string(plistbuddy, info_path, 'CFBundleIdentifier', '$(PRODUCT_BUNDLE_IDENTIFIER)')
+set_plist_string(
+  plistbuddy, info_path, 'NSHealthShareUsageDescription',
+  'StepGo City liest deine heutigen Schritte fuer deinen Fortschritt, virtuelle Coins und Baupunkte.'
+)
+raise 'Info.plist ungueltig' unless system('plutil', '-lint', info_path)
+
 
 project.save
 puts 'HealthKit-Plugin eingebunden, Berechtigung gesetzt und Storyboard angepasst.'
