@@ -32,7 +32,7 @@ Stand: 06.11.2026 · Prototyp, noch keine Echtgeld-Prämien.
 
 - [x] iOS-Simulator-Build erfolgreich (GitHub-Lauf 42288817938).
 - [x] App im iPhone-Simulator installiert, gestartet und Screenshot gesichert (Lauf 42288817938).
-- [ ] Unsignierten Release-Build fuer echtes iPhone (arm64) erfolgreich pruefen; eigener Workflow eingerichtet.
+- [x] Unsignierten Release-Build fuer echtes iPhone (arm64) erfolgreich kompiliert (GitHub-Lauf 42296727114). Zusatzpruefung des Archiv-Bundles folgt separat.
 - [ ] Apple-signiertes Archiv zu TestFlight hochladen; erfordert Apple-Developer-Mitgliedschaft und App-Store-Connect-Einrichtung.
 - [ ] Installation und Start auf einem echten iPhone.
 - [ ] HealthKit-Zugriff erstmals erlauben, verweigern, später widerrufen und erneut erlauben.
