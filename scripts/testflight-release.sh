@@ -79,6 +79,18 @@ python3 scripts/run_xcode_stage.py device-archive 780 \
     "${AUTH_ARGS[@]}" \
     archive
 
+APP_IN_ARCHIVE="$ARCHIVE/Products/Applications/App.app"
+if [[ ! -d "$APP_IN_ARCHIVE" ]]; then
+  echo "::error::Kein iPhone-App-Bundle im Xcode-Archiv gefunden."
+  exit 4
+fi
+ARCHIVE_BUNDLE=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_IN_ARCHIVE/Info.plist")
+if [[ -z "$ARCHIVE_BUNDLE" ]]; then
+  echo "::error::iPhone-Archiv hat keine App-Kennung."
+  exit 4
+fi
+echo "iPhone-Archiv geprueft: $ARCHIVE_BUNDLE"
+
 if [[ "$MODE" == "device-check" ]]; then
   echo "GERAETE-KOMPILIERUNG ERFOLGREICH. Keine App signiert und nichts zu Apple gesendet."
   exit 0
