@@ -272,6 +272,88 @@
     }
   });
 
+
+  // Der echte HealthKit-Zugriff läuft ausschließlich in der nativen iOS-App.
+  // Safari und die Home-Bildschirm-Web-App bleiben beim bisherigen Kurzbefehl.
+  const nativeCapacitor = window.Capacitor;
+  const nativeHealthPlugin =
+    nativeCapacitor &&
+    typeof nativeCapacitor.isNativePlatform === 'function' &&
+    nativeCapacitor.isNativePlatform() &&
+    typeof nativeCapacitor.isPluginAvailable === 'function' &&
+    nativeCapacitor.isPluginAvailable('StepGoHealth') &&
+    typeof nativeCapacitor.registerPlugin === 'function'
+      ? nativeCapacitor.registerPlugin('StepGoHealth')
+      : null;
+  const HEALTH_CONSENT_KEY = 'stepgo-health-native-consent-v1';
+  let syncingNativeHealth = false;
+  let nativeLastSync = 0;
+  let nativeHealthEnabled = false;
+  if (nativeHealthPlugin) {
+    $('nativeHealthCard').hidden = false;
+    $('manualHealthCard').classList.add('native-health-fallback');
+    nativeHealthEnabled = localStorage.getItem(HEALTH_CONSENT_KEY) === 'yes';
+    $('nativeHealthSyncButton').textContent = nativeHealthEnabled
+      ? '↻ Schritte jetzt aktualisieren'
+      : '♥ Apple Health verbinden';
+    $('nativeHealthStatus').textContent = nativeHealthEnabled
+      ? 'Direkte Verbindung eingerichtet. Die Schritte werden beim Öffnen aktualisiert.'
+      : 'Einmal Zugriff erlauben, danach liest StepGo City deine Schritte direkt.';
+  }
+  async function syncNativeHealth(fromButton = false) {
+    if (!nativeHealthPlugin || syncingNativeHealth) return;
+    if (!nativeHealthEnabled && !fromButton) return;
+    syncingNativeHealth = true;
+    const button = $('nativeHealthSyncButton');
+    button.disabled = true;
+    button.textContent = 'Schritte werden gelesen …';
+    try {
+      if (!nativeHealthEnabled) {
+        await nativeHealthPlugin.requestAuthorization();
+        nativeHealthEnabled = true;
+        localStorage.setItem(HEALTH_CONSENT_KEY,'yes');
+      }
+      const result = await nativeHealthPlugin.readTodaySteps();
+      const steps = Number(result && result.steps);
+      if (!Number.isSafeInteger(steps) || steps < 0 || steps > 100000) {
+        throw new Error('Ungültige Schrittzahl von Apple Health');
+      }
+      if (steps === 0 && state.steps > 0) {
+        $('nativeHealthStatus').textContent =
+          'Apple Health liefert derzeit 0 Schritte. Bitte prüfe die Lesefreigabe in den iPhone-Einstellungen.';
+        if (fromButton) toast('Health meldet 0 Schritte – bisherige Zahl bleibt erhalten.');
+        return;
+      }
+      // Nicht unnötig oft neu schreiben und den Zeitstempel nur bei Änderung aktualisieren.
+      if (steps !== state.steps || state.stepSource !== 'health-import') applySteps(steps);
+      nativeLastSync = Date.now();
+      $('nativeHealthStatus').textContent = fmt(steps)+' Schritte heute aus Apple Health · automatisch synchronisiert.';
+      if (fromButton) toast('Apple Health synchronisiert: '+fmt(steps)+' Schritte');
+    } catch (error) {
+      $('nativeHealthStatus').textContent =
+        'Verbindung fehlgeschlagen. Prüfe unter Einstellungen → Datenschutz & Sicherheit → Health die Lesefreigabe.';
+      if (fromButton) toast('Apple Health konnte nicht gelesen werden.');
+    } finally {
+      button.disabled = false;
+      button.textContent = nativeHealthEnabled ? '↻ Schritte jetzt aktualisieren' : '♥ Apple Health verbinden';
+      syncingNativeHealth = false;
+    }
+  }
+  if (nativeHealthPlugin) {
+    $('nativeHealthSyncButton').addEventListener('click',()=>syncNativeHealth(true));
+    // Beim Zurückkehren aus Health oder nach einem Spaziergang aktualisieren,
+    // sofern der Nutzer den Zugriff einmal selbst aktiviert hat.
+    document.addEventListener('visibilitychange',()=>{
+      if (!document.hidden && nativeHealthEnabled && Date.now()-nativeLastSync>10000) {
+        syncNativeHealth();
+      }
+    });
+    window.addEventListener('focus',()=>{
+      if (nativeHealthEnabled && Date.now()-nativeLastSync>10000) syncNativeHealth();
+    });
+    if (nativeHealthEnabled) syncNativeHealth();
+  }
+
   $('healthImportForm').addEventListener('submit', event => {
     event.preventDefault();
     const value = parseSteps($('healthSteps').value);
