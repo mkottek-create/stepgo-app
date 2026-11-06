@@ -1,0 +1,82 @@
+name: StepGo City - iPhone / TestFlight
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Nur iPhone-Code pruefen (kostenlos) oder bewusst zu TestFlight hochladen"
+        required: true
+        type: choice
+        default: device-check
+        options:
+          - device-check
+          - testflight-upload
+  push:
+    paths:
+      - ".github/workflows/testflight.yml"
+      - "scripts/testflight-release.sh"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stepgo-device-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  iphone-device:
+    name: iPhone-Archiv / TestFlight
+    runs-on: macos-26-intel
+    timeout-minutes: 46
+    env:
+      STEPGO_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.mode || 'device-check' }}
+    steps:
+      - name: Quellcode laden
+        uses: actions/checkout@v4
+
+      - name: Node.js vorbereiten
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Bestehende Funktionstests
+        run: |
+          npm install --no-audit --no-fund
+          npm run test:check
+          npm test
+
+      - name: iOS-Projekt vorbereiten
+        run: |
+          npm run ios:init
+          gem install --user-install xcodeproj --no-document
+          ruby scripts/configure-native-ios.rb
+
+      - name: Vorpruefung HealthKit und App-Kennung
+        shell: bash
+        run: |
+          set -euo pipefail
+          swiftc -frontend -parse ios/App/App/StepGoHealthPlugin.swift ios/App/App/StepGoBridgeViewController.swift
+          plutil -lint ios/App/App/Info.plist ios/App/App/StepGoCity.entitlements
+          /usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c "Print :NSHealthShareUsageDescription" ios/App/App/Info.plist
+
+      - name: iPhone-Archiv bauen (Upload nur bei bewusster Auswahl)
+        shell: bash
+        env:
+          ASC_API_KEY_ID: ${{ secrets.ASC_API_KEY_ID }}
+          ASC_API_ISSUER_ID: ${{ secrets.ASC_API_ISSUER_ID }}
+          ASC_API_PRIVATE_KEY: ${{ secrets.ASC_API_PRIVATE_KEY }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          bash scripts/testflight-release.sh "$STEPGO_MODE"
+
+      - name: Diagnose ohne Schluessel sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: StepGo-City-Geraetearchiv-Diagnose
+          path: |
+            ${{ runner.temp }}/stepgo-ios-device-resolve.log
+            ${{ runner.temp }}/stepgo-ios-device-archive.log
+          if-no-files-found: ignore
+          retention-days: 7
