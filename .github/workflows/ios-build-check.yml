@@ -87,13 +87,21 @@ jobs:
               CODE_SIGNING_ALLOWED=NO \
               build
 
-      - name: Diagnoseprotokolle sichern (auch bei Fehler)
+      - name: Schritt 4 - Testinstallation und Start im iPhone-Simulator
+        shell: bash
+        run: |
+          python3 scripts/run_xcode_stage.py simulator 360 \
+            bash scripts/test-simulator.sh
+
+      - name: Diagnose und Screenshot sichern (auch bei Fehler)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: StepGo-City-iOS-Diagnose
+          name: StepGo-City-iOS-Testinstallation
           path: |
             ${{ runner.temp }}/stepgo-ios-resolve.log
             ${{ runner.temp }}/stepgo-ios-compile.log
+            ${{ runner.temp }}/stepgo-ios-simulator.log
+            ${{ runner.temp }}/stepgo-city-simulator.png
           if-no-files-found: warn
           retention-days: 14
