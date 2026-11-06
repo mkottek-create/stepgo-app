@@ -9,6 +9,8 @@ on:
       - "scripts/**"
       - "package.json"
       - "capacitor.config.json"
+      - "app.js"
+      - "index.html"
 
 permissions:
   contents: read
@@ -16,7 +18,7 @@ permissions:
 jobs:
   iphone-build-check:
     name: iPhone-App zusammenbauen und kompilieren
-    runs-on: macos-26
+    runs-on: macos-26-intel
     timeout-minutes: 35
     steps:
       - name: Projekt herunterladen
