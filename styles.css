@@ -401,3 +401,21 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .coin-large,.modal-backdrop.open .modal{animation:none}
   .claim-btn,.nav-icon,.step-ring{transition:none}
 }
+
+
+/* Eindeutiger Hinweis auf die wirklich geladene Comic-Version */
+.comic-stamp{
+  display:table;
+  margin:12px auto -3px;
+  background:#ffdd64;
+  color:#21482d;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1.1px;
+  border:3px solid #102f23;
+  border-radius:11px;
+  padding:7px 12px;
+  box-shadow:3px 4px 0 #082e20;
+  transform:rotate(-3deg);
+  text-align:center;
+}
