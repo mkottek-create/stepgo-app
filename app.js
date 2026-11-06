@@ -11,8 +11,10 @@
   if (!Array.isArray(state.ledger)) state.ledger = [];
   if (!Number.isFinite(state.goal)) state.goal = 15000;
   if (!Number.isFinite(state.wallet)) state.wallet = 0;
-  if (state.date!==todayKey()) {state.date=todayKey();state.steps=0;}
+  if (state.date!==todayKey()) {state.date=todayKey();state.steps=0;state.stepSource="demo";state.importedAt=null;}
   if (!Number.isFinite(state.steps)) state.steps=0;
+  if (state.stepSource !== "health-import" && state.stepSource !== "demo") state.stepSource="demo";
+  if (state.date !== todayKey()) state.stepSource="demo";
   state.steps=Math.max(0,Math.min(100000,Math.floor(state.steps)));
   state.wallet=Math.max(0,Math.floor(state.wallet));
   state.goal=Math.min(30000,Math.max(3000,state.goal));
@@ -42,6 +44,8 @@
     $('statSteps').textContent=fmt(state.steps);
     $('statDays').textContent=fmt(state.ledger.length);
     $('activitySteps').textContent=fmt(state.steps);
+    $('activityStepSource').textContent=state.stepSource==='health-import'?'Aus Apple Health übernommen (manuell)':'Schritte im Testmodus';
+    $('healthImportHint').textContent=state.stepSource==='health-import'?'Zuletzt übernommen: '+fmt(state.steps)+' Schritte · '+(state.importedAt ? new Date(state.importedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'heute')+'. Nur Test-Coins.':'Noch keine Health-Schritte für heute übernommen.';
     $('historyCount').textContent=`${state.ledger.length} ${state.ledger.length===1?'Eintrag':'Einträge'}`;
     $('goalRange').value=String(state.goal);
     $('goalSettingLabel').textContent=fmt(state.goal);
@@ -57,9 +61,26 @@
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
-  $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);render();toast('+1.000 Demo-Schritte hinzugefügt');});
-  $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);render();toast('+5.000 Demo-Schritte hinzugefügt');});
-  $('resetDemo').addEventListener('click',()=>{state.steps=DEMO_START_STEPS;render();toast('Demo-Schritte zurückgesetzt');});
+  $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);state.stepSource='demo';state.importedAt=null;render();toast('+1.000 Demo-Schritte hinzugefügt');});
+  $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);state.stepSource='demo';state.importedAt=null;render();toast('+5.000 Demo-Schritte hinzugefügt');});
+  $('resetDemo').addEventListener('click',()=>{state.steps=DEMO_START_STEPS;state.stepSource='demo';state.importedAt=null;render();toast('Demo-Schritte zurückgesetzt');});
+
+  $('healthImportForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const raw = $('healthSteps').value.trim();
+    if (!/^[0-9.,\\s]+$/.test(raw)) { toast('Bitte nur eine Schrittzahl eingeben.'); return; }
+    const value = Number(raw.replace(/[^0-9]/g,''));
+    if (!Number.isSafeInteger(value) || value < 0 || value > 100000 || !raw) {
+      toast('Bitte eine Schrittzahl von 0 bis 100.000 eingeben.'); return;
+    }
+    state.steps=value;
+    state.stepSource='health-import';
+    state.importedAt=new Date().toISOString();
+    $('healthSteps').value='';
+    render();
+    toast(currentEntry() ? 'Schritte aktualisiert. Coins für heute sind bereits bestätigt.' : fmt(value)+' Schritte übernommen!');
+  });
+
   $('goalRange').addEventListener('input',event=>{state.goal=Number(event.target.value);render();});
   $('claimBtn').addEventListener('click',()=>{
     if(currentEntry()) {toast('Heute schon bestätigt.');return;}
