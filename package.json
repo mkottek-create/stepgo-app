@@ -1,0 +1,19 @@
+{
+  "name": "stepgo-city",
+  "version": "0.6.0",
+  "private": true,
+  "description": "StepGo City Web-App und iOS-HealthKit-Brücke",
+  "scripts": {
+    "native:assets": "node scripts/prepare-native.mjs",
+    "ios:init": "npm run native:assets && npx cap add ios",
+    "ios:sync": "npm run native:assets && npx cap sync ios",
+    "ios:open": "npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^8.0.0",
+    "@capacitor/ios": "^8.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.0.0"
+  }
+}
