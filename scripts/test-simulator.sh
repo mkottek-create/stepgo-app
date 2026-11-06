@@ -10,6 +10,9 @@ if [[ ! -d "$APP_PATH" ]]; then
   exit 10
 fi
 
+echo "Info.plist der fertigen App:"
+plutil -p "$APP_PATH/Info.plist" | head -80
+
 APP_ID=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$APP_PATH/Info.plist")
 if [[ -z "$APP_ID" ]]; then
   echo "::error::Bundle Identifier konnte nicht gelesen werden."
@@ -20,7 +23,7 @@ echo "StepGo Bundle: $APP_ID"
 echo "Verfuegbare iPhone-Simulatoren:"
 xcrun simctl list devices available
 
-SIMULATOR_ID=$(xcrun simctl list devices available --json | python3 -c '
+SIMULATOR_ID=$(xcrun simctl list -j devices available | python3 -c '
 import json,sys
 data=json.load(sys.stdin)
 devices=[d for group in data.get("devices",{}).values() for d in group
