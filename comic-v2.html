@@ -1,0 +1,646 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d2820" />
+  <meta name="description" content="StepGo – Schritt-für-Schritt-Prototyp. Schritte sammeln, Coins bestätigen und Fortschritt verfolgen." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <style>
+:root{font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:#162a24;background:#e9efea;font-synthesis:none;-webkit-tap-highlight-color:transparent}*{box-sizing:border-box}body{padding:0;margin:0}.app-shell{width:100%;max-width:520px;margin:0 auto;min-height:100dvh;background:#f5f7f4;padding-bottom:calc(87px + env(safe-area-inset-bottom));box-shadow:0 0 45px #0b2e2017}.app-header{background:#0d2820;color:white}.header-inner{padding:calc(18px + env(safe-area-inset-top)) 25px 12px}.brand-line,.header-right{display:flex;align-items:center;justify-content:space-between}.header-right{gap:12px}.brand{font-size:30px;line-height:1;font-weight:900;letter-spacing:-1.8px}.brand>span:first-child{color:#b6f478}.brand-dot{color:#f9c960}.tagline{font-size:9px;letter-spacing:2.6px;color:#98b7a8;font-weight:800;margin:8px 0 0}.demo-pill{display:flex;align-items:center;gap:5px;border:1px solid #476b5b;color:#a9d2b9;background:#174234;padding:6px 10px;border-radius:30px;font-size:10px;font-weight:800;letter-spacing:1px}.dot{width:6px;height:6px;border-radius:50%;background:#b6f478}.avatar{width:36px;height:36px;border-radius:50%;color:#b6f478;border:1px solid #5e806c;background:#193a2e;font-size:22px;cursor:pointer}.main{min-height:calc(100dvh - 185px)}.screen{display:none}.screen.active{display:block}.hero-panel{background:radial-gradient(ellipse at 98% 0%,#2e6550 0%,transparent 47%),linear-gradient(145deg,#103629 0%,#0b251d 80%);color:white;padding:19px 25px 26px;border-radius:0 0 30px 30px;box-shadow:0 12px 30px #103a271c}.overline,.section-overline{font-size:10px;letter-spacing:2px;font-weight:850;color:#829c8d}.overline{color:#a9c3b1}h1{font-size:29px;letter-spacing:-1.2px;line-height:1.15;margin:9px 0 6px;font-weight:850}h1 em{font-style:normal;color:#b6f478}.step-ring{--pct:83%;width:min(62vw,235px);height:min(62vw,235px);border-radius:50%;background:conic-gradient(from 0deg,#b6f478 var(--pct),#3d5b4e var(--pct) 100%);margin:13px auto 19px;padding:12px;box-shadow:0 0 0 7px #4c8c5820,0 8px 40px #bbf78110;display:grid;place-items:center;transition:background .35s}.ring-inner{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 30% 15%,#234d3c,#102b22 60%);display:flex;flex-direction:column;align-items:center;justify-content:center}.ring-icon{color:#b6f478;font-weight:900;font-size:27px;line-height:1}.step-count{font-size:43px;letter-spacing:-2px;font-weight:900;font-variant-numeric:tabular-nums}.ring-sub{font-size:9px;letter-spacing:2px;color:#a9c5b4;font-weight:900}.percent-pill{display:inline-block;margin-top:13px;border-radius:30px;padding:6px 11px;color:#c9faa0;background:#28553a;font-weight:800;font-size:10px}.progress-text{display:flex;justify-content:space-between;color:#c0d6c8;font-weight:650;font-size:11px;margin:0 0 16px;gap:8px}.progress-text b{color:#fff}.payout-preview{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border:1px solid #476c54;background:#1c4434;border-radius:16px;margin-bottom:13px;font-size:12px;color:#d0e2d6}.payout-preview strong{font-size:16px;color:#f9ecb9}.coin-mini{display:inline-grid;place-items:center;width:20px;height:20px;margin-right:5px;background:linear-gradient(130deg,#ffe99f,#e8aa3b);border-radius:50%;border:2px solid #ffdd80;color:#9e6808;font-weight:900;font-size:12px;vertical-align:middle;box-shadow:0 2px 6px #1d341025}.claim-btn{width:100%;border:0;cursor:pointer;background:#b6f478;color:#143222;font-size:14px;font-weight:900;padding:16px 18px;border-radius:15px;box-shadow:0 5px 14px #9ce9652a;display:flex;align-items:center;justify-content:center;position:relative;gap:10px;min-height:52px}.claim-btn:disabled{background:#4b6958;color:#b5c6ba;cursor:default;box-shadow:none}.claim-arrow{position:absolute;right:17px;font-size:20px}.hero-caption{text-align:center;font-size:10px;color:#a5c3af;margin:11px 0 0}.wallet-card{background:linear-gradient(112deg,#fff,#edf5e9);margin:20px 17px 0;padding:19px 19px;border:1px solid #d9e9d7;border-radius:21px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 7px 18px #233a2010}.section-overline{font-size:9px;color:#738776}.wallet-value{font-size:34px;font-weight:900;letter-spacing:-1.2px;margin-top:5px;line-height:1.1;font-variant-numeric:tabular-nums}.wallet-value small{font-size:14px;color:#6d8c77;letter-spacing:0}.wallet-hint{font-size:11px;color:#548565;margin-top:7px}.coin-large{width:61px;height:61px;border-radius:50%;background:linear-gradient(140deg,#ffe7a3,#f2bb47);border:5px solid #f8d777;box-shadow:inset 0 1px 5px #fff7,0 5px 12px #c99e4250;display:grid;place-items:center;font-size:31px;color:#b87911}.section-heading{display:flex;justify-content:space-between;align-items:center;margin:21px 18px 12px}.section-heading h2{font-size:16px;letter-spacing:-.35px;margin:0}.section-heading>span{font-size:11px;color:#65906d;font-weight:700}.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 17px}.stat-card{min-width:0;background:white;border:1px solid #e0e9e0;padding:15px;border-radius:17px;display:flex;flex-direction:column;gap:4px}.stat-icon{font-size:20px;color:#3d9262;font-weight:800}.stat-card strong{font-size:21px;letter-spacing:-.7px;margin-top:2px}.stat-card span{font-size:11px;color:#758578}.demo-tools{background:#eaf0e8;border:1px solid #dce6d9;border-radius:17px;margin:17px 17px 10px;padding:15px}.demo-header{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:11px;font-weight:850;color:#446953}.demo-header>span:last-child{color:#809887;font-size:10px}.demo-tools p{font-size:11px;line-height:1.5;color:#65816a;margin:8px 0 12px}.demo-buttons{display:flex;gap:7px;flex-wrap:wrap}.mini-button{border:0;background:#1d583b;color:white;border-radius:9px;padding:10px 12px;font-size:11px;font-weight:750;cursor:pointer;flex:1;white-space:nowrap}.mini-button-light{background:#d2e0ce;color:#2c513c}.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;border-top:1px solid #e0e9df;display:flex;justify-content:space-around;padding:11px 8px calc(12px + env(safe-area-inset-bottom));z-index:5;box-shadow:0 -4px 20px #1324190c}.nav-link{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;min-width:57px;background:none;border:0;cursor:pointer;color:#8c9b90;font-weight:750;font-size:10px}.nav-link.active{color:#207747}.nav-icon{font-size:24px;line-height:1}.page-intro{padding:27px 23px 20px;background:linear-gradient(140deg,#13382b,#0f271e);color:#fff;border-radius:0 0 27px 27px}.page-intro .section-overline{color:#a7c7ae}.page-intro h1{font-size:32px;margin-top:12px}.page-intro h1 em{color:#b6f478}.page-intro p{font-size:13px;line-height:1.6;color:#bcd2c5;margin:10px 0 4px}.detail-tile{margin:20px 17px 10px;background:white;border:1px solid #dfe8df;border-radius:19px;padding:22px;display:flex;gap:18px;align-items:center}.detail-icon{border-radius:50%;width:55px;height:55px;background:#e5f5d6;color:#3a9651;display:grid;place-items:center;font-size:36px}.detail-tile>div:last-child{display:flex;flex-direction:column;gap:5px}.detail-tile span,.detail-tile small{color:#758677;font-size:12px}.detail-tile strong{font-size:34px}.history-list{margin:0 17px}.empty{border:1px dashed #c9d8c9;border-radius:16px;padding:22px;text-align:center;color:#728a77;font-size:13px;line-height:1.5}.history-entry{background:#fff;border:1px solid #e1e9df;border-radius:14px;margin-bottom:8px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}.history-entry .date{display:block;font-weight:800;font-size:13px}.history-entry .step-detail{font-size:11px;color:#849486;margin-top:4px}.history-entry strong{color:#477c36;white-space:nowrap}.info-note{font-size:11px;color:#849486;padding:0 19px;line-height:1.6}.reward-balance{margin:21px 17px 18px;padding:20px;background:linear-gradient(120deg,#e8f4df,#f6fbf0);border:1px solid #d8e9cd;border-radius:17px;display:flex;justify-content:space-between;align-items:center;gap:10px}.reward-balance>span{font-size:12px;font-weight:750;color:#3e6549}.reward-balance strong{font-size:24px}.reward-card{margin:9px 17px;padding:17px 13px;display:flex;align-items:center;gap:12px;border-radius:16px;background:#fff;border:1px solid #e2eae0}.reward-icon{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;background:#edf6e7;font-size:23px;flex-shrink:0}.reward-card>div:nth-child(2){flex:1}.reward-card strong{font-size:13px}.reward-card p{margin:4px 0 0;font-size:11px;color:#849587}.soon{font-size:9px;font-weight:850;letter-spacing:1px;color:#4c8860;background:#e9f6e6;border-radius:20px;padding:6px 8px}.profile-card{display:flex;gap:15px;align-items:center;padding:18px;border-radius:17px;background:#fff;margin:19px 17px;border:1px solid #e1e8e0}.profile-icon{display:grid;place-items:center;font-size:24px;width:50px;height:50px;border-radius:50%;background:#e3f4dc}.profile-card>div:last-child{display:flex;flex-direction:column;gap:6px}.profile-card strong{font-size:15px}.profile-card span{font-size:11px;color:#7a8c80}.settings-card{margin:11px 17px;padding:18px;border-radius:17px;background:white;border:1px solid #e1e8e0}.settings-card strong{font-size:14px}.settings-card p{font-size:12px;line-height:1.65;color:#758777;margin:11px 0 0}.settings-head{display:flex;justify-content:space-between}.settings-head span{font-size:13px;font-weight:850;color:#3b9450}input[type=range]{width:100%;accent-color:#4d9f52;margin:22px 0 0}.range-hints{display:flex;justify-content:space-between;color:#94a397;font-size:10px}.danger-button{display:block;margin:22px auto;padding:11px 15px;border:none;background:#f6e7e2;color:#a14a39;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer}.toast{position:fixed;z-index:20;top:28px;left:50%;transform:translate(-50%,-18px);opacity:0;pointer-events:none;background:#153e2a;color:white;border-radius:14px;padding:13px 18px;box-shadow:0 7px 20px #132e2255;text-align:center;font-size:13px;max-width:90%;transition:opacity .2s,transform .2s}.toast.visible{opacity:1;transform:translate(-50%,0)}.modal-backdrop{position:fixed;inset:0;background:#061d13b9;display:none;z-index:10;align-items:center;justify-content:center;padding:20px}.modal-backdrop.open{display:flex}.modal{width:100%;max-width:360px;background:#fff;padding:28px 21px 23px;border-radius:25px;text-align:center;box-shadow:0 20px 60px #0004}.modal-medal{font-size:35px;line-height:1;display:grid;place-items:center;margin:0 auto 12px;background:#ffe59a;color:#b67a0b;width:72px;height:72px;border-radius:50%;border:5px solid #f5c65a}.modal h2{font-size:24px;letter-spacing:-.5px}.modal p{font-size:13px;color:#718475;line-height:1.6;margin-bottom:20px}.modal .claim-btn{background:#174e34;color:white}.ring-sub,.section-overline,.tagline{text-transform:uppercase}button:focus-visible,input:focus-visible{outline:3px solid #5cb76d;outline-offset:3px}@media(min-width:620px){.app-shell{margin:24px auto;min-height:calc(100dvh - 48px);border-radius:30px;overflow:hidden;border:1px solid #d5dfd6}.bottom-nav{bottom:24px;border-radius:0 0 30px 30px}.main{padding-bottom:12px}}@media(max-width:380px){.hero-panel{padding:16px 19px 23px}.header-inner{padding-left:19px;padding-right:19px}.step-ring{width:210px;height:210px}.step-count{font-size:38px}.progress-text{font-size:10px}.stat-card{padding:12px}.demo-buttons{gap:5px}.mini-button{font-size:10px;padding:9px}}
+
+/* Apple-Health-Import fuer die Web-Demo */
+.health-import-card{background:#fff;border:1px solid #d8e8d5;border-radius:19px;margin:17px 17px 4px;padding:17px;box-shadow:0 5px 20px #183d2810}
+.health-import-head{display:flex;align-items:center;gap:10px}
+.health-import-icon{display:grid;place-items:center;background:#e4f6e0;color:#348f48;border-radius:13px;width:42px;height:42px;font-size:24px}
+.health-import-head>div:nth-child(2){flex:1}
+.health-import-head h2{font-size:17px;margin:3px 0 0;font-weight:850}
+.health-beta{border-radius:30px;background:#e7f4d8;color:#428047;padding:5px 8px;font-size:9px;font-weight:900;letter-spacing:.7px}
+.health-import-text{font-size:12px;line-height:1.55;color:#687f70;margin:13px 0}
+.health-import-form label{font-size:11px;color:#526c56;font-weight:850;display:block;margin-bottom:7px}
+.health-import-row{display:flex;gap:7px}
+.health-import-row input{min-width:0;flex:1;border:1px solid #cbd9ca;border-radius:11px;font-size:16px;padding:12px;background:#f7faf6;color:#1a3224;width:50%}
+.health-import-button{background:#226b43;border:0;border-radius:11px;color:white;font-size:12px;font-weight:850;padding:12px;cursor:pointer}
+.health-import-status{font-size:11px;color:#587b64;line-height:1.5;margin:10px 0 0}
+.health-help{margin-top:13px;border-top:1px solid #e3ebe2;padding-top:12px}
+.health-help summary{font-size:12px;color:#236a3b;font-weight:850;cursor:pointer;display:flex;justify-content:space-between;gap:8px;list-style:none}
+.health-help summary::-webkit-details-marker{display:none}
+.health-help[open] summary span{transform:rotate(180deg)}
+.health-help ol{font-size:12px;line-height:1.7;padding-left:21px;color:#526d5b}
+.health-help li{margin:7px 0}
+.health-help p{font-size:11px;line-height:1.6;color:#6f8575;margin:12px 0 0}
+
+
+
+/* STEP-GO COMIC V2 DESIGN
+   Freundlich, dynamisch und spielerisch – ohne Funktionen oder gespeicherte Daten anzufassen.
+*/
+:root{
+  --comic-ink:#143d2b;
+  --comic-dark:#0c2d22;
+  --comic-green:#bfff67;
+  --comic-yellow:#ffcf53;
+  --comic-mint:#ecf9e7;
+  font-family:ui-rounded,"SF Pro Rounded","Arial Rounded MT Bold",ui-sans-serif,system-ui,-apple-system,sans-serif;
+  color:var(--comic-ink);
+  background:#e4f3df;
+}
+body{
+  background-color:#e4f3df;
+  background-image:radial-gradient(#9fcf9a40 1px,transparent 1px);
+  background-size:18px 18px;
+}
+.app-shell{
+  background:linear-gradient(180deg,#f2f9ec 0%,#f7fbf4 45%,#edf7e9 100%);
+  box-shadow:0 0 0 2px #12402d1b,0 16px 40px #103b2538;
+}
+.app-header{
+  background:linear-gradient(112deg,#0d3c2c,#176448 65%,#134a35);
+  border-bottom:3px solid var(--comic-dark);
+}
+.brand{
+  font-size:33px;
+  font-weight:950;
+  letter-spacing:-2.2px;
+  text-shadow:2px 3px 0 #062b1d;
+}
+.brand>span:first-child{color:#bfff67}
+.brand-dot{color:#ffd258;font-size:35px}
+.tagline{color:#dbedc5;font-weight:900;letter-spacing:2px}
+.demo-pill{
+  border:2px solid #d8f5a8;
+  background:#286b43;
+  color:#fff6b4;
+  box-shadow:2px 3px 0 #062c1f;
+  font-weight:900;
+}
+.dot{background:#ffe278;box-shadow:0 0 0 2px #f9e69438}
+.avatar{
+  width:39px;height:39px;
+  background:#e4ffbb;color:#155638;
+  border:2px solid #082e21;
+  box-shadow:2px 3px 0 #082e21;
+  font-weight:900;
+}
+.hero-panel{
+  position:relative;
+  overflow:hidden;
+  background:
+    radial-gradient(ellipse at 88% 6%,#389b67 0%,transparent 45%),
+    radial-gradient(ellipse at 5% 70%,#23714a 0%,transparent 44%),
+    linear-gradient(145deg,#175a40,#10382b 65%,#092d24);
+  border-bottom:4px solid var(--comic-dark);
+  border-radius:0 0 35px 35px;
+  box-shadow:0 10px 0 #a2ce96,0 19px 28px #1a5d3426;
+  padding-top:22px;
+  padding-bottom:30px;
+}
+.hero-panel::before{
+  content:"✦";
+  position:absolute;right:11px;top:15px;
+  color:#fce682;font-size:51px;
+  opacity:.27;transform:rotate(17deg);
+  pointer-events:none;
+}
+.hero-panel::after{
+  content:"";
+  position:absolute;left:-28px;bottom:54px;
+  width:125px;height:125px;border:4px dashed #d5fa6a;
+  border-radius:50%;opacity:.10;pointer-events:none;
+}
+.hero-panel>*{position:relative;z-index:1}
+.hero-panel h1{
+  font-size:32px;letter-spacing:-1.4px;
+  font-weight:950;
+  line-height:1.10;
+  text-shadow:2px 3px 0 #082f22;
+}
+.hero-panel h1 em{color:#c8ff6c;text-shadow:2px 3px 0 #1d7041}
+.overline{
+  display:inline-block;
+  background:#dcfdb1;color:#164633;
+  padding:6px 11px;border-radius:10px;
+  border:2px solid #143d2b;
+  box-shadow:2px 3px 0 #092d20;
+  font-size:10px;letter-spacing:1.1px;
+}
+.step-ring{
+  --pct:83%;
+  position:relative;
+  background:conic-gradient(from -90deg,#d3ff76 0%,#b4f65f var(--pct),#346e51 var(--pct) 100%);
+  outline:4px solid #082e22;
+  border:5px solid #e0ff9c;
+  padding:10px;
+  margin-top:24px;
+  margin-bottom:23px;
+  box-shadow:0 0 0 8px #9bf16e25,0 9px 0 #072c20,0 18px 30px #00190f47;
+}
+.step-ring::before{
+  content:"✦";
+  position:absolute;top:-25px;left:-14px;
+  color:#ffe279;font-size:33px;
+  text-shadow:2px 2px 0 #133e29;
+  transform:rotate(-17deg);
+}
+.step-ring::after{
+  content:"✧";
+  position:absolute;right:-20px;bottom:14px;
+  color:#c8fdb1;font-size:36px;
+  text-shadow:2px 2px 0 #174d36;
+}
+.ring-inner{
+  border:4px solid #205c3e;
+  background:radial-gradient(circle at 30% 20%,#276a4c,#102e24 77%);
+  box-shadow:inset 0 4px 13px #0003;
+}
+.ring-icon{
+  color:#ffe278;font-size:34px;
+  font-weight:950;text-shadow:2px 2px 0 #114734;
+}
+.step-count{
+  font-size:45px;
+  font-weight:950;
+  letter-spacing:-2.4px;
+  color:#fffef3;
+  text-shadow:3px 3px 0 #0a3929;
+}
+.ring-sub{color:#d7f4d4;font-size:10px;letter-spacing:1.7px}
+.percent-pill{
+  background:#ffdd70;color:#193d28;
+  border:2px solid #0a3524;
+  box-shadow:2px 3px 0 #082c21;
+  font-size:10px;font-weight:950;
+  padding:6px 12px;
+}
+.progress-text{font-size:12px;color:#e0f1dc}
+.progress-text b{color:#fff9cf}
+.payout-preview{
+  background:#205a41;
+  border:2px solid #bbf08a;
+  border-radius:17px;
+  box-shadow:0 4px 0 #082e20;
+  font-weight:800;
+}
+.payout-preview strong{color:#fff0a9;font-size:18px;font-weight:950}
+.coin-mini{
+  background:linear-gradient(140deg,#fff6ba,#ffd64a 55%,#efa931);
+  border:2px solid #a97717;
+  color:#80510c;
+  box-shadow:0 2px 0 #6c4d20;
+}
+.claim-btn{
+  border:3px solid #123e29;
+  background:linear-gradient(180deg,#d4ff85,#a9ef55);
+  color:#103927;
+  border-radius:18px;
+  box-shadow:0 6px 0 #0b3324,0 13px 22px #082b2245;
+  min-height:55px;
+  font-size:15px;
+  letter-spacing:.1px;
+  font-weight:950;
+  transition:transform .13s ease,box-shadow .13s ease,filter .13s ease;
+}
+.claim-btn:active:not(:disabled){
+  transform:translateY(4px);
+  box-shadow:0 2px 0 #0b3324,0 5px 9px #082b2240;
+}
+.claim-btn:disabled{
+  border-color:#153d2c;
+  background:#5b8369;color:#def4df;
+  box-shadow:0 4px 0 #133c2a;
+}
+.claim-arrow{font-size:23px;font-weight:900}
+.hero-caption{color:#c3e0ca}
+.wallet-card{
+  position:relative;
+  overflow:visible;
+  background:linear-gradient(115deg,#fffef4,#fff7ce 55%,#fdf0b7);
+  border:3px solid #194732;
+  border-radius:23px;
+  box-shadow:0 6px 0 #b1d5ad,0 12px 19px #22503417;
+  padding:20px;
+  margin-top:24px;
+}
+.wallet-card>div{position:relative;z-index:1}
+.wallet-card::after{
+  content:"✧";position:absolute;right:6px;top:-19px;
+  color:#ffcf50;font-size:31px;
+  text-shadow:2px 2px 0 #946b20;
+  pointer-events:none;
+}
+.wallet-value{
+  color:#164b30;font-size:35px;font-weight:950;
+  text-shadow:1px 2px 0 #d1ead0;
+}
+.wallet-value small{color:#486c4c;font-weight:900}
+.wallet-hint{color:#527b58;font-weight:700}
+.coin-large{
+  position:relative;
+  flex:0 0 auto;
+  width:68px;height:68px;
+  background:linear-gradient(140deg,#fff5b8 10%,#ffe06e 40%,#f1b32f 88%);
+  border:5px solid #fff1a4;
+  outline:3px solid #956718;
+  color:#936010;
+  box-shadow:inset 0 2px 3px #fffeea,0 6px 0 #a97b21,0 10px 13px #99722435;
+  font-size:36px;
+  transform:rotate(-11deg);
+  animation:coin-tilt 4.2s ease-in-out infinite;
+}
+.coin-large::after{
+  content:"";position:absolute;left:8px;top:8px;width:12px;height:7px;
+  background:#ffffffa8;border-radius:50%;transform:rotate(-30deg);
+}
+.section-heading h2{
+  font-weight:950;font-size:18px;letter-spacing:-.5px;
+}
+.section-heading>span{
+  color:#1f6c42;background:#d4f4c7;
+  border:1px solid #91cb93;padding:4px 8px;border-radius:9px;
+  font-weight:900;
+}
+.stat-card{
+  background:#fff;
+  border:2px solid #215339;
+  border-radius:19px;
+  box-shadow:0 5px 0 #c4dec1;
+  padding:15px;
+}
+.stat-card:nth-child(2){background:#fffbee;box-shadow:0 5px 0 #e8dfac}
+.stat-icon{font-size:25px;color:#278d49}
+.stat-card strong{font-size:24px;font-weight:950;color:#183f2c}
+.stat-card span{color:#5f7969;font-weight:750}
+.health-import-card{
+  background:#fcfff8;
+  border:2px solid #276b43;
+  border-radius:21px;
+  box-shadow:0 5px 0 #bddab9;
+  margin-top:21px;
+}
+.health-import-icon{
+  background:#c8f79b;border:2px solid #235f3b;
+  box-shadow:2px 3px 0 #a4d182;color:#22673d;
+  font-weight:900;
+}
+.health-import-head h2{font-size:18px;font-weight:950}
+.health-beta{
+  background:#fff0ad;color:#795716;border:1px solid #dcbf5b;
+}
+.health-import-row input{
+  background:white;
+  border:2px solid #9ec7a5;
+  border-radius:13px;
+}
+.health-import-button{
+  background:#b9f66b;color:#173d2b;
+  border:2px solid #194631;border-radius:13px;
+  box-shadow:0 3px 0 #164a2c;
+  font-weight:950;min-height:44px;
+}
+.health-import-button:active{transform:translateY(2px);box-shadow:0 1px 0 #164a2c}
+.health-help summary{color:#205f3e}
+.demo-tools{
+  background:#eaf2e7;
+  border:2px dashed #9db9a1;
+  border-radius:17px;
+}
+.mini-button{
+  background:#316b48;
+  border:2px solid #164330;
+  border-radius:12px;
+  box-shadow:0 3px 0 #143d2b;
+  font-weight:850;
+}
+.mini-button-light{background:#d7e8cf;color:#244c35}
+.mini-button:active{transform:translateY(2px);box-shadow:0 1px 0 #143d2b}
+.bottom-nav{
+  background:#fffef7;
+  border-top:3px solid #174933;
+  box-shadow:0 -7px 18px #1e593324;
+  padding-top:9px;
+}
+.nav-link{color:#738a77;font-size:10px;font-weight:850;gap:4px}
+.nav-icon{
+  display:grid;place-items:center;
+  width:37px;height:34px;border-radius:12px;
+  font-size:23px;transition:transform .18s ease,background .18s ease;
+}
+.nav-link.active{color:#205e3d}
+.nav-link.active .nav-icon{
+  background:#c6f78c;
+  color:#194a2e;
+  border:2px solid #164631;
+  box-shadow:2px 3px 0 #a0ce85;
+  transform:rotate(-5deg);
+}
+.page-intro{
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 98% 5%,#307e55 0%,transparent 50%),linear-gradient(135deg,#155c3e,#0c3227);
+  border-bottom:4px solid #0d3426;
+  border-radius:0 0 32px 32px;
+  box-shadow:0 7px 0 #b4d69f;
+}
+.page-intro::after{
+  content:"✦";position:absolute;right:13px;top:16px;
+  font-size:42px;color:#dbfa9d;opacity:.25;
+  pointer-events:none;
+}
+.page-intro h1{font-weight:950;letter-spacing:-1.3px;text-shadow:2px 2px 0 #0b2c22}
+.page-intro h1 em{color:#caff75}
+.detail-tile,.reward-card,.profile-card,.settings-card,.history-entry{
+  border:2px solid #25553a;
+  border-radius:19px;
+  box-shadow:0 4px 0 #c9dec4;
+}
+.detail-icon,.profile-icon,.reward-icon{
+  border:2px solid #2d7249;
+  box-shadow:2px 3px 0 #c2e5b6;
+  background:#dcf6bd;
+}
+.detail-tile strong{font-weight:950;color:#183e2b}
+.reward-balance{
+  background:linear-gradient(110deg,#fdfcd9,#e6f7c6);
+  border:3px solid #1d5937;
+  box-shadow:0 5px 0 #c1dda8;
+  border-radius:20px;
+}
+.reward-balance strong{font-weight:950;color:#235437}
+.reward-card{background:#fffef7}
+.reward-card strong,.profile-card strong,.settings-card strong{font-weight:900}
+.soon{
+  color:#195734;background:#d0f4af;
+  border:1px solid #6aa86a;
+  font-weight:950;
+}
+.empty{
+  background:#fcfff9;
+  border:2px dashed #9ebca0;
+}
+.modal{
+  border:3px solid #164b30;
+  box-shadow:0 9px 0 #689569,0 22px 50px #0005;
+}
+.modal-medal{border:5px solid #f0c34d;outline:3px solid #9f6e19}
+.modal-backdrop.open .modal{animation:modal-pop .27s cubic-bezier(.2,1.4,.45,1) both}
+.toast{border:2px solid #bbf48d;box-shadow:0 5px 0 #0b2a20}
+.danger-button{border:1px solid #bd7b70;font-weight:850}
+button:focus-visible,input:focus-visible,summary:focus-visible{
+  outline:3px solid #ffb92e;
+  outline-offset:3px;
+}
+@keyframes coin-tilt{
+  0%,100%{transform:rotate(-11deg) translateY(0)}
+  50%{transform:rotate(-3deg) translateY(-3px)}
+}
+@keyframes modal-pop{
+  0%{transform:scale(.89);opacity:.5}
+  100%{transform:scale(1);opacity:1}
+}
+@media(max-width:380px){
+  .hero-panel h1{font-size:29px}
+  .step-ring{width:205px;height:205px}
+  .step-count{font-size:37px}
+  .ring-icon{font-size:27px}
+  .coin-large{width:57px;height:57px;font-size:30px}
+  .wallet-value{font-size:30px}
+  .health-import-button{padding:10px;font-size:11px}
+  .health-import-head h2{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .coin-large,.modal-backdrop.open .modal{animation:none}
+  .claim-btn,.nav-icon,.step-ring{transition:none}
+}
+
+
+/* Eindeutiger Hinweis auf die wirklich geladene Comic-Version */
+.comic-stamp{
+  display:table;
+  margin:12px auto -3px;
+  background:#ffdd64;
+  color:#21482d;
+  font-size:10px;
+  font-weight:950;
+  letter-spacing:1.1px;
+  border:3px solid #102f23;
+  border-radius:11px;
+  padding:7px 12px;
+  box-shadow:3px 4px 0 #082e20;
+  transform:rotate(-3deg);
+  text-align:center;
+}
+
+</style>
+  <title>StepGo V2 – Comic Edition</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="brand-line">
+          <div class="brand">step<span>go</span><span class="brand-dot">.</span></div>
+          <div class="header-right"><span class="demo-pill"><span class="dot"></span> DEMO</span><button id="profileShortcut" class="avatar" aria-label="Profil öffnen">♙</button></div>
+        </div>
+        <p class="tagline">JEDER SCHRITT LOHNT SICH.</p>
+      </div>
+    </header>
+
+    <main class="main" id="main">
+      <section class="screen active" id="screen-home" aria-label="Startseite">
+        <div class="hero-panel">
+          <div class="overline" id="todayLabel">HEUTE</div>
+          <h1>Mach jeden Schritt<br><em>wertvoll.</em></h1>
+          <div class="comic-stamp" aria-label="StepGo Comic Edition">✦ COMIC EDITION V2 ✦</div>
+          <div class="step-ring" id="stepRing" role="progressbar" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="12458" aria-label="Tägliche Schrittanzahl">
+            <div class="ring-inner">
+              <div class="ring-icon">↟</div>
+              <div class="step-count" id="stepsMain">12.458</div>
+              <div class="ring-sub">SCHRITTE HEUTE</div>
+              <span class="percent-pill" id="percentPill">83 % vom Tagesziel</span>
+            </div>
+          </div>
+          <div class="progress-text"><span><b id="goalProgress">12.458</b> / <span id="goalText">15.000</span> Schritte</span><span id="stepsRemaining">Noch 2.542</span></div>
+          <div class="payout-preview"><span>Heute möglich</span><strong><span class="coin-mini">✦</span><span id="earnableCoins">124</span> Coins</strong></div>
+          <button id="claimBtn" class="claim-btn"><span id="claimBtnText">Schritte bestätigen</span><span class="claim-arrow">↗</span></button>
+          <p class="hero-caption" id="claimCaption">Sammle deine heutigen Coins mit einem Klick.</p>
+        </div>
+
+        <section class="wallet-card" aria-label="Dein Coin-Guthaben">
+          <div><div class="section-overline">DEIN GUTHABEN</div><div class="wallet-value"><span id="walletCoins">0</span> <small>Coins</small></div><div class="wallet-hint">Dein Fortschritt. Deine Belohnungen.</div></div>
+          <div class="coin-large" aria-hidden="true">✦</div>
+        </section>
+
+
+        <section class="health-import-card" aria-label="Schritte aus Apple Health übernehmen">
+          <div class="health-import-head"><div class="health-import-icon" aria-hidden="true">♥</div><div><span class="section-overline">ECHTE SCHRITTE</span><h2>Schritte aus Health</h2></div><span class="health-beta">TEST</span></div>
+          <p class="health-import-text">Übernimm deine heutige Schrittzahl aus Apple Health. Gehen, Walking und Laufen zählen gleich.</p>
+          <form id="healthImportForm" class="health-import-form">
+            <label for="healthSteps">Schritte heute</label>
+            <div class="health-import-row"><input type="text" inputmode="numeric" autocomplete="off" id="healthSteps" placeholder="z. B. 12.458" aria-describedby="healthImportHint" /><button class="health-import-button" type="submit">Übernehmen</button></div>
+          </form>
+          <p class="health-import-status" id="healthImportHint" aria-live="polite">Noch keine Health-Schritte für heute übernommen.</p>
+          <details class="health-help"><summary>So holst du deine Schritte vom iPhone <span aria-hidden="true">⌄</span></summary>
+            <ol>
+              <li>Öffne auf dem iPhone die App <strong>Kurzbefehle</strong> und erstelle einen Kurzbefehl namens <strong>StepGo-Schritte</strong>.</li>
+              <li>Füge <strong>Health-Messungen suchen</strong> hinzu: Typ <strong>Schritte</strong> und Startdatum <strong>heute</strong>.</li>
+              <li>Füge <strong>Statistik berechnen</strong> hinzu und wähle <strong>Summe</strong> der gefundenen Messungen.</li>
+              <li>Füge <strong>In Zwischenablage kopieren</strong> hinzu. Starte den Kurzbefehl und erlaube den Zugriff auf Health.</li>
+              <li>Öffne StepGo, füge die kopierte Zahl oben ein und tippe auf <strong>Übernehmen</strong>.</li>
+            </ol>
+            <p>Dieser Umweg ist nötig, weil eine Web-App Apple Health nicht direkt lesen kann. Die Zahlen werden nur auf deinem Gerät gespeichert. Eine vollautomatische Synchronisierung benötigt später eine native iPhone-App.</p>
+          </details>
+        </section>
+
+        <div class="section-heading"><h2>Dein Fortschritt</h2><span>Heute</span></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon">⌁</div><strong id="statSteps">12.458</strong><span>Schritte gesammelt</span></div>
+          <div class="stat-card"><div class="stat-icon">✦</div><strong id="statDays">0</strong><span>Bestätigte Tage</span></div>
+        </div>
+        <section class="demo-tools" aria-label="Schritt-Simulation">
+          <div class="demo-header"><span>🧪 Testmodus</span><span>Ohne Health-Verbindung</span></div>
+          <p>Hier kannst du die App ausprobieren. Echte Schritte folgen in der iPhone-App.</p>
+          <div class="demo-buttons"><button id="add1k" class="mini-button">+ 1.000 Schritte</button><button id="add5k" class="mini-button">+ 5.000 Schritte</button><button id="resetDemo" class="mini-button mini-button-light">Zurücksetzen</button></div>
+        </section>
+      </section>
+
+      <section class="screen" id="screen-activity" aria-label="Schrittübersicht">
+        <div class="page-intro"><div class="section-overline">DEINE BEWEGUNG</div><h1>Jeder Schritt zählt.</h1><p>Ob Spazieren, Walking oder Joggen – für StepGo spielt die Art deiner Bewegung keine Rolle.</p></div>
+        <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small id="activityStepSource">Schritte im Testmodus</small></div></div>
+        <div class="section-heading"><h2>Bestätigte Tage</h2><span id="historyCount">0 Einträge</span></div>
+        <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!</div></div>
+        <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Coins bleiben Test-Coins.</p>
+      </section>
+
+      <section class="screen" id="screen-rewards" aria-label="Prämien">
+        <div class="page-intro"><div class="section-overline">DEINE BELOHNUNGEN</div><h1>Schritte werden<br><em>belohnt.</em></h1><p>Hier werden später Gutscheine und Auszahlungen angeboten. In dieser Demo gibt es noch keine echten Prämien.</p></div>
+        <div class="reward-balance"><span>Deine gesammelten Coins</span><strong><span class="coin-mini">✦</span><span id="rewardsCoins">0</span></strong></div>
+        <div class="reward-card"><div class="reward-icon">🎁</div><div><strong>Gutscheine</strong><p>Partnerangebote in Planung</p></div><span class="soon">BALD</span></div>
+        <div class="reward-card"><div class="reward-icon">💶</div><div><strong>Auszahlungen</strong><p>Erst nach sicherer Anbindung</p></div><span class="soon">BALD</span></div>
+        <div class="reward-card"><div class="reward-icon">🏆</div><div><strong>Meilensteine</strong><p>Belohnungen für deine Bewegung</p></div><span class="soon">BALD</span></div>
+      </section>
+
+      <section class="screen" id="screen-profile" aria-label="Profil">
+        <div class="page-intro"><div class="section-overline">DEIN BEREICH</div><h1>Dein Tempo.<br><em>Dein Ziel.</em></h1><p>Passe deine Tagesziele an und behalte deine Fortschritte im Blick.</p></div>
+        <div class="profile-card"><div class="profile-icon">👟</div><div><strong>StepGo-Tester</strong><span>Dein erstes Abenteuer beginnt hier.</span></div></div>
+        <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
+        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte kannst du manuell aus Apple Health übernehmen; Coins sind noch Test-Coins. Die Daten werden lokal auf diesem Gerät gespeichert und nicht an einen Server gesendet.</p></div>
+        <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigation">
+      <button class="nav-link active" data-tab="home" aria-current="page"><span class="nav-icon">⌂</span><span>Start</span></button>
+      <button class="nav-link" data-tab="activity"><span class="nav-icon">↟</span><span>Schritte</span></button>
+      <button class="nav-link" data-tab="rewards"><span class="nav-icon">◇</span><span>Prämien</span></button>
+      <button class="nav-link" data-tab="profile"><span class="nav-icon">♙</span><span>Profil</span></button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
+  </div>
+  <script>
+(() => {
+  'use strict';
+  const STORAGE_KEY = 'stepgo-demo-v1';
+  const DEMO_START_STEPS = 12458;
+  const fmt = n => new Intl.NumberFormat('de-DE').format(n);
+  const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[]});
+  let state;
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fresh(); } catch { state = fresh(); }
+  if (!state || typeof state!=='object') state = fresh();
+  if (!Array.isArray(state.ledger)) state.ledger = [];
+  if (!Number.isFinite(state.goal)) state.goal = 15000;
+  if (!Number.isFinite(state.wallet)) state.wallet = 0;
+  if (state.date!==todayKey()) {state.date=todayKey();state.steps=0;state.stepSource="demo";state.importedAt=null;}
+  if (!Number.isFinite(state.steps)) state.steps=0;
+  if (state.stepSource !== "health-import" && state.stepSource !== "demo") state.stepSource="demo";
+  if (state.date !== todayKey()) state.stepSource="demo";
+  state.steps=Math.max(0,Math.min(100000,Math.floor(state.steps)));
+  state.wallet=Math.max(0,Math.floor(state.wallet));
+  state.goal=Math.min(30000,Math.max(3000,state.goal));
+  const $ = id => document.getElementById(id);
+  const persist = () => {try {localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}};
+  let toastTimer;
+  const toast = s => { const t=$('toast');t.textContent=s;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),2700); };
+  const earnedForSteps = steps => Math.min(200,Math.floor(steps/100)); // Demo-Regel: 1 Coin je 100 Schritte, max. 200/Tag
+  const currentEntry = () => state.ledger.find(x=>x.date===todayKey());
+  const coinsAvailable = () => currentEntry() ? 0 : earnedForSteps(state.steps);
+  const dateLabel = key => {const d=new Date(`${key}T12:00:00`);return new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long',year:'numeric'}).format(d);};
+  function render(){
+    const pct=Math.min(100,Math.round(state.steps/state.goal*100));
+    const remaining=Math.max(0,state.goal-state.steps);
+    $('todayLabel').textContent=new Intl.DateTimeFormat('de-DE',{weekday:'long',day:'numeric',month:'long'}).format(new Date()).toUpperCase();
+    $('stepsMain').textContent=fmt(state.steps);
+    $('goalProgress').textContent=fmt(state.steps);
+    $('goalText').textContent=fmt(state.goal);
+    $('stepsRemaining').textContent=remaining?`Noch ${fmt(remaining)}`:'Ziel erreicht ✓';
+    $('stepRing').style.setProperty('--pct',pct+'%');
+    $('stepRing').setAttribute('aria-valuemax',String(state.goal));
+    $('stepRing').setAttribute('aria-valuenow',String(Math.min(state.steps,state.goal)));
+    $('percentPill').textContent=`${pct} % vom Tagesziel`;
+    $('earnableCoins').textContent=fmt(coinsAvailable());
+    $('walletCoins').textContent=fmt(state.wallet);
+    $('rewardsCoins').textContent=fmt(state.wallet);
+    $('statSteps').textContent=fmt(state.steps);
+    $('statDays').textContent=fmt(state.ledger.length);
+    $('activitySteps').textContent=fmt(state.steps);
+    $('activityStepSource').textContent=state.stepSource==='health-import'?'Aus Apple Health übernommen (manuell)':'Schritte im Testmodus';
+    $('healthImportHint').textContent=state.stepSource==='health-import'?'Zuletzt übernommen: '+fmt(state.steps)+' Schritte · '+(state.importedAt ? new Date(state.importedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'heute')+'. Nur Test-Coins.':'Noch keine Health-Schritte für heute übernommen.';
+    $('historyCount').textContent=`${state.ledger.length} ${state.ledger.length===1?'Eintrag':'Einträge'}`;
+    $('goalRange').value=String(state.goal);
+    $('goalSettingLabel').textContent=fmt(state.goal);
+    const claimed=!!currentEntry();
+    $('claimBtn').disabled=claimed || state.steps<100;
+    $('claimBtnText').textContent=claimed?'Heute bereits bestätigt ✓':state.steps<100?'Mindestens 100 Schritte nötig':'Schritte bestätigen';
+    $('claimCaption').textContent=claimed?'Morgen warten neue Coins auf dich.':'1 Coin je 100 Schritte · max. 200 Coins/Tag (Demo-Regel)';
+    const history=$('historyList');history.replaceChildren();
+    if (!state.ledger.length){const el=document.createElement('div');el.className='empty';el.textContent='Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!';history.append(el);}
+    else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte`;left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
+    persist();
+  }
+  function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
+  document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
+  $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
+  $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);state.stepSource='demo';state.importedAt=null;render();toast('+1.000 Demo-Schritte hinzugefügt');});
+  $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);state.stepSource='demo';state.importedAt=null;render();toast('+5.000 Demo-Schritte hinzugefügt');});
+  $('resetDemo').addEventListener('click',()=>{state.steps=DEMO_START_STEPS;state.stepSource='demo';state.importedAt=null;render();toast('Demo-Schritte zurückgesetzt');});
+
+  $('healthImportForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const raw = $('healthSteps').value.trim();
+    if (!/^[0-9.,\s]+$/.test(raw)) { toast('Bitte nur eine Schrittzahl eingeben.'); return; }
+    const value = Number(raw.replace(/[^0-9]/g,''));
+    if (!Number.isSafeInteger(value) || value < 0 || value > 100000 || !raw) {
+      toast('Bitte eine Schrittzahl von 0 bis 100.000 eingeben.'); return;
+    }
+    state.steps=value;
+    state.stepSource='health-import';
+    state.importedAt=new Date().toISOString();
+    $('healthSteps').value='';
+    render();
+    toast(currentEntry() ? 'Schritte aktualisiert. Coins für heute sind bereits bestätigt.' : fmt(value)+' Schritte übernommen!');
+  });
+
+  $('goalRange').addEventListener('input',event=>{state.goal=Number(event.target.value);render();});
+  $('claimBtn').addEventListener('click',()=>{
+    if(currentEntry()) {toast('Heute schon bestätigt.');return;}
+    const coins=coinsAvailable(); if(coins<1)return;
+    state.wallet+=coins;
+    state.ledger.push({date:todayKey(),steps:state.steps,coins});
+    render();$('modalText').textContent=`Du hast ${fmt(state.steps)} Schritte bestätigt und ${coins} Demo-Coins gesammelt!`;
+    $('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('modalClose').focus();
+  });
+  $('modalClose').addEventListener('click',()=>{$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');});
+  $('modalBackdrop').addEventListener('click',ev=>{if(ev.target===$('modalBackdrop'))$('modalClose').click();});
+  document.addEventListener('keydown',ev=>{if(ev.key==='Escape' && $('modalBackdrop').classList.contains('open'))$('modalClose').click();});
+  $('clearAll').addEventListener('click',()=>{if(!confirm('Wirklich alle StepGo-Testdaten löschen?'))return;state=fresh();render();switchTab('home');toast('Testdaten gelöscht');});
+  render();
+})();
+
+</script>
+</body>
+</html>
