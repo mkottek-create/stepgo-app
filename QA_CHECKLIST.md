@@ -30,7 +30,10 @@ Stand: 06.11.2026 · Prototyp, noch keine Echtgeld-Prämien.
 
 ## Technische / praktische Tests – noch offen
 
-- [ ] macOS-iOS-Simulator-Build erfolgreich (Cloud-Build derzeit noch nicht bestätigt).
+- [x] iOS-Simulator-Build erfolgreich (GitHub-Lauf 42288817938).
+- [x] App im iPhone-Simulator installiert, gestartet und Screenshot gesichert (Lauf 42288817938).
+- [ ] Unsignierten Release-Build fuer echtes iPhone (arm64) erfolgreich pruefen; eigener Workflow eingerichtet.
+- [ ] Apple-signiertes Archiv zu TestFlight hochladen; erfordert Apple-Developer-Mitgliedschaft und App-Store-Connect-Einrichtung.
 - [ ] Installation und Start auf einem echten iPhone.
 - [ ] HealthKit-Zugriff erstmals erlauben, verweigern, später widerrufen und erneut erlauben.
 - [ ] Health-Schritte bei mehrfachen Geräten/Quellen, nach Mitternacht, nach Zeitzonenwechsel und bei 0 Schritten.
