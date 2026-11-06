@@ -7,7 +7,9 @@
     "native:assets": "node scripts/prepare-native.mjs",
     "ios:init": "npm run native:assets && npx cap add ios",
     "ios:sync": "npm run native:assets && npx cap sync ios",
-    "ios:open": "npx cap open ios"
+    "ios:open": "npx cap open ios",
+    "test": "node --test tests/*.test.cjs",
+    "test:check": "node --check app.js"
   },
   "dependencies": {
     "@capacitor/core": "^8.0.0",
