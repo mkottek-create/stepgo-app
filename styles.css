@@ -419,3 +419,14 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   transform:rotate(-3deg);
   text-align:center;
 }
+
+/* StepGo V3 – iPhone-Health-Import mit zwei einfachen Knöpfen */
+.health-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0 8px}
+.health-quick-actions button{border-radius:14px;min-height:58px;padding:10px 9px;display:flex;gap:6px;align-items:center;justify-content:center;flex-direction:column;text-align:center;font-family:inherit;font-size:11px;font-weight:950;line-height:1.25;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.health-quick-actions button span{font-size:22px;line-height:1.2}
+.health-launch-button{background:linear-gradient(160deg,#d8ff96,#b3f35c);color:#15402b;border:2px solid #174732;box-shadow:0 4px 0 #2c6540}
+.health-paste-button{background:linear-gradient(160deg,#ffeeb3,#ffd267);color:#62451d;border:2px solid #8b6a21;box-shadow:0 4px 0 #b3933e}
+.health-quick-actions button:active{transform:translateY(3px);box-shadow:0 1px 0 #54704a}
+.health-quick-hint{font-size:11px;color:#54715c;line-height:1.55;margin:10px 0 14px}
+.health-import-form{padding-top:11px;border-top:1px dashed #b4d2b1}
+@media(max-width:360px){.health-quick-actions{gap:7px}.health-quick-actions button{font-size:10px;padding:9px 6px}}
