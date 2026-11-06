@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=comic3" />
+  <link rel="stylesheet" href="styles.css?v=bonus4" />
   <title>StepGo – Jeder Schritt lohnt sich</title>
 </head>
 <body>
@@ -28,7 +28,7 @@
         <div class="hero-panel">
           <div class="overline" id="todayLabel">HEUTE</div>
           <h1>Mach jeden Schritt<br><em>wertvoll.</em></h1>
-          <div class="comic-stamp" aria-label="StepGo Comic Edition">✦ COMIC EDITION V2 ✦</div>
+          <div class="comic-stamp" aria-label="StepGo Comic Edition">✦ STEP GO • BONUS V4 ✦</div>
           <div class="step-ring" id="stepRing" role="progressbar" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="12458" aria-label="Tägliche Schrittanzahl">
             <div class="ring-inner">
               <div class="ring-icon">↟</div>
@@ -48,6 +48,22 @@
           <div class="coin-large" aria-hidden="true">✦</div>
         </section>
 
+
+
+        <section class="challenge-card" aria-label="Deine Tages-Challenge">
+          <div class="challenge-top">
+            <div><span class="section-overline">DEIN HEUTIGES ZIEL</span><h2>🎯 Tages-Challenge</h2></div>
+            <span id="challengeGoalStatus" class="challenge-badge">Los geht’s!</span>
+          </div>
+          <p id="challengeGoalText" class="challenge-goal-text">Noch ein paar Schritte bis zum Ziel!</p>
+          <div class="challenge-track" role="progressbar" id="challengeTrack" aria-label="Tagesziel-Fortschritt" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="0"><div id="challengeFill" class="challenge-fill"></div></div>
+          <div class="challenge-footer"><span id="challengeProgress">0 / 15.000 Schritte</span><strong><span aria-hidden="true">✦</span> +20 Coins bei Zielerreichung</strong></div>
+        </section>
+        <section class="milestone-section" aria-label="Schritt-Bonus-Meilensteine">
+          <div class="section-heading milestone-heading"><h2>🏆 Bonus-Meilensteine</h2><span>Extra-Coins</span></div>
+          <div class="milestone-row" id="milestoneHomeList" aria-label="Deine heutigen Meilensteine"></div>
+          <p class="milestone-next" id="nextMilestoneText">Sammle Schritte und schalte Bonus-Coins frei.</p>
+        </section>
 
         <section class="health-import-card" aria-label="Schritte aus Apple Health übernehmen">
           <div class="health-import-head"><div class="health-import-icon" aria-hidden="true">♥</div><div><span class="section-overline">ECHTE SCHRITTE</span><h2>Schritte aus Health</h2></div><span class="health-beta">TEST</span></div>
@@ -97,15 +113,36 @@
       <section class="screen" id="screen-rewards" aria-label="Prämien">
         <div class="page-intro"><div class="section-overline">DEINE BELOHNUNGEN</div><h1>Schritte werden<br><em>belohnt.</em></h1><p>Hier werden später Gutscheine und Auszahlungen angeboten. In dieser Demo gibt es noch keine echten Prämien.</p></div>
         <div class="reward-balance"><span>Deine gesammelten Coins</span><strong><span class="coin-mini">✦</span><span id="rewardsCoins">0</span></strong></div>
+
+        <section class="coin-breakdown-card" aria-label="Deine heutigen Coin-Belohnungen">
+          <div class="challenge-top"><div><span class="section-overline">COIN-SYSTEM</span><h2>🪙 Deine Coins heute</h2></div><span class="coin-breakdown-pill">TEST</span></div>
+          <div class="coin-breakdown-row"><span>👟 Schritte-Coins</span><strong id="baseCoinPreview">0</strong></div>
+          <div class="coin-breakdown-row"><span>🏆 Meilenstein-Boni</span><strong id="milestoneCoinPreview">0</strong></div>
+          <div class="coin-breakdown-row"><span>🎯 Tagesziel-Bonus</span><strong id="goalCoinPreview">0</strong></div>
+          <div class="coin-breakdown-total"><span>Heute insgesamt</span><strong><span id="totalCoinPreview">0</span> ✦</strong></div>
+          <p class="coin-breakdown-hint" id="coinBreakdownHint">Einmal pro Tag bestätigen. Alle Coins sind nur Testguthaben.</p>
+        </section>
+        <section class="milestone-section milestone-rewards" aria-label="Meilenstein-Belohnungen">
+          <div class="section-heading milestone-heading"><h2>🏆 Alle Bonus-Stufen</h2><span>täglich</span></div>
+          <div class="milestone-rewards-list" id="milestoneRewardList"></div>
+        </section>
         <div class="reward-card"><div class="reward-icon">🎁</div><div><strong>Gutscheine</strong><p>Partnerangebote in Planung</p></div><span class="soon">BALD</span></div>
         <div class="reward-card"><div class="reward-icon">💶</div><div><strong>Auszahlungen</strong><p>Erst nach sicherer Anbindung</p></div><span class="soon">BALD</span></div>
-        <div class="reward-card"><div class="reward-icon">🏆</div><div><strong>Meilensteine</strong><p>Belohnungen für deine Bewegung</p></div><span class="soon">BALD</span></div>
       </section>
 
       <section class="screen" id="screen-profile" aria-label="Profil">
         <div class="page-intro"><div class="section-overline">DEIN BEREICH</div><h1>Dein Tempo.<br><em>Dein Ziel.</em></h1><p>Passe deine Tagesziele an und behalte deine Fortschritte im Blick.</p></div>
         <div class="profile-card"><div class="profile-icon">👟</div><div><strong>StepGo-Tester</strong><span>Dein erstes Abenteuer beginnt hier.</span></div></div>
         <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
+        <div class="goal-preset-card" aria-label="Schnelle Zielauswahl">
+          <div class="goal-preset-heading"><strong>Wähle dein Tempo</strong><span>+20 Coins beim Tagesziel</span></div>
+          <div class="goal-preset-grid">
+            <button type="button" class="goal-preset" data-goal-preset="5000"><span>🌱</span><strong>5.000</strong><small>Locker</small></button>
+            <button type="button" class="goal-preset" data-goal-preset="10000"><span>⚡</span><strong>10.000</strong><small>Aktiv</small></button>
+            <button type="button" class="goal-preset" data-goal-preset="15000"><span>🔥</span><strong>15.000</strong><small>Power</small></button>
+          </div>
+          <p>Oder passe dein Ziel mit dem Regler darüber individuell an. Boni werden einmal am Tag beim Bestätigen vergeben.</p>
+        </div>
         <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte kannst du manuell aus Apple Health übernehmen; Coins sind noch Test-Coins. Die Daten werden lokal auf diesem Gerät gespeichert und nicht an einen Server gesendet.</p></div>
         <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
       </section>
@@ -123,6 +160,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=comic3"></script>
+  <script src="app.js?v=bonus4"></script>
 </body>
 </html>
