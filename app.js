@@ -276,14 +276,17 @@
   // Der echte HealthKit-Zugriff läuft ausschließlich in der nativen iOS-App.
   // Safari und die Home-Bildschirm-Web-App bleiben beim bisherigen Kurzbefehl.
   const nativeCapacitor = window.Capacitor;
+  // Eine Capacitor-WebView stellt für native Plugins direkt unter
+  // window.Capacitor.Plugins einen JavaScript-Proxy bereit.
+  // Die normale GitHub-Pages-App hat diesen Proxy nicht.
   const nativeHealthPlugin =
     nativeCapacitor &&
     typeof nativeCapacitor.isNativePlatform === 'function' &&
     nativeCapacitor.isNativePlatform() &&
-    typeof nativeCapacitor.isPluginAvailable === 'function' &&
-    nativeCapacitor.isPluginAvailable('StepGoHealth') &&
-    typeof nativeCapacitor.registerPlugin === 'function'
-      ? nativeCapacitor.registerPlugin('StepGoHealth')
+    nativeCapacitor.Plugins &&
+    nativeCapacitor.Plugins.StepGoHealth &&
+    typeof nativeCapacitor.Plugins.StepGoHealth.readTodaySteps === 'function'
+      ? nativeCapacitor.Plugins.StepGoHealth
       : null;
   const HEALTH_CONSENT_KEY = 'stepgo-health-native-consent-v1';
   let syncingNativeHealth = false;
