@@ -65,20 +65,54 @@
   $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);state.stepSource='demo';state.importedAt=null;render();toast('+5.000 Demo-Schritte hinzugefügt');});
   $('resetDemo').addEventListener('click',()=>{state.steps=DEMO_START_STEPS;state.stepSource='demo';state.importedAt=null;render();toast('Demo-Schritte zurückgesetzt');});
 
+  const parseSteps = raw => {
+    const text = String(raw ?? '').trim();
+    if (!/^(?:[0-9]{1,6}|[0-9]{1,3}(?:[.,\s][0-9]{3})+)$/.test(text)) return null;
+    const count = Number(text.replace(/[^0-9]/g, ''));
+    return Number.isInteger(count) && count >= 0 && count <= 100000 ? count : null;
+  };
+  const applySteps = count => {
+    if (state.date !== todayKey()) {
+      state.date = todayKey();
+      state.stepSource = 'demo';
+      state.importedAt = null;
+    }
+    state.steps = count;
+    state.stepSource = 'health-import';
+    state.importedAt = new Date().toISOString();
+    $('healthSteps').value = '';
+    render();
+    toast(currentEntry() ? 'Schritte aktualisiert. Coins für heute sind schon bestätigt.' : fmt(count) + ' Schritte übernommen!');
+  };
+  $('runHealthShortcut').addEventListener('click', () => {
+    // Apple dokumentiert shortcuts://run-shortcut?name=...
+    window.location.href = 'shortcuts://run-shortcut?name=StepGo-Schritte';
+  });
+  $('pasteHealthSteps').addEventListener('click', async () => {
+    if (!navigator.clipboard || typeof navigator.clipboard.readText !== 'function') {
+      $('healthSteps').focus();
+      toast('Zwischenablage nicht verfügbar. Die Zahl unten selbst einfügen.');
+      return;
+    }
+    try {
+      const copied = await navigator.clipboard.readText();
+      const count = parseSteps(copied);
+      if (count === null) {
+        toast('Keine gültige Schrittzahl kopiert. Starte erst StepGo-Schritte.');
+        return;
+      }
+      applySteps(count);
+    } catch {
+      $('healthSteps').focus();
+      toast('Einfügen nicht erlaubt. Halte das Eingabefeld gedrückt und wähle Einsetzen.');
+    }
+  });
+
   $('healthImportForm').addEventListener('submit', event => {
     event.preventDefault();
-    const raw = $('healthSteps').value.trim();
-    if (!/^[0-9.,\s]+$/.test(raw)) { toast('Bitte nur eine Schrittzahl eingeben.'); return; }
-    const value = Number(raw.replace(/[^0-9]/g,''));
-    if (!Number.isSafeInteger(value) || value < 0 || value > 100000 || !raw) {
-      toast('Bitte eine Schrittzahl von 0 bis 100.000 eingeben.'); return;
-    }
-    state.steps=value;
-    state.stepSource='health-import';
-    state.importedAt=new Date().toISOString();
-    $('healthSteps').value='';
-    render();
-    toast(currentEntry() ? 'Schritte aktualisiert. Coins für heute sind bereits bestätigt.' : fmt(value)+' Schritte übernommen!');
+    const value = parseSteps($('healthSteps').value);
+    if (value === null) { toast('Bitte gültige Schrittzahl von 0 bis 100.000 eingeben.'); return; }
+    applySteps(value);
   });
 
   $('goalRange').addEventListener('input',event=>{state.goal=Number(event.target.value);render();});
