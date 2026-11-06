@@ -38,8 +38,10 @@ jobs:
       - name: iPhone-Projekt erzeugen
         run: npm run ios:init
 
-      - name: Xcode-Projekt-Werkzeuge installieren
-        run: gem install xcodeproj rexml --no-document
+      - name: Xcode-Projekt-Werkzeuge installieren (ohne Systemrechte)
+        run: |
+          gem install --user-install xcodeproj --no-document
+          ruby -e 'require "xcodeproj"; require "rexml/document"; puts "Ruby und Xcodeproj bereit."'
 
       - name: HealthKit integrieren
         run: ruby scripts/configure-native-ios.rb
