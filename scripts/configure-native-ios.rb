@@ -53,6 +53,14 @@ raise 'Info.plist not found' unless File.file?(info_path)
 info = REXML::Document.new(File.read(info_path))
 info_dict = REXML::XPath.first(info, '/plist/dict')
 raise 'Info.plist does not contain dict' unless info_dict
+# Eine installierbare iOS-App muss ihren Bundle Identifier in Info.plist tragen.
+# Fuer den Simulator-Build ersetzt Xcode den Build-Wert durch die echte App-ID.
+if !info_dict.get_elements('key').any? { |e| e.text == 'CFBundleIdentifier' }
+  key = info_dict.add_element('key')
+  key.text = 'CFBundleIdentifier'
+  value = info_dict.add_element('string')
+  value.text = '$(PRODUCT_BUNDLE_IDENTIFIER)'
+end
 if !info_dict.get_elements('key').any? { |e| e.text == 'NSHealthShareUsageDescription' }
   key = info_dict.add_element('key')
   key.text = 'NSHealthShareUsageDescription'
