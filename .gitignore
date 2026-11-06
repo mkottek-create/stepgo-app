@@ -1,0 +1,21 @@
+# Lokale Build-Ausgaben und Abhaengigkeiten
+node_modules/
+ios/
+www/
+build/
+dist/
+DerivedData/
+.DS_Store
+
+# Niemals Apple-Schluessel oder Zertifikate in das oeffentliche Repository
+*.p8
+*.p12
+*.mobileprovision
+*.cer
+*.cert
+*.pem
+*.xcarchive/
+*.ipa
+.env
+.env.*
+!.env.example
