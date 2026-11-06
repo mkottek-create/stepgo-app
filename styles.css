@@ -646,3 +646,24 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .nav-link{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.city-plot-built:not(.city-plot-center){animation:none}}
+
+/* StepGo City V6 – Native HealthKit Verbindung (nur iOS-App) */
+.native-health-card[hidden]{display:none!important}
+.native-health-card{
+  margin:17px 17px 3px;
+  border:3px solid #216444;
+  border-radius:21px;
+  padding:17px;
+  background:linear-gradient(145deg,#f7ffe8,#d5f6bd);
+  box-shadow:0 5px 0 #b3dca6;
+}
+.native-health-top{display:flex;align-items:center;gap:9px}
+.native-health-icon{width:42px;height:42px;display:grid;place-items:center;background:#fcffee;border:2px solid #306a46;border-radius:13px;color:#e44d6c;font-size:25px;flex-shrink:0}
+.native-health-top>div{min-width:0;flex:1}
+.native-health-top h2{font-size:16px;font-weight:950;color:#224d33;margin:4px 0 0}
+.native-health-pill{color:#285b35;background:#c1efb4;border:1px solid #70a15c;border-radius:9px;padding:4px 6px;font-size:9px;font-weight:950}
+.native-health-status{font-size:12px;line-height:1.5;color:#476d4e;margin:14px 0}
+.native-health-button{width:100%;min-height:47px;border-radius:13px;border:2px solid #194e34;box-shadow:0 4px 0 #1b5034;background:linear-gradient(135deg,#b7f67c,#8de35c);color:#1c472c;font-family:inherit;font-size:14px;font-weight:950;cursor:pointer}
+.native-health-button:disabled{opacity:.7;cursor:wait;box-shadow:0 1px 0 #1b5034}
+.native-health-note{font-size:10px;line-height:1.55;color:#5a7b58;margin:12px 1px 0}
+.native-health-fallback{opacity:.94}
