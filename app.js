@@ -9,6 +9,8 @@
   try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fresh(); } catch { state = fresh(); }
   if (!state || typeof state!=='object') state = fresh();
   if (!Array.isArray(state.ledger)) state.ledger = [];
+  if (!Array.isArray(state.cityBuildings)) state.cityBuildings = [];
+  state.cityBuildings = [...new Set(state.cityBuildings.filter(item=>typeof item==='string'))];
   if (!Number.isFinite(state.goal)) state.goal = 15000;
   if (!Number.isFinite(state.wallet)) state.wallet = 0;
   if (state.date!==todayKey()) {state.date=todayKey();state.steps=0;state.stepSource="demo";state.importedAt=null;}
@@ -37,6 +39,88 @@
     const target = steps>=goal ? 20 : 0;
     return {base,milestones,target,total:base+milestones+target};
   };
+
+
+  // StepGo City: Baupunkte entstehen nur aus einmalig bestätigten Tagen.
+  // Es werden keine Coins abgezogen und keine nachträglich importierten Schritte doppelt gewertet.
+  const CITY_BUILDINGS = Object.freeze([
+    {id:'park',name:'Stadtpark',icon:'🌳',cost:25,plot:0,description:'Eine grüne Oase zum Entspannen.'},
+    {id:'home',name:'Wohnviertel',icon:'🏡',cost:45,plot:1,description:'Die ersten Bewohner ziehen ein!'},
+    {id:'bakery',name:'Bäckerei',icon:'🥐',cost:85,plot:2,description:'Hier duftet es nach frischem Brot.'},
+    {id:'market',name:'Marktplatz',icon:'🏪',cost:130,plot:3,description:'Das Herz deiner kleinen Stadt.'},
+    {id:'lake',name:'Stadtsee',icon:'⛲',cost:90,plot:5,description:'Ein schöner Ort für eine Pause.'},
+    {id:'school',name:'Schule',icon:'🏫',cost:210,plot:6,description:'Hier lernen die Kinder der Stadt.'},
+    {id:'clinic',name:'Klinik',icon:'🏥',cost:300,plot:7,description:'Versorgung für die ganze Stadt.'},
+    {id:'tower',name:'Stadtturm',icon:'🏰',cost:450,plot:8,description:'Das Wahrzeichen deiner City.'}
+  ]);
+  // Niemals hypothetische (unbestätigte) Schrittzahlen gutschreiben.
+  const cityEarned = () => state.ledger.reduce((sum,entry) =>
+    sum + (Number.isFinite(entry.steps) ? Math.floor(Math.max(0,Math.min(20000,entry.steps))/100) : 0),0);
+  const citySpent = () => CITY_BUILDINGS.reduce((sum,building)=>
+    sum+(state.cityBuildings.includes(building.id)?building.cost:0),0);
+  const cityAvailable = () => Math.max(0,cityEarned()-citySpent());
+  const cityLevel = () => 1+Math.floor(state.cityBuildings.length/2);
+  function renderCity(){
+    const owned=new Set(state.cityBuildings);
+    const pts=cityAvailable();
+    $('cityAvailablePoints').textContent=fmt(pts);
+    $('cityBuiltCount').textContent=(owned.size+1)+' / 9';
+    $('cityLevel').textContent='STUFE '+cityLevel();
+    $('cityMapProgress').textContent=owned.size+' von 8 gebaut';
+    const grid=$('cityMap');
+    grid.replaceChildren();
+    for(let pos=0;pos<9;pos++){
+      const item=CITY_BUILDINGS.find(b=>b.plot===pos);
+      const built=pos===4 || !!(item&&owned.has(item.id));
+      const tile=document.createElement('div');
+      tile.className='city-plot'+(built?' city-plot-built':' city-plot-locked')+(pos===4?' city-plot-center':'');
+      tile.setAttribute('aria-label',pos===4?'Rathaus – Startgebäude':item.name+(built?' – gebaut':' – noch frei'));
+      const art=document.createElement('span');
+      art.className='city-plot-art';
+      art.textContent=pos===4?'🏛️':built?item.icon:'🌱';
+      const label=document.createElement('span');
+      label.className='city-plot-label';
+      label.textContent=pos===4?'Rathaus':built?item.name:'Bauplatz';
+      tile.append(art,label);
+      grid.append(tile);
+    }
+    const list=$('cityBuildList');
+    list.replaceChildren();
+    CITY_BUILDINGS.forEach(item=>{
+      const built=owned.has(item.id);
+      const canAfford=pts>=item.cost;
+      const card=document.createElement('article');
+      card.className='city-build-card'+(built?' city-build-done':'');
+      const icon=document.createElement('span');
+      icon.className='city-build-icon'; icon.textContent=item.icon;
+      const info=document.createElement('div');info.className='city-build-info';
+      const title=document.createElement('strong');title.textContent=item.name;
+      const detail=document.createElement('p');detail.textContent=item.description;
+      info.append(title,detail);
+      const action=document.createElement('button');action.type='button';
+      action.className='city-build-button'+(built?' city-build-button-done':'');
+      action.textContent=built?'✓ Gebaut':item.cost+' 🧱';
+      action.disabled=built||!canAfford;
+      action.setAttribute('aria-label',built?item.name+' bereits gebaut':item.name+' für '+item.cost+' Baupunkte bauen');
+      action.addEventListener('click',()=>buildCityBuilding(item.id));
+      card.append(icon,info,action);
+      list.append(card);
+    });
+    const pending=CITY_BUILDINGS.filter(item=>!owned.has(item.id)).sort((a,b)=>a.cost-b.cost);
+    $('cityNextHint').textContent=pending.length===0
+      ? '🎉 Deine erste Stadt ist komplett! Bald kommen neue Stadtteile.'
+      : pts>=pending[0].cost
+        ? '🎉 Du kannst jetzt '+pending[0].name+' bauen!'
+        : 'Noch '+fmt(pending[0].cost-pts)+' Baupunkte bis zum nächsten Gebäude ('+pending[0].name+').';
+  }
+  function buildCityBuilding(id){
+    const target=CITY_BUILDINGS.find(item=>item.id===id);
+    if(!target || state.cityBuildings.includes(id))return;
+    if(cityAvailable()<target.cost){toast('Noch nicht genug Baupunkte!');return;}
+    state.cityBuildings.push(id);
+    render();
+    toast(target.icon+' '+target.name+' gebaut!');
+  }
 
   const currentEntry = () => state.ledger.find(x=>x.date===todayKey());
   const coinsAvailable = () => currentEntry() ? 0 : coinBreakdown(state.steps,state.goal).total;
@@ -127,6 +211,7 @@
       : next ? 'Noch '+fmt(next.steps-state.steps)+' Schritte bis '+next.name+' (+'+next.coins+' Coins)!'
              : 'Alle fünf Meilensteine erreicht! 👑';
 
+    renderCity();
     const claimed=!!currentEntry();
     $('claimBtn').disabled=claimed || state.steps<100;
     $('claimBtnText').textContent=claimed?'Heute bereits bestätigt ✓':state.steps<100?'Mindestens 100 Schritte nötig':'Schritte bestätigen';
@@ -139,6 +224,7 @@
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
+  $('openCityBtn').addEventListener('click',()=>switchTab('city'));
   $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);state.stepSource='demo';state.importedAt=null;render();toast('+1.000 Demo-Schritte hinzugefügt');});
   $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);state.stepSource='demo';state.importedAt=null;render();toast('+5.000 Demo-Schritte hinzugefügt');});
   $('resetDemo').addEventListener('click',()=>{state.steps=DEMO_START_STEPS;state.stepSource='demo';state.importedAt=null;render();toast('Demo-Schritte zurückgesetzt');});
@@ -210,7 +296,8 @@
       goalAtClaim:state.goal
     });
     render();
-    $('modalText').textContent=`Du hast ${fmt(state.steps)} Schritte bestätigt und ${fmt(earned.total)} Test-Coins gesammelt! (${earned.base} Basis + ${earned.milestones} Meilensteine + ${earned.target} Tagesziel)`;
+    const gainedCityPoints = Math.floor(Math.min(state.steps,20000)/100);
+    $('modalText').textContent=`Du hast ${fmt(state.steps)} Schritte bestätigt und ${fmt(earned.total)} Test-Coins gesammelt! Außerdem +${fmt(gainedCityPoints)} Baupunkte für deine StepGo City!`;
     $('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('modalClose').focus();
   });
   $('modalClose').addEventListener('click',()=>{$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');});
