@@ -4,7 +4,7 @@
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[]});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],stepSource:'demo',importedAt:null});
   let state;
   try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fresh(); } catch { state = fresh(); }
   if (!state || typeof state!=='object') state = fresh();
