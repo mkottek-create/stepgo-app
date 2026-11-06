@@ -1,5 +1,25 @@
 # StepGo City – direkte Apple-Health-Verbindung für iPhone
 
+## Entwicklung ausschließlich vom iPhone: GitHub-Cloud-Mac
+
+Ein eigener Mac ist für einen **technischen Simulator-Build-Test** nicht nötig. Ein GitHub-Actions-Workflow erzeugt auf einem Mac-Rechner in der Cloud das Capacitor-iOS-Projekt, fügt den HealthKit-Code hinzu und versucht einen Build **ohne Apple-Signatur**.
+
+1. Vom iPhone aus das GitHub-Repository öffnen.
+2. Den Reiter **Actions** auswählen.
+3. **StepGo City - iOS Build-Check** öffnen und die Ausführung ansehen.
+4. Bei Bedarf über **Run workflow** einen neuen Build-Test starten.
+
+Workflow-Datei: `.github/workflows/ios-build-check.yml`.
+
+**Der Build-Test ist KEINE installierbare iPhone-App.** Er kompiliert zunächst nur für den iOS-Simulator. Erst mit passender Apple-Signierung, Provisioning, eindeutigem App-Identifier und TestFlight-/Distributions-Setup kann daraus ein auf dem eigenen iPhone installierbarer Build werden. Ein Apple Developer Program ist für TestFlight/öffentliche Verteilung erforderlich.
+
+Die Home-Bildschirm-Web-App bleibt unverändert. Vor einem späteren Umstieg müssen gespeicherte lokale Daten migriert oder explizit neu gestartet werden.
+
+### Technische Notiz
+
+Das Ruby-Skript `scripts/configure-native-ios.rb` bindet die beiden HealthKit-Swift-Klassen in das frische Xcode-Projekt ein, setzt die HealthKit-Entitlement und die Datenschutz-Beschreibung. Die native JavaScript-Oberfläche verwendet `window.Capacitor.Plugins.StepGoHealth`, nur wenn der Plugin-Proxy im nativen Container vorhanden ist.
+
+
 ## Status
 
 HealthKit-Code und die JavaScript-Schnittstelle sind im Repository vorbereitet. Es ist noch **keine native iOS-App gebaut oder installiert**. Die GitHub-Pages-Webseite kann Apple Health nicht selbst lesen.
