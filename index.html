@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=city5" />
+  <link rel="stylesheet" href="styles.css?v=health6" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -72,7 +72,19 @@
           <p class="milestone-next" id="nextMilestoneText">Sammle Schritte und schalte Bonus-Coins frei.</p>
         </section>
 
-        <section class="health-import-card" aria-label="Schritte aus Apple Health übernehmen">
+
+        <section class="native-health-card" id="nativeHealthCard" aria-label="Direkte Apple-Health-Verbindung" hidden>
+          <div class="native-health-top">
+            <span class="native-health-icon" aria-hidden="true">♥</span>
+            <div><span class="section-overline">DIREKTE VERBINDUNG</span><h2>Apple Health verbunden</h2></div>
+            <span class="native-health-pill">iPHONE</span>
+          </div>
+          <p id="nativeHealthStatus" class="native-health-status" aria-live="polite">Lies deine Schritte direkt aus Apple Health, ganz ohne Kopieren.</p>
+          <button type="button" class="native-health-button" id="nativeHealthSyncButton">Mit Apple Health verbinden</button>
+          <p class="native-health-note">Du entscheidest, ob StepGo City deine Schrittzahl lesen darf. Nach deiner Zustimmung wird sie beim Öffnen der iPhone-App aktualisiert. Keine Weitergabe an einen Server.</p>
+        </section>
+
+        <section class="health-import-card" id="manualHealthCard" aria-label="Schritte aus Apple Health übernehmen">
           <div class="health-import-head"><div class="health-import-icon" aria-hidden="true">♥</div><div><span class="section-overline">ECHTE SCHRITTE</span><h2>Schritte aus Health</h2></div><span class="health-beta">TEST</span></div>
           <p class="health-import-text">Übernimm deine heutigen Schritte aus Apple Health – ohne die Zahl selbst einzutippen. Gehen, Walking und Laufen zählen gleich.</p>
           <div class="health-quick-actions">
@@ -197,6 +209,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=city5"></script>
+  <script src="app.js?v=health6"></script>
 </body>
 </html>
