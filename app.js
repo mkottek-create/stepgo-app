@@ -68,7 +68,7 @@
   $('healthImportForm').addEventListener('submit', event => {
     event.preventDefault();
     const raw = $('healthSteps').value.trim();
-    if (!/^[0-9.,\\s]+$/.test(raw)) { toast('Bitte nur eine Schrittzahl eingeben.'); return; }
+    if (!/^[0-9.,\s]+$/.test(raw)) { toast('Bitte nur eine Schrittzahl eingeben.'); return; }
     const value = Number(raw.replace(/[^0-9]/g,''));
     if (!Number.isSafeInteger(value) || value < 0 || value > 100000 || !raw) {
       toast('Bitte eine Schrittzahl von 0 bis 100.000 eingeben.'); return;
