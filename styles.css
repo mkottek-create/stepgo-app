@@ -517,3 +517,132 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .goal-preset strong{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){.challenge-fill{transition:none}}
+
+
+/* StepGo City V5 – Comic-Karte, Stadtaufbau und Baupunkte */
+.brand-city{
+  display:inline-block;
+  font-size:13px;
+  font-weight:950;
+  line-height:1;
+  color:#ffe07a!important;
+  border-radius:7px;
+  border:2px solid #ffe59a;
+  padding:3px 4px 2px;
+  margin-left:6px;
+  vertical-align:middle;
+  letter-spacing:.4px;
+  transform:rotate(-4deg) translateY(-2px);
+  box-shadow:2px 2px 0 #0a3021;
+}
+.city-teaser{
+  margin:24px 17px 2px;
+  padding:17px 15px;
+  background:linear-gradient(110deg,#fff4bc,#e4ffb3 76%,#c9f3a3);
+  border:3px solid #205738;
+  border-radius:21px;
+  box-shadow:0 6px 0 #b8d4a4,0 11px 17px #316a2d18;
+  display:grid;
+  grid-template-columns:58px 1fr;
+  gap:11px;align-items:center;
+}
+.city-teaser-icon{font-size:39px;background:#fff5d4;border:2px solid #947e40;border-radius:15px;text-align:center;padding:7px 0}
+.city-teaser-copy h2{font-size:16px;font-weight:950;line-height:1.2;margin:5px 0 4px;color:#1d4a32}
+.city-teaser-copy p{font-size:11px;color:#5d795a;line-height:1.45;margin:0}
+.city-teaser-button{
+  grid-column:1/-1;
+  border:2px solid #123c28;border-radius:13px;background:#b9f16b;
+  box-shadow:0 4px 0 #164732;color:#163e29;
+  font-family:inherit;font-size:13px;font-weight:950;
+  padding:12px;cursor:pointer;
+}
+.city-teaser-button:active,.city-build-button:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 #164732}
+.city-hero{
+  background:radial-gradient(circle at 92% 12%,#4d9866 0%,transparent 48%),
+             linear-gradient(145deg,#1c6545,#0a3528);
+  padding:24px 21px 29px;color:white;border-bottom:4px solid #0b2e24;border-radius:0 0 30px 30px;
+  box-shadow:0 7px 0 #c4dbac;
+}
+.city-hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.city-kicker{font-size:10px;color:#d0eaae;letter-spacing:1.6px;font-weight:950}
+.city-level{background:#ffe784;color:#5d451c;border:2px solid #234930;padding:6px 9px;border-radius:9px;font-size:10px;font-weight:950;box-shadow:2px 3px 0 #112c21}
+.city-hero h1{font-size:32px;font-weight:950;line-height:1.1;margin:20px 0 9px;text-shadow:2px 3px 0 #062b20}
+.city-hero h1 em{font-style:normal;color:#d4fa7c}
+.city-hero p{font-size:12px;color:#d0e4ce;line-height:1.65;margin:8px 0 18px}
+.city-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.city-stat{background:#235f45;border:2px solid #9ccd93;box-shadow:0 4px 0 #0b3123;border-radius:15px;padding:13px 11px;display:flex;flex-direction:column;gap:7px}
+.city-stat span{font-size:11px;color:#c7e7d0;font-weight:750}
+.city-stat strong{font-size:24px;color:#fff5bb;font-weight:950;letter-spacing:-.5px}
+.city-map-card{
+  margin:19px 17px 0;
+  border:3px solid #2c6645;border-radius:23px;
+  background:linear-gradient(160deg,#f9ffe9,#eaf5d1);
+  padding:15px 12px 14px;
+  box-shadow:0 6px 0 #aace98;
+}
+.city-map-head{display:flex;justify-content:space-between;align-items:center;gap:7px;margin:0 3px 14px}
+.city-map-head h2{font-size:17px;font-weight:950;color:#235639;margin:5px 0 0}
+.city-map-label{font-size:9px;font-weight:950;background:#ffeba7;border:2px solid #af8738;border-radius:8px;padding:5px;color:#624b21;transform:rotate(4deg);white-space:nowrap}
+.city-map{
+  position:relative;
+  background:
+    linear-gradient(90deg,transparent 46%,#dbce9d 46%,#dbce9d 54%,transparent 54%),
+    linear-gradient(0deg,transparent 46%,#dbce9d 46%,#dbce9d 54%,transparent 54%),
+    repeating-linear-gradient(45deg,#bbe09f,#bbe09f 18px,#b5d994 18px,#b5d994 36px);
+  border:3px solid #5f955c;border-radius:17px;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;padding:13px 11px;
+  box-shadow:inset 0 4px 8px #355b3318;
+}
+.city-plot{
+  min-width:0;
+  min-height:88px;
+  border-radius:14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;text-align:center;
+  background:linear-gradient(160deg,#f7fddf,#d6edb0);
+  border:2px solid #477d4e;
+  box-shadow:0 4px 0 #6e995b;
+  position:relative;
+}
+.city-plot-locked{background:repeating-linear-gradient(125deg,#d3ddbd,#d3ddbd 12px,#dae5c8 12px,#dae5c8 24px);border-style:dashed;border-color:#7a9a71;box-shadow:0 3px 0 #8bab78}
+.city-plot-center{background:linear-gradient(155deg,#fff0b0,#f3d37b);border-color:#ae792a;box-shadow:0 5px 0 #b28e47}
+.city-plot-built:not(.city-plot-center){animation:city-rise .3s ease-out both}
+.city-plot-art{font-size:37px;line-height:1.15;filter:drop-shadow(1px 3px 0 #164d392b)}
+.city-plot-locked .city-plot-art{font-size:27px;opacity:.6}
+.city-plot-label{font-size:10px;font-weight:950;color:#275339;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;padding:0 2px}
+.city-map-bottom{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:10px;font-weight:850;color:#447650;margin-top:13px;padding:0 2px}
+.city-wallet{margin:17px 17px 0;background:#fff7d8;border:2px solid #a57b2f;border-radius:16px;box-shadow:0 4px 0 #dfcfaa;display:flex;align-items:center;gap:11px;padding:13px 14px}
+.city-wallet-icon{font-size:29px;flex-shrink:0}
+.city-wallet strong{font-size:12px;font-weight:950;color:#5b4a28}
+.city-wallet p{font-size:11px;color:#83734e;margin:5px 0 0;line-height:1.5}
+.city-build-section{padding:20px 0 0}
+.city-explain{font-size:12px;color:#5b7e60;font-weight:800;margin:0 18px 12px;line-height:1.5}
+.city-build-list{padding:0 17px;display:flex;flex-direction:column;gap:10px}
+.city-build-card{background:white;display:flex;align-items:center;gap:10px;padding:13px 11px;border:2px solid #316447;border-radius:17px;box-shadow:0 4px 0 #c5dfc0}
+.city-build-done{background:#f2ffe1;border-color:#669451}
+.city-build-icon{font-size:30px;background:#ecf9de;border:2px solid #9ccc87;border-radius:12px;width:49px;height:49px;display:grid;place-items:center;flex-shrink:0}
+.city-build-info{min-width:0;flex:1}
+.city-build-info strong{display:block;font-size:13px;color:#244d34;font-weight:950}
+.city-build-info p{font-size:10px;line-height:1.35;color:#708774;margin:4px 0 0}
+.city-build-button{width:82px;flex-shrink:0;border:2px solid #194731;border-radius:11px;background:#c9f582;color:#26512b;box-shadow:0 3px 0 #5a8f4b;min-height:42px;font-family:inherit;font-size:12px;font-weight:950;cursor:pointer}
+.city-build-button:disabled{background:#e6ece2;color:#8c968b;border-color:#a9b5a4;box-shadow:none;cursor:default}
+.city-build-button-done:disabled{background:#d9f9bb;color:#296a3c;border-color:#6ca36a}
+.city-disclaimer{font-size:10px;color:#849683;line-height:1.6;text-align:center;padding:5px 19px 18px}
+.bottom-nav{justify-content:space-between;gap:0;padding-left:6px;padding-right:6px}
+.nav-link{min-width:0;flex:1;padding:0 1px}
+.nav-icon{font-size:21px;width:34px;height:32px}
+@keyframes city-rise{from{opacity:.4;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+@media(max-width:380px){
+  .brand{font-size:28px}
+  .brand-city{font-size:10px;padding:3px; margin-left:4px}
+  .city-map{gap:5px;padding:9px 7px}
+  .city-plot{min-height:74px}
+  .city-plot-art{font-size:31px}
+  .city-plot-label{font-size:9px}
+  .city-build-button{width:72px;font-size:11px}
+  .city-hero h1{font-size:29px}
+  .nav-icon{font-size:19px;width:29px;height:30px}
+  .nav-link{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.city-plot-built:not(.city-plot-center){animation:none}}
