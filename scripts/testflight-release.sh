@@ -26,7 +26,7 @@ python3 scripts/run_xcode_stage.py device-resolve 420 \
     -clonedSourcePackagesDirPath "$PACKAGE_DIR" \
     -resolvePackageDependencies
 
-AUTH_ARGS=()
+AUTH_ARGS=(-quiet) # Bash 3.2 + set -u kann leere Arrays nicht sicher expandieren.
 KEY_DIR=""
 if [[ "$MODE" == "testflight-upload" ]]; then
   for name in ASC_API_KEY_ID ASC_API_ISSUER_ID ASC_API_PRIVATE_KEY APPLE_TEAM_ID; do
