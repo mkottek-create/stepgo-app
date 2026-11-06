@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=comic2b" />
+  <link rel="stylesheet" href="styles.css?v=comic3" />
   <title>StepGo – Jeder Schritt lohnt sich</title>
 </head>
 <body>
@@ -51,9 +51,14 @@
 
         <section class="health-import-card" aria-label="Schritte aus Apple Health übernehmen">
           <div class="health-import-head"><div class="health-import-icon" aria-hidden="true">♥</div><div><span class="section-overline">ECHTE SCHRITTE</span><h2>Schritte aus Health</h2></div><span class="health-beta">TEST</span></div>
-          <p class="health-import-text">Übernimm deine heutige Schrittzahl aus Apple Health. Gehen, Walking und Laufen zählen gleich.</p>
+          <p class="health-import-text">Übernimm deine heutigen Schritte aus Apple Health – ohne die Zahl selbst einzutippen. Gehen, Walking und Laufen zählen gleich.</p>
+          <div class="health-quick-actions">
+            <button id="runHealthShortcut" class="health-launch-button" type="button"><span aria-hidden="true">⚡</span> Kurzbefehl starten</button>
+            <button id="pasteHealthSteps" class="health-paste-button" type="button"><span aria-hidden="true">📋</span> Kopierte Schritte übernehmen</button>
+          </div>
+          <p class="health-quick-hint">Einfach zuerst den Kurzbefehl <strong>StepGo-Schritte</strong> starten, danach zu StepGo zurückkehren und die kopierte Zahl übernehmen. Auf dem iPhone kann eine Freigabe zum Einfügen erscheinen.</p>
           <form id="healthImportForm" class="health-import-form">
-            <label for="healthSteps">Schritte heute</label>
+            <label for="healthSteps">Oder Schrittzahl selbst einfügen</label>
             <div class="health-import-row"><input type="text" inputmode="numeric" autocomplete="off" id="healthSteps" placeholder="z. B. 12.458" aria-describedby="healthImportHint" /><button class="health-import-button" type="submit">Übernehmen</button></div>
           </form>
           <p class="health-import-status" id="healthImportHint" aria-live="polite">Noch keine Health-Schritte für heute übernommen.</p>
@@ -62,8 +67,8 @@
               <li>Öffne auf dem iPhone die App <strong>Kurzbefehle</strong> und erstelle einen Kurzbefehl namens <strong>StepGo-Schritte</strong>.</li>
               <li>Füge <strong>Health-Messungen suchen</strong> hinzu: Typ <strong>Schritte</strong> und Startdatum <strong>heute</strong>.</li>
               <li>Füge <strong>Statistik berechnen</strong> hinzu und wähle <strong>Summe</strong> der gefundenen Messungen.</li>
-              <li>Füge <strong>In Zwischenablage kopieren</strong> hinzu. Starte den Kurzbefehl und erlaube den Zugriff auf Health.</li>
-              <li>Öffne StepGo, füge die kopierte Zahl oben ein und tippe auf <strong>Übernehmen</strong>.</li>
+              <li>Füge <strong>In Zwischenablage kopieren</strong> hinzu. Benenne den Kurzbefehl genau <strong>StepGo-Schritte</strong> und erlaube den Zugriff auf Health.</li>
+              <li>Starte den Kurzbefehl mit dem neuen grünen Knopf. Kehre danach zu StepGo zurück und tippe auf <strong>Kopierte Schritte übernehmen</strong>. Falls iOS fragt, bestätige <strong>Einfügen</strong>.</li>
             </ol>
             <p>Dieser Umweg ist nötig, weil eine Web-App Apple Health nicht direkt lesen kann. Die Zahlen werden nur auf deinem Gerät gespeichert. Eine vollautomatische Synchronisierung benötigt später eine native iPhone-App.</p>
           </details>
@@ -118,6 +123,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js"></script>
+  <script src="app.js?v=comic3"></script>
 </body>
 </html>
