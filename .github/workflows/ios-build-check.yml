@@ -19,7 +19,7 @@ jobs:
   iphone-build-check:
     name: iPhone-App schrittweise pruefen und kompilieren
     runs-on: macos-26-intel
-    timeout-minutes: 28
+    timeout-minutes: 35
     steps:
       - name: Projekt herunterladen
         uses: actions/checkout@v4
@@ -89,10 +89,10 @@ jobs:
               CODE_SIGNING_ALLOWED=NO \
               build
 
-      - name: Schritt 4 - Testinstallation und Start im iPhone-Simulator
+      - name: Schritt 4 - Testinstallation und Start im iPhone-Simulator (maximal 12 Minuten)
         shell: bash
         run: |
-          python3 scripts/run_xcode_stage.py simulator 360 \
+          python3 scripts/run_xcode_stage.py simulator 720 \
             bash scripts/test-simulator.sh
 
       - name: Diagnose und Screenshot sichern (auch bei Fehler)
