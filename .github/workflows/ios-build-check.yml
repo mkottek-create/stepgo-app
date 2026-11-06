@@ -17,9 +17,9 @@ permissions:
 
 jobs:
   iphone-build-check:
-    name: iPhone-App zusammenbauen und kompilieren
+    name: iPhone-App schrittweise pruefen und kompilieren
     runs-on: macos-26-intel
-    timeout-minutes: 35
+    timeout-minutes: 28
     steps:
       - name: Projekt herunterladen
         uses: actions/checkout@v4
@@ -29,8 +29,11 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Xcode anzeigen
-        run: xcodebuild -version
+      - name: Xcode und Swift anzeigen
+        run: |
+          xcodebuild -version
+          swift --version
+          xcodebuild -showsdks
 
       - name: Capacitor installieren
         run: npm install --no-audit --no-fund
@@ -46,25 +49,51 @@ jobs:
       - name: HealthKit integrieren
         run: ruby scripts/configure-native-ios.rb
 
-      - name: iOS-Simulator-Build testen (ohne Signierung)
+      - name: Schritt 1 - Swift-Syntax und Xcode-Dateien pruefen
         shell: bash
         run: |
-          set -o pipefail
-          xcodebuild \
-            -project ios/App/App.xcodeproj \
-            -scheme App \
-            -configuration Debug \
-            -sdk iphonesimulator \
-            -destination 'generic/platform=iOS Simulator' \
-            -derivedDataPath "$RUNNER_TEMP/stepgo-derived" \
-            CODE_SIGNING_ALLOWED=NO \
-            build 2>&1 | tee "$RUNNER_TEMP/stepgo-ios-build.log"
+          set -euxo pipefail
+          swiftc -frontend -parse ios/App/App/StepGoHealthPlugin.swift ios/App/App/StepGoBridgeViewController.swift
+          plutil -lint ios/App/App/Info.plist ios/App/App/StepGoCity.entitlements
+          xmllint --noout ios/App/App/Base.lproj/Main.storyboard
+          grep -q 'NSHealthShareUsageDescription' ios/App/App/Info.plist
+          echo "Swift-Syntax, HealthKit-Info und Storyboard geprueft"
 
-      - name: Protokoll sichern
+      - name: Schritt 2 - Swift-Pakete aufloesen (maximal 7 Minuten)
+        shell: bash
+        run: |
+          python3 scripts/run_xcode_stage.py resolve 420 \
+            xcodebuild \
+              -project ios/App/App.xcodeproj \
+              -scheme App \
+              -clonedSourcePackagesDirPath "$RUNNER_TEMP/stepgo-packages" \
+              -resolvePackageDependencies
+
+      - name: Schritt 3 - iOS Simulator kompilieren (maximal 13 Minuten)
+        shell: bash
+        run: |
+          python3 scripts/run_xcode_stage.py compile 780 \
+            xcodebuild \
+              -project ios/App/App.xcodeproj \
+              -scheme App \
+              -configuration Debug \
+              -sdk iphonesimulator \
+              -destination 'generic/platform=iOS Simulator' \
+              -clonedSourcePackagesDirPath "$RUNNER_TEMP/stepgo-packages" \
+              -derivedDataPath "$RUNNER_TEMP/stepgo-derived" \
+              -disableAutomaticPackageResolution \
+              -jobs 2 \
+              COMPILER_INDEX_STORE_ENABLE=NO \
+              CODE_SIGNING_ALLOWED=NO \
+              build
+
+      - name: Diagnoseprotokolle sichern (auch bei Fehler)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: StepGo-City-iOS-Buildprotokoll
-          path: ${{ runner.temp }}/stepgo-ios-build.log
-          if-no-files-found: ignore
-          retention-days: 7
+          name: StepGo-City-iOS-Diagnose
+          path: |
+            ${{ runner.temp }}/stepgo-ios-resolve.log
+            ${{ runner.temp }}/stepgo-ios-compile.log
+          if-no-files-found: warn
+          retention-days: 14
