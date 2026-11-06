@@ -1,0 +1,8 @@
+{
+  "appId": "app.stepgocity.mobile",
+  "appName": "StepGo City",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "always"
+  }
+}
