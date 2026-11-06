@@ -56,6 +56,8 @@ jobs:
           swiftc -frontend -parse ios/App/App/StepGoHealthPlugin.swift ios/App/App/StepGoBridgeViewController.swift
           plutil -lint ios/App/App/Info.plist ios/App/App/StepGoCity.entitlements
           xmllint --noout ios/App/App/Base.lproj/Main.storyboard
+          /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' ios/App/App/Info.plist
+          /usr/libexec/PlistBuddy -c 'Print :NSHealthShareUsageDescription' ios/App/App/Info.plist
           grep -q 'NSHealthShareUsageDescription' ios/App/App/Info.plist
           echo "Swift-Syntax, HealthKit-Info und Storyboard geprueft"
 
