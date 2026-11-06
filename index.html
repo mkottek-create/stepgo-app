@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0d2820" />
+  <meta name="description" content="StepGo – Schritt-für-Schritt-Prototyp. Schritte sammeln, Coins bestätigen und Fortschritt verfolgen." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.png" type="image/png" />
+  <link rel="apple-touch-icon" href="icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>StepGo – Jeder Schritt lohnt sich</title>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="header-inner">
+        <div class="brand-line">
+          <div class="brand">step<span>go</span><span class="brand-dot">.</span></div>
+          <div class="header-right"><span class="demo-pill"><span class="dot"></span> DEMO</span><button id="profileShortcut" class="avatar" aria-label="Profil öffnen">♙</button></div>
+        </div>
+        <p class="tagline">JEDER SCHRITT LOHNT SICH.</p>
+      </div>
+    </header>
+
+    <main class="main" id="main">
+      <section class="screen active" id="screen-home" aria-label="Startseite">
+        <div class="hero-panel">
+          <div class="overline" id="todayLabel">HEUTE</div>
+          <h1>Mach jeden Schritt<br><em>wertvoll.</em></h1>
+          <div class="step-ring" id="stepRing" role="progressbar" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="12458" aria-label="Tägliche Schrittanzahl">
+            <div class="ring-inner">
+              <div class="ring-icon">↟</div>
+              <div class="step-count" id="stepsMain">12.458</div>
+              <div class="ring-sub">SCHRITTE HEUTE</div>
+              <span class="percent-pill" id="percentPill">83 % vom Tagesziel</span>
+            </div>
+          </div>
+          <div class="progress-text"><span><b id="goalProgress">12.458</b> / <span id="goalText">15.000</span> Schritte</span><span id="stepsRemaining">Noch 2.542</span></div>
+          <div class="payout-preview"><span>Heute möglich</span><strong><span class="coin-mini">✦</span><span id="earnableCoins">124</span> Coins</strong></div>
+          <button id="claimBtn" class="claim-btn"><span id="claimBtnText">Schritte bestätigen</span><span class="claim-arrow">↗</span></button>
+          <p class="hero-caption" id="claimCaption">Sammle deine heutigen Coins mit einem Klick.</p>
+        </div>
+
+        <section class="wallet-card" aria-label="Dein Coin-Guthaben">
+          <div><div class="section-overline">DEIN GUTHABEN</div><div class="wallet-value"><span id="walletCoins">0</span> <small>Coins</small></div><div class="wallet-hint">Dein Fortschritt. Deine Belohnungen.</div></div>
+          <div class="coin-large" aria-hidden="true">✦</div>
+        </section>
+
+        <div class="section-heading"><h2>Dein Fortschritt</h2><span>Heute</span></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon">⌁</div><strong id="statSteps">12.458</strong><span>Schritte gesammelt</span></div>
+          <div class="stat-card"><div class="stat-icon">✦</div><strong id="statDays">0</strong><span>Bestätigte Tage</span></div>
+        </div>
+        <section class="demo-tools" aria-label="Schritt-Simulation">
+          <div class="demo-header"><span>🧪 Testmodus</span><span>Ohne Health-Verbindung</span></div>
+          <p>Hier kannst du die App ausprobieren. Echte Schritte folgen in der iPhone-App.</p>
+          <div class="demo-buttons"><button id="add1k" class="mini-button">+ 1.000 Schritte</button><button id="add5k" class="mini-button">+ 5.000 Schritte</button><button id="resetDemo" class="mini-button mini-button-light">Zurücksetzen</button></div>
+        </section>
+      </section>
+
+      <section class="screen" id="screen-activity" aria-label="Schrittübersicht">
+        <div class="page-intro"><div class="section-overline">DEINE BEWEGUNG</div><h1>Jeder Schritt zählt.</h1><p>Ob Spazieren, Walking oder Joggen – für StepGo spielt die Art deiner Bewegung keine Rolle.</p></div>
+        <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small>Schritte im Testmodus</small></div></div>
+        <div class="section-heading"><h2>Bestätigte Tage</h2><span id="historyCount">0 Einträge</span></div>
+        <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!</div></div>
+        <p class="info-note">Hinweis: Diese Testversion verwendet simulierte Schritte und speichert Daten nur in diesem Browser.</p>
+      </section>
+
+      <section class="screen" id="screen-rewards" aria-label="Prämien">
+        <div class="page-intro"><div class="section-overline">DEINE BELOHNUNGEN</div><h1>Schritte werden<br><em>belohnt.</em></h1><p>Hier werden später Gutscheine und Auszahlungen angeboten. In dieser Demo gibt es noch keine echten Prämien.</p></div>
+        <div class="reward-balance"><span>Deine gesammelten Coins</span><strong><span class="coin-mini">✦</span><span id="rewardsCoins">0</span></strong></div>
+        <div class="reward-card"><div class="reward-icon">🎁</div><div><strong>Gutscheine</strong><p>Partnerangebote in Planung</p></div><span class="soon">BALD</span></div>
+        <div class="reward-card"><div class="reward-icon">💶</div><div><strong>Auszahlungen</strong><p>Erst nach sicherer Anbindung</p></div><span class="soon">BALD</span></div>
+        <div class="reward-card"><div class="reward-icon">🏆</div><div><strong>Meilensteine</strong><p>Belohnungen für deine Bewegung</p></div><span class="soon">BALD</span></div>
+      </section>
+
+      <section class="screen" id="screen-profile" aria-label="Profil">
+        <div class="page-intro"><div class="section-overline">DEIN BEREICH</div><h1>Dein Tempo.<br><em>Dein Ziel.</em></h1><p>Passe deine Tagesziele an und behalte deine Fortschritte im Blick.</p></div>
+        <div class="profile-card"><div class="profile-icon">👟</div><div><strong>StepGo-Tester</strong><span>Dein erstes Abenteuer beginnt hier.</span></div></div>
+        <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
+        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Alle Schritte und Coins sind Testdaten. Sie werden lokal auf deinem Gerät gespeichert, nicht an einen Server gesendet.</p></div>
+        <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" aria-label="Navigation">
+      <button class="nav-link active" data-tab="home" aria-current="page"><span class="nav-icon">⌂</span><span>Start</span></button>
+      <button class="nav-link" data-tab="activity"><span class="nav-icon">↟</span><span>Schritte</span></button>
+      <button class="nav-link" data-tab="rewards"><span class="nav-icon">◇</span><span>Prämien</span></button>
+      <button class="nav-link" data-tab="profile"><span class="nav-icon">♙</span><span>Profil</span></button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
