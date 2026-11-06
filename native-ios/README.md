@@ -11,7 +11,7 @@ Ein eigener Mac ist für einen **technischen Simulator-Build-Test** nicht nötig
 
 Workflow-Datei: `.github/workflows/ios-build-check.yml`.
 
-**Der Build-Test ist KEINE installierbare iPhone-App.** Er kompiliert zunächst nur für den iOS-Simulator. Erst mit passender Apple-Signierung, Provisioning, eindeutigem App-Identifier und TestFlight-/Distributions-Setup kann daraus ein auf dem eigenen iPhone installierbarer Build werden. Ein Apple Developer Program ist für TestFlight/öffentliche Verteilung erforderlich.
+**Der un­signierte Simulator-Build ist KEINE direkt auf deinem iPhone installierbare App.** Die Cloud-Simulatorinstallation und der App-Start wurden am 06.11.2026 erfolgreich geprüft ([Nachweis](https://github.com/mkottek-create/stepgo-app/actions/runs/42288817938)). Für dein eigenes iPhone fehlen noch Apple-Signierung, App Store Connect und TestFlight. Unser vorbereiteter Installationsweg steht in [TESTFLIGHT_INSTALLATION.md](../TESTFLIGHT_INSTALLATION.md).
 
 Die Home-Bildschirm-Web-App bleibt unverändert. Vor einem späteren Umstieg müssen gespeicherte lokale Daten migriert oder explizit neu gestartet werden.
 
@@ -22,11 +22,11 @@ Das Ruby-Skript `scripts/configure-native-ios.rb` bindet die beiden HealthKit-Sw
 
 ## Status
 
-HealthKit-Code und die JavaScript-Schnittstelle sind im Repository vorbereitet. Es ist noch **keine native iOS-App gebaut oder installiert**. Die GitHub-Pages-Webseite kann Apple Health nicht selbst lesen.
+HealthKit-Code und JavaScript-Schnittstelle sind vorbereitet. Die native App wurde **bereits erfolgreich für den iPhone-Simulator gebaut, installiert und gestartet**. Der echte Apple-Health-Zugriff auf deinem persönlichen iPhone ist **noch nicht getestet**. Die GitHub-Pages-Webseite kann Apple Health nicht selbst lesen.
 
-## Voraussetzung
+## Voraussetzung für den manuellen Xcode-Weg
 
-- Ein Mac mit Xcode, Node.js und npm.
+- Ein Mac mit Xcode, Node.js und npm. **Alternative ohne Mac:** siehe den GitHub-Cloud- und TestFlight-Weg in [TESTFLIGHT_INSTALLATION.md](../TESTFLIGHT_INSTALLATION.md).
 - Ein iPhone mit Schrittaufzeichnungen in Apple Health.
 - Eine Apple-ID für Entwicklung; für App Store/TestFlight später Apple Developer Program.
 - HealthKit-Capability und Lesen-Berechtigung für Schrittzahlen.
