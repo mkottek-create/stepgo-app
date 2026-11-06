@@ -47,6 +47,27 @@
           <div class="coin-large" aria-hidden="true">✦</div>
         </section>
 
+
+        <section class="health-import-card" aria-label="Schritte aus Apple Health übernehmen">
+          <div class="health-import-head"><div class="health-import-icon" aria-hidden="true">♥</div><div><span class="section-overline">ECHTE SCHRITTE</span><h2>Schritte aus Health</h2></div><span class="health-beta">TEST</span></div>
+          <p class="health-import-text">Übernimm deine heutige Schrittzahl aus Apple Health. Gehen, Walking und Laufen zählen gleich.</p>
+          <form id="healthImportForm" class="health-import-form">
+            <label for="healthSteps">Schritte heute</label>
+            <div class="health-import-row"><input type="text" inputmode="numeric" autocomplete="off" id="healthSteps" placeholder="z. B. 12.458" aria-describedby="healthImportHint" /><button class="health-import-button" type="submit">Übernehmen</button></div>
+          </form>
+          <p class="health-import-status" id="healthImportHint" aria-live="polite">Noch keine Health-Schritte für heute übernommen.</p>
+          <details class="health-help"><summary>So holst du deine Schritte vom iPhone <span aria-hidden="true">⌄</span></summary>
+            <ol>
+              <li>Öffne auf dem iPhone die App <strong>Kurzbefehle</strong> und erstelle einen Kurzbefehl namens <strong>StepGo-Schritte</strong>.</li>
+              <li>Füge <strong>Health-Messungen suchen</strong> hinzu: Typ <strong>Schritte</strong> und Startdatum <strong>heute</strong>.</li>
+              <li>Füge <strong>Statistik berechnen</strong> hinzu und wähle <strong>Summe</strong> der gefundenen Messungen.</li>
+              <li>Füge <strong>In Zwischenablage kopieren</strong> hinzu. Starte den Kurzbefehl und erlaube den Zugriff auf Health.</li>
+              <li>Öffne StepGo, füge die kopierte Zahl oben ein und tippe auf <strong>Übernehmen</strong>.</li>
+            </ol>
+            <p>Dieser Umweg ist nötig, weil eine Web-App Apple Health nicht direkt lesen kann. Die Zahlen werden nur auf deinem Gerät gespeichert. Eine vollautomatische Synchronisierung benötigt später eine native iPhone-App.</p>
+          </details>
+        </section>
+
         <div class="section-heading"><h2>Dein Fortschritt</h2><span>Heute</span></div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-icon">⌁</div><strong id="statSteps">12.458</strong><span>Schritte gesammelt</span></div>
@@ -61,10 +82,10 @@
 
       <section class="screen" id="screen-activity" aria-label="Schrittübersicht">
         <div class="page-intro"><div class="section-overline">DEINE BEWEGUNG</div><h1>Jeder Schritt zählt.</h1><p>Ob Spazieren, Walking oder Joggen – für StepGo spielt die Art deiner Bewegung keine Rolle.</p></div>
-        <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small>Schritte im Testmodus</small></div></div>
+        <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small id="activityStepSource">Schritte im Testmodus</small></div></div>
         <div class="section-heading"><h2>Bestätigte Tage</h2><span id="historyCount">0 Einträge</span></div>
         <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!</div></div>
-        <p class="info-note">Hinweis: Diese Testversion verwendet simulierte Schritte und speichert Daten nur in diesem Browser.</p>
+        <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Coins bleiben Test-Coins.</p>
       </section>
 
       <section class="screen" id="screen-rewards" aria-label="Prämien">
@@ -79,7 +100,7 @@
         <div class="page-intro"><div class="section-overline">DEIN BEREICH</div><h1>Dein Tempo.<br><em>Dein Ziel.</em></h1><p>Passe deine Tagesziele an und behalte deine Fortschritte im Blick.</p></div>
         <div class="profile-card"><div class="profile-icon">👟</div><div><strong>StepGo-Tester</strong><span>Dein erstes Abenteuer beginnt hier.</span></div></div>
         <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
-        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Alle Schritte und Coins sind Testdaten. Sie werden lokal auf deinem Gerät gespeichert, nicht an einen Server gesendet.</p></div>
+        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte kannst du manuell aus Apple Health übernehmen; Coins sind noch Test-Coins. Die Daten werden lokal auf diesem Gerät gespeichert und nicht an einen Server gesendet.</p></div>
         <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
       </section>
     </main>
