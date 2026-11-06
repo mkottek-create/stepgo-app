@@ -1,0 +1,66 @@
+name: StepGo City - iOS Build-Check
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/ios-build-check.yml"
+      - "native-ios/**"
+      - "scripts/**"
+      - "package.json"
+      - "capacitor.config.json"
+
+permissions:
+  contents: read
+
+jobs:
+  iphone-build-check:
+    name: iPhone-App zusammenbauen und kompilieren
+    runs-on: macos-26
+    timeout-minutes: 35
+    steps:
+      - name: Projekt herunterladen
+        uses: actions/checkout@v4
+
+      - name: Node.js vorbereiten
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Xcode anzeigen
+        run: xcodebuild -version
+
+      - name: Capacitor installieren
+        run: npm install --no-audit --no-fund
+
+      - name: iPhone-Projekt erzeugen
+        run: npm run ios:init
+
+      - name: Xcode-Projekt-Werkzeuge installieren
+        run: gem install xcodeproj rexml --no-document
+
+      - name: HealthKit integrieren
+        run: ruby scripts/configure-native-ios.rb
+
+      - name: iOS-Simulator-Build testen (ohne Signierung)
+        shell: bash
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/stepgo-derived" \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee "$RUNNER_TEMP/stepgo-ios-build.log"
+
+      - name: Protokoll sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: StepGo-City-iOS-Buildprotokoll
+          path: ${{ runner.temp }}/stepgo-ios-build.log
+          if-no-files-found: ignore
+          retention-days: 7
