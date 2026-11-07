@@ -306,10 +306,14 @@ test('Legacy coin wallet and built city survive switch to unified city currency'
   assert.deepEqual(app.state().cityBuildings,['park']);
   assert.equal(app.get('cityAvailablePoints').textContent,'180');
   assert.equal(app.get('walletCoins').textContent,'180');
-  const first=app.get('cityBuildList').children[0]; // first is already built
-  assert.equal(first.children[2].disabled,true);
+  const first=app.get('cityBuildList').children[0]; // old save: built park is level 1
+  assert.equal(first.children[2].disabled,false);
+  assert.equal(first.children[1].children[2].textContent,'⭐ Stufe 1 / 3');
+  assert.deepEqual(app.state().cityUpgrades,{});
   first.children[2].click();
-  assert.equal(app.state().wallet,180);
+  assert.equal(app.state().wallet,130);
+  assert.equal(app.state().cityUpgrades.park,2);
+  assert.deepEqual(app.state().cityBuildings,['park']);
 });
 
 
@@ -380,4 +384,94 @@ test('City themed project cards preserve purchase button and spending logic',()=
   assert.deepEqual(app.state().cityBuildings,['park']);
   assert.equal(app.get('cityBuiltCount').textContent,'2 / 9');
   assert.equal(app.get('cityMap').children[0].children[0].children[0].textContent,'🌳');
+});
+
+
+test('Fixed 3D map shows geometric models and one unchanged plot per building',()=>{
+  const state=baseState();
+  state.cityBuildings=['home','bakery','tower'];
+  state.cityUpgrades={home:3,bakery:2};
+  const app=harness(state);
+  const tiles=app.get('cityMap').children;
+  assert.equal(tiles.length,9);
+  const home=tiles[1],bakery=tiles[2],tower=tiles[8],hall=tiles[4];
+  assert.match(home.className,/city-plot-home/);
+  assert.match(home.className,/city-plot-level-3/);
+  assert.equal(home.children[0].children[2].className,'city-model city-model-home city-model-level-3');
+  assert.equal(home.children[2].textContent,'★ 3');
+  assert.equal(bakery.children[0].children[2].className,'city-model city-model-bakery city-model-level-2');
+  assert.equal(tower.children[0].children[2].className,'city-model city-model-tower city-model-level-1');
+  assert.equal(hall.children[0].children[2].className,'city-model city-model-hall city-model-level-1');
+  assert.equal(home.attributes['aria-label'],'Wohnviertel – Stufe 3 von 3');
+  assert.match(html,/3D-Optik/);
+  assert.match(html,/Feste Bauplätze/);
+});
+
+test('Upgrade journey from level 1 to 3 spends coins exactly twice and retains plot',()=>{
+  const state=baseState();
+  state.wallet=400;
+  const app=harness(state);
+  let park=app.get('cityBuildList').children[0];
+  park.children[2].click(); // build 25
+  assert.equal(app.state().wallet,375);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+  assert.deepEqual(app.state().cityUpgrades,{});
+  park=app.get('cityBuildList').children[0];
+  assert.match(park.children[2].attributes['aria-label'],/Stufe 1 auf 2 für 50 Stadtmünzen/);
+  park.children[2].click(); // upgrade 50
+  assert.equal(app.state().wallet,325);
+  assert.equal(app.state().cityUpgrades.park,2);
+  assert.equal(app.get('cityMap').children[0].children[2].textContent,'★ 2');
+  park=app.get('cityBuildList').children[0];
+  assert.match(park.children[2].attributes['aria-label'],/Stufe 2 auf 3 für 100 Stadtmünzen/);
+  park.children[2].click(); // upgrade 100
+  assert.equal(app.state().wallet,225);
+  assert.equal(app.state().cityUpgrades.park,3);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+  assert.equal(app.get('cityMap').children.length,9);
+  assert.match(app.get('cityMap').children[0].className,/city-plot-level-3/);
+  park=app.get('cityBuildList').children[0];
+  assert.equal(park.children[2].textContent,'★ MAX');
+  assert.equal(park.children[2].disabled,true);
+  park.children[2].click(); // defensive level cap
+  assert.equal(app.state().wallet,225);
+  assert.equal(app.state().cityUpgrades.park,3);
+});
+
+test('An unaffordable upgrade cannot spend coins or upgrade a building',()=>{
+  const state=baseState();
+  state.wallet=49;
+  state.cityBuildings=['park'];
+  const app=harness(state);
+  const upgrade=app.get('cityBuildList').children[0].children[2];
+  assert.equal(upgrade.disabled,true);
+  upgrade.click(); // call handler defensively despite disabled DOM button
+  assert.equal(app.state().wallet,49);
+  assert.equal(app.state().cityUpgrades.park,undefined);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+});
+
+test('Existing saved upgrades persist while invalid data is normalized',()=>{
+  const state=baseState();
+  state.wallet=127;
+  state.cityBuildings=['park','home'];
+  state.cityUpgrades={park:2,home:99,market:3,toString:3};
+  const app=harness(state);
+  assert.equal(app.state().wallet,127);
+  assert.deepEqual(app.state().cityBuildings,['park','home']);
+  assert.deepEqual(app.state().cityUpgrades,{park:2});
+  assert.equal(app.get('cityMap').children[0].children[2].textContent,'★ 2');
+  assert.equal(app.get('cityMap').children[1].children[2].textContent,'★ 1');
+});
+
+test('Deleting test data also removes building upgrade levels',()=>{
+  const state=baseState();
+  state.cityBuildings=['park'];
+  state.cityUpgrades={park:3};
+  const app=harness(state);
+  app.event('clearAll');
+  assert.deepEqual(app.state().cityBuildings,[]);
+  assert.deepEqual(app.state().cityUpgrades,{});
+  assert.equal(app.get('cityMap').children.length,9);
+  assert.equal(app.get('cityBuiltCount').textContent,'1 / 9');
 });
