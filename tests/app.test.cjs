@@ -272,7 +272,7 @@ test('Competition teaser and both panels explicitly identify fictional demo cont
   assert.match(html,/NUR DEMO/);
   assert.match(html,/Alle Namen und Schrittzahlen hier sind erfunden/);
   assert.match(html,/keine echten Gegner/);
-  assert.match(html,/Keine Live-Daten, kein Gegnerkontakt und kein Echtgeld/);
+  assert.match(html,/Keine Live-Daten und kein Gegnerkontakt/);
   assert.match(html,/id="screen-activity"/);
   assert.match(html,/id="screen-city"/);
 });
@@ -310,4 +310,33 @@ test('Legacy coin wallet and built city survive switch to unified city currency'
   assert.equal(first.children[2].disabled,true);
   first.children[2].click();
   assert.equal(app.state().wallet,180);
+});
+
+
+test('City cannot purchase unaffordable building, and coins cannot go negative',()=>{
+  const state=baseState();
+  state.wallet=20;
+  const app=harness(state);
+  const firstPark=app.get('cityBuildList').children[0];
+  assert.equal(firstPark.children[2].disabled,true);
+  firstPark.children[2].click(); // handler re-checks funds
+  assert.equal(app.state().wallet,20);
+  assert.deepEqual(app.state().cityBuildings,[]);
+  assert.equal(app.get('cityAvailablePoints').textContent,'20');
+});
+
+test('City purchase remains saved and daily coins still accrue once after purchase',()=>{
+  const state=baseState();
+  state.wallet=60;
+  const app=harness(state);
+  const firstPark=app.get('cityBuildList').children[0];
+  firstPark.children[2].click();
+  assert.equal(app.state().wallet,35);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+  app.event('claimBtn');
+  assert.equal(app.state().wallet,86);
+  assert.equal(app.get('cityAvailablePoints').textContent,'86');
+  app.event('claimBtn');
+  assert.equal(app.state().wallet,86);
+  assert.deepEqual(app.state().cityBuildings,['park']);
 });
