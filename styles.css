@@ -765,3 +765,24 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .competition-switch-button{font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){.duel-progress>span{transition:none}}
+
+
+/* StepGo City V8 – kostenlose City, geplanter Wettkampf-Pass */
+.arena-membership{margin:17px 17px 16px;padding:16px 15px 15px;background:linear-gradient(140deg,#fffcef,#f2edca);border:3px solid #9b7b38;border-radius:21px;box-shadow:0 5px 0 #e5d7a2;color:#3f5135}
+.arena-membership-head{display:flex;align-items:center;gap:10px}
+.arena-membership-icon{display:grid;place-items:center;width:42px;height:42px;border:2px solid #9a7739;border-radius:12px;background:#fce6a2;font-size:24px;flex-shrink:0}
+.arena-membership-head>div{min-width:0;flex:1}
+.arena-membership-head .section-overline{color:#7e673c;font-size:9px;letter-spacing:.65px}
+.arena-membership h2{margin:5px 0 0;color:#355231;font-size:17px;font-weight:950;line-height:1.25}
+.arena-membership-tag{border:1px solid #ac905e;border-radius:8px;background:#fff2cb;color:#87693a;font-weight:900;font-size:8px;letter-spacing:.3px;padding:6px 5px}
+.arena-membership-price{display:flex;flex-direction:column;align-items:flex-start;margin-top:15px;gap:3px}
+.arena-membership-price strong{font-size:29px;font-weight:950;line-height:1.2;letter-spacing:-.7px;color:#1d5136}
+.arena-membership-price strong small{font-size:14px;color:#557353;letter-spacing:0}
+.arena-membership-price>span{font-size:12px;font-weight:800;color:#846e3e}
+.arena-membership>p{margin:13px 0 14px;color:#69785b;font-size:11px;line-height:1.6}
+.arena-membership-button{width:100%;min-height:44px;border:2px solid #305a3b;border-radius:12px;background:#d8f3b8;color:#2e5736;font-size:12px;font-family:inherit;font-weight:950;cursor:pointer}
+.arena-membership-button:active{background:#c3e99f}
+.arena-membership-detail[hidden]{display:none!important}
+.arena-membership-detail{margin-top:13px;padding:11px 12px;background:#fffdf1;border:1px solid #d4c398;border-radius:12px}
+.arena-membership-detail ul{margin:0;padding-left:20px;font-size:11px;line-height:1.9;color:#385e3d}
+.arena-membership-detail p{margin:12px 0 0;font-size:10px;line-height:1.6;color:#76684d}
