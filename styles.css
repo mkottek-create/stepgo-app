@@ -786,3 +786,185 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .arena-membership-detail{margin-top:13px;padding:11px 12px;background:#fffdf1;border:1px solid #d4c398;border-radius:12px}
 .arena-membership-detail ul{margin:0;padding-left:20px;font-size:11px;line-height:1.9;color:#385e3d}
 .arena-membership-detail p{margin:12px 0 0;font-size:10px;line-height:1.6;color:#76684d}
+
+
+/* StepGo City V9 – Kleine lebendige Comic-Stadt */
+.city-map-card{
+  background:linear-gradient(155deg,#fefff0 0%,#e9f7d8 65%,#e1f3ce 100%);
+  border-color:#285e41;
+  box-shadow:0 7px 0 #bdd5ac,0 12px 22px #245a3021;
+}
+.city-map-head{margin-bottom:13px}
+.city-map-head h2{font-size:16px;line-height:1.2}
+.city-map-label{background:#ffeb99;border-color:#b28738;color:#694b19}
+.city-landscape{
+  position:relative;height:89px;overflow:hidden;
+  border:3px solid #54896c;border-bottom:0;
+  border-radius:17px 17px 0 0;
+  background:linear-gradient(to bottom,#78c5ed 0%,#bfe8ff 66%,#f1f5c7 100%);
+  isolation:isolate;
+}
+.city-landscape-sun{
+  position:absolute;right:18%;top:13px;width:32px;height:32px;border-radius:50%;
+  background:#ffe47c;border:3px solid #fff3ba;
+  box-shadow:0 0 0 8px #fff6c749,0 0 22px #ffeb9f;
+}
+.city-landscape-cloud{position:absolute;top:19px;width:55px;height:15px;border-radius:20px;background:#faffff;box-shadow:15px -7px 0 1px #faffff,29px 0 0 0 #faffff;opacity:.94}
+.city-landscape-cloud-left{left:6%;top:15px;transform:scale(.65);transform-origin:left}
+.city-landscape-cloud-right{right:4%;top:39px;transform:scale(.48);transform-origin:right}
+.city-landscape-hill{position:absolute;bottom:-27px;width:75%;height:76px;border-radius:65% 65% 0 0}
+.city-landscape-hill-back{left:-17%;background:linear-gradient(160deg,#8cd0a1,#65ad83);transform:rotate(-8deg)}
+.city-landscape-hill-front{right:-17%;bottom:-43px;height:91px;background:linear-gradient(160deg,#7ebc75,#4b9a6b);transform:rotate(7deg)}
+.city-landscape-trees{position:absolute;bottom:0;left:7%;z-index:2;font-size:21px;letter-spacing:-3px;filter:drop-shadow(0 2px 0 #31724862)}
+.city-landscape-sign{
+  position:absolute;right:12px;bottom:8px;z-index:3;
+  display:inline-block;padding:5px 8px 4px;border:2px solid #2a5834;border-radius:7px;
+  background:#fff0b5;box-shadow:2px 3px 0 #315e3b;
+  font-size:9px;font-weight:950;letter-spacing:1px;color:#4a6c30;transform:rotate(-3deg);
+}
+.city-map{
+  position:relative;isolation:isolate;
+  min-height:362px;
+  gap:16px;
+  padding:16px 11px 18px;
+  border:3px solid #54896c;
+  border-top:0;
+  border-radius:0 0 17px 17px;
+  box-shadow:inset 0 4px 8px #31552a21;
+  background:
+    linear-gradient(90deg,
+      transparent calc(33.333% - 9px),
+      #e5d4b1 calc(33.333% - 9px),
+      #e5d4b1 calc(33.333% + 9px),
+      transparent calc(33.333% + 9px),
+      transparent calc(66.666% - 9px),
+      #e5d4b1 calc(66.666% - 9px),
+      #e5d4b1 calc(66.666% + 9px),
+      transparent calc(66.666% + 9px)),
+    linear-gradient(0deg,
+      transparent calc(33.333% - 9px),
+      #e5d4b1 calc(33.333% - 9px),
+      #e5d4b1 calc(33.333% + 9px),
+      transparent calc(33.333% + 9px),
+      transparent calc(66.666% - 9px),
+      #e5d4b1 calc(66.666% - 9px),
+      #e5d4b1 calc(66.666% + 9px),
+      transparent calc(66.666% + 9px)),
+    repeating-linear-gradient(42deg,#c7e7a4 0px,#c7e7a4 14px,#bee19d 14px,#bee19d 28px);
+}
+.city-plot{
+  z-index:1;position:relative;min-width:0;min-height:102px;
+  border:2px solid #4d8553;border-radius:15px;
+  gap:0;justify-content:space-between;
+  padding:5px 3px 7px;
+  background:linear-gradient(155deg,#f6ffe8 0%,#e1f3c5 52%,#a6d98b 100%);
+  box-shadow:0 4px 0 #75a86a,0 6px 7px #284b2b26;
+  overflow:hidden;
+}
+.city-plot::before{
+  content:"";position:absolute;top:3px;left:6px;right:6px;height:8px;
+  border-radius:50%;background:#ffffff57;pointer-events:none;
+}
+.city-plot-built.city-plot-park{background:linear-gradient(150deg,#eaffbd,#bcdf92 68%,#8ac36e)}
+.city-plot-built.city-plot-home{background:linear-gradient(150deg,#fef8cf,#e5edb6 68%,#9ccb83)}
+.city-plot-built.city-plot-bakery{background:linear-gradient(150deg,#fff2cb,#f6d7a5 72%,#dbad7d);border-color:#b98d56;box-shadow:0 4px 0 #b29167}
+.city-plot-built.city-plot-market{background:linear-gradient(150deg,#fff7d3,#e8e3a0 65%,#b7ce8c)}
+.city-plot-built.city-plot-lake{background:linear-gradient(150deg,#d4f5ff,#8cd9eb 67%,#65b4cf);border-color:#4a98a2;box-shadow:0 4px 0 #6ba6b0}
+.city-plot-built.city-plot-school{background:linear-gradient(150deg,#feeed2,#e8e5b2 65%,#b7cf8d)}
+.city-plot-built.city-plot-clinic{background:linear-gradient(150deg,#e8fbf3,#b3e7d7 67%,#8ec6bb);border-color:#5b9893}
+.city-plot-built.city-plot-tower{background:linear-gradient(150deg,#f5eafc,#e0c9ef 67%,#bfabdc);border-color:#907ca6;box-shadow:0 4px 0 #a895b6}
+.city-plot-center{
+  background:linear-gradient(150deg,#fff9cf,#ffe4a2 62%,#f3c973);
+  border-color:#b98b3a;
+  box-shadow:0 5px 0 #b49656,0 8px 8px #4a3b2628;
+}
+.city-plot-locked{
+  border:2px dashed #8ca98b;
+  background:repeating-linear-gradient(135deg,#e3edcb 0px,#e3edcb 12px,#d8e6c6 12px,#d8e6c6 24px);
+  box-shadow:0 3px 0 #a4b79b;
+}
+.city-plot-scene{
+  flex:1;position:relative;display:grid;place-items:center;
+  width:100%;min-height:65px;
+  isolation:isolate;
+}
+.city-plot-scene::before{
+  content:"";position:absolute;z-index:-1;
+  width:67%;height:18px;bottom:9px;left:16%;
+  background:#2d663b25;border-radius:50%;
+  transform:skew(-12deg);
+}
+.city-plot-art{
+  position:relative;z-index:2;
+  display:block;font-size:41px;
+  line-height:1.1;
+  transform:translateY(-1px);
+  filter:drop-shadow(0 3px 1px #214e2a45);
+}
+.city-plot-locked .city-plot-art{font-size:30px;opacity:.6;filter:grayscale(.3)}
+.city-plot-center .city-plot-art{font-size:43px}
+.city-plot-decoration{
+  position:absolute;right:0;bottom:2px;z-index:3;
+  font-size:12px;line-height:1.1;letter-spacing:-3px;white-space:nowrap;
+  filter:drop-shadow(0 2px 0 #346d402c);
+  pointer-events:none;
+}
+.city-plot-locked .city-plot-decoration{opacity:.6}
+.city-plot-label{
+  z-index:3;position:relative;
+  align-self:stretch;margin:2px 2px 0;
+  padding:4px 3px 3px;
+  border:1px solid #8eaf86;border-radius:7px;
+  background:#fdfdf0e9;
+  color:#2d5a3b;font-size:10px;line-height:1.2;
+  text-overflow:ellipsis;
+  box-shadow:0 2px 0 #30613212;
+}
+.city-plot-center .city-plot-label{background:#fff2c9;border-color:#c29f5b}
+.city-plot-locked .city-plot-label{background:#edf1e3;color:#81937c;border-color:#b4c8aa}
+.city-map-tip{text-align:center;font-size:11px;color:#537b53;line-height:1.4;margin:12px 5px 1px;font-weight:800}
+.city-map-bottom{margin-top:11px}
+.city-build-card{
+  position:relative;overflow:hidden;
+  padding:13px 11px 13px 15px;
+  background:linear-gradient(110deg,#ffffff 0%,#f8fef0 100%);
+  border-color:#37684b;
+  box-shadow:0 4px 0 #b6d7ad,0 6px 12px #1743270e;
+}
+.city-build-card::before{
+  content:"";position:absolute;inset:7px auto 7px 4px;width:5px;
+  background:#8ccc75;border-radius:6px;pointer-events:none;
+}
+.city-build-bakery::before,.city-build-market::before{background:#f2c26e}
+.city-build-lake::before,.city-build-clinic::before{background:#80d5d5}
+.city-build-tower::before{background:#ba9cd4}
+.city-build-card.city-build-done{
+  background:linear-gradient(125deg,#efffdc,#e1f6d6);border-color:#669451;
+}
+.city-build-icon{
+  border-radius:13px;background:linear-gradient(150deg,#f4ffe6,#dbefc7);
+  box-shadow:inset 0 -3px 0 #a6d09854;
+}
+.city-build-bakery .city-build-icon,.city-build-market .city-build-icon{background:#fff0ce;border-color:#d8ba7c}
+.city-build-lake .city-build-icon,.city-build-clinic .city-build-icon{background:#e3faff;border-color:#9bd1ce}
+.city-build-tower .city-build-icon{background:#f3e9ff;border-color:#c9afda}
+.city-build-card .city-build-button:not(:disabled){
+  background:linear-gradient(160deg,#d8ffaa,#b4eb74);
+  box-shadow:0 3px 0 #5c9153;
+}
+@media(max-width:380px){
+  .city-map{gap:11px;padding:12px 6px 15px;min-height:329px}
+  .city-plot{min-height:89px;padding:4px 2px 5px;border-radius:12px}
+  .city-plot-scene{min-height:54px}
+  .city-plot-art{font-size:34px}
+  .city-plot-center .city-plot-art{font-size:36px}
+  .city-plot-locked .city-plot-art{font-size:27px}
+  .city-plot-decoration{font-size:10px}
+  .city-plot-label{font-size:9px;padding:3px 2px}
+  .city-landscape{height:77px}
+  .city-landscape-sign{font-size:8px}
+  .city-map-head h2{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  .city-plot-built:not(.city-plot-center){animation:none}
+}
