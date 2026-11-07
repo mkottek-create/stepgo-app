@@ -4,13 +4,22 @@
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],stepSource:'demo',importedAt:null});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null});
   let state;
   try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fresh(); } catch { state = fresh(); }
   if (!state || typeof state!=='object') state = fresh();
   if (!Array.isArray(state.ledger)) state.ledger = [];
   if (!Array.isArray(state.cityBuildings)) state.cityBuildings = [];
   state.cityBuildings = [...new Set(state.cityBuildings.filter(item=>typeof item==='string'))];
+  // Alte Spielstände hatten keine Gebäude-Stufen. Bereits gebaute Gebäude bleiben Stufe 1.
+  const oldLevels = state.cityUpgrades && typeof state.cityUpgrades==='object' && !Array.isArray(state.cityUpgrades)
+    ? state.cityUpgrades : {};
+  state.cityUpgrades = {};
+  state.cityBuildings.forEach(id=>{
+    if (Object.prototype.hasOwnProperty.call(oldLevels,id) && (oldLevels[id]===2 || oldLevels[id]===3)) {
+      Object.defineProperty(state.cityUpgrades,id,{value:oldLevels[id],enumerable:true,writable:true,configurable:true});
+    }
+  });
   if (!Number.isFinite(state.goal)) state.goal = 15000;
   if (!Number.isFinite(state.wallet)) state.wallet = 0;
   if (state.date!==todayKey()) {state.date=todayKey();state.steps=0;state.stepSource="demo";state.importedAt=null;}
@@ -60,22 +69,28 @@
   });
   // Niemals hypothetische (unbestätigte) Schrittzahlen gutschreiben.
   const cityAvailable = () => state.wallet;
-  const cityLevel = () => 1+Math.floor(state.cityBuildings.length/2);
+  const buildingLevel = id => state.cityBuildings.includes(id) ? (state.cityUpgrades[id] || 1) : 0;
+  const MAX_BUILDING_LEVEL = 3;
+  const upgradeCost = (item,level) => Math.ceil((item.cost * (level===1?2:4)) / 5) * 5;
+  const cityLevel = () => 1+Math.floor(
+    (state.cityBuildings.length + state.cityBuildings.reduce((sum,id)=>sum+buildingLevel(id)-1,0))/2
+  );
   function renderCity(){
     const owned=new Set(state.cityBuildings);
     const pts=cityAvailable();
     $('cityAvailablePoints').textContent=fmt(pts);
     $('cityBuiltCount').textContent=(owned.size+1)+' / 9';
     $('cityLevel').textContent='STUFE '+cityLevel();
-    $('cityMapProgress').textContent=owned.size+' von 8 gebaut';
+    $('cityMapProgress').textContent=owned.size+' von 8 gebaut · '+state.cityBuildings.reduce((sum,id)=>sum+buildingLevel(id)-1,0)+' Ausbauten';
     const grid=$('cityMap');
     grid.replaceChildren();
     for(let pos=0;pos<9;pos++){
       const item=CITY_BUILDINGS.find(b=>b.plot===pos);
       const built=pos===4 || !!(item&&owned.has(item.id));
+      const level=pos===4?1:(built?buildingLevel(item.id):0);
       const tile=document.createElement('div');
-      tile.className='city-plot'+(built?' city-plot-built':' city-plot-locked')+(pos===4?' city-plot-center':'')+(item?' city-plot-'+item.id:'');
-      tile.setAttribute('aria-label',pos===4?'Rathaus – Startgebäude':item.name+(built?' – gebaut':' – noch frei'));
+      tile.className='city-plot'+(built?' city-plot-built':' city-plot-locked')+(pos===4?' city-plot-center':'')+(item?' city-plot-'+item.id:'')+(built?' city-plot-level-'+level:'');
+      tile.setAttribute('aria-label',pos===4?'Rathaus – Startgebäude':item.name+(built?' – Stufe '+level+' von '+MAX_BUILDING_LEVEL:' – noch frei'));
       const scene=document.createElement('div');
       scene.className='city-plot-scene';
       const art=document.createElement('span');
@@ -86,17 +101,44 @@
       decoration.setAttribute('aria-hidden','true');
       decoration.textContent=pos===4?'🌳 🌼':built?CITY_DECORATIONS[item.id]:'🌱';
       scene.append(art,decoration);
+      if (built) {
+        // Feste perspektivische 3D-Ansicht: Dach, Vorderwand und Seitenwand.
+        // Keine große Bibliothek, kein Drehen, keine zweiten Bauteile beim Upgrade.
+        const model=document.createElement('div');
+        model.className='city-model city-model-'+(pos===4?'hall':item.id)+' city-model-level-'+level;
+        model.setAttribute('aria-hidden','true');
+        ['roof','front','side','window','door'].forEach(part=>{
+          const layer=document.createElement('span');
+          layer.className='city-model-'+part;
+          model.append(layer);
+        });
+        const emblem=document.createElement('span');
+        emblem.className='city-model-emblem';
+        emblem.textContent=pos===4?'🏛️':item.icon;
+        model.append(emblem);
+        scene.append(model);
+      }
       const label=document.createElement('span');
       label.className='city-plot-label';
       label.textContent=pos===4?'Rathaus':built?item.name:'Bauplatz';
       tile.append(scene,label);
+      if (built && pos!==4) {
+        const rank=document.createElement('span');
+        rank.className='city-plot-rank';
+        rank.textContent='★ '+level;
+        rank.setAttribute('aria-hidden','true');
+        tile.append(rank);
+      }
       grid.append(tile);
     }
     const list=$('cityBuildList');
     list.replaceChildren();
     CITY_BUILDINGS.forEach(item=>{
       const built=owned.has(item.id);
-      const canAfford=pts>=item.cost;
+      const level=buildingLevel(item.id);
+      const fullyUpgraded=built && level>=MAX_BUILDING_LEVEL;
+      const price=built ? (fullyUpgraded?0:upgradeCost(item,level)) : item.cost;
+      const canAfford=pts>=price;
       const card=document.createElement('article');
       card.className='city-build-card city-build-'+item.id+(built?' city-build-done':'');
       const icon=document.createElement('span');
@@ -104,22 +146,30 @@
       const info=document.createElement('div');info.className='city-build-info';
       const title=document.createElement('strong');title.textContent=item.name;
       const detail=document.createElement('p');detail.textContent=item.description;
-      info.append(title,detail);
+      const stage=document.createElement('span');
+      stage.className='city-build-stage'+(fullyUpgraded?' city-build-stage-max':'');
+      stage.textContent=built?('⭐ Stufe '+level+' / '+MAX_BUILDING_LEVEL+(fullyUpgraded?' · voll ausgebaut':'')):'🌱 Noch nicht gebaut';
+      info.append(title,detail,stage);
       const action=document.createElement('button');action.type='button';
-      action.className='city-build-button'+(built?' city-build-button-done':'');
-      action.textContent=built?'✓ Gebaut':item.cost+' ✦';
-      action.disabled=built||!canAfford;
-      action.setAttribute('aria-label',built?item.name+' bereits gebaut':item.name+' für '+item.cost+' Stadtmünzen bauen');
-      action.addEventListener('click',()=>buildCityBuilding(item.id));
+      action.className='city-build-button'+(fullyUpgraded?' city-build-button-done':'')+(built&&!fullyUpgraded?' city-build-button-upgrade':'');
+      action.textContent=fullyUpgraded?'★ MAX':built?'⬆ '+fmt(price)+' ✦':fmt(price)+' ✦';
+      action.disabled=fullyUpgraded||!canAfford;
+      action.setAttribute('aria-label',fullyUpgraded?item.name+' ist vollständig ausgebaut':built?item.name+' von Stufe '+level+' auf '+(level+1)+' für '+price+' Stadtmünzen verbessern':item.name+' für '+price+' Stadtmünzen bauen');
+      action.addEventListener('click',()=>built?upgradeCityBuilding(item.id):buildCityBuilding(item.id));
       card.append(icon,info,action);
       list.append(card);
     });
     const pending=CITY_BUILDINGS.filter(item=>!owned.has(item.id)).sort((a,b)=>a.cost-b.cost);
-    $('cityNextHint').textContent=pending.length===0
-      ? '🎉 Deine erste Stadt ist komplett! Bald kommen neue Stadtteile.'
-      : pts>=pending[0].cost
-        ? '🎉 Du kannst jetzt '+pending[0].name+' bauen!'
-        : 'Noch '+fmt(pending[0].cost-pts)+' Stadtmünzen bis zum nächsten Gebäude ('+pending[0].name+').';
+    const upgradeable=CITY_BUILDINGS.filter(item=>owned.has(item.id)&&buildingLevel(item.id)<MAX_BUILDING_LEVEL);
+    const options=[
+      ...pending.map(item=>({name:item.name,price:item.cost,action:'bauen'})),
+      ...upgradeable.map(item=>({name:item.name,price:upgradeCost(item,buildingLevel(item.id)),action:'verbessern'}))
+    ].sort((a,b)=>a.price-b.price);
+    $('cityNextHint').textContent=options.length===0
+      ? '🎉 Alle Gebäude stehen auf Stufe 3! Deine Stadt ist komplett!'
+      : pts>=options[0].price
+        ? '🎉 Du kannst jetzt '+options[0].name+' '+options[0].action+'!'
+        : 'Noch '+fmt(options[0].price-pts)+' Stadtmünzen, um '+options[0].name+' zu '+options[0].action+'.';
   }
   function buildCityBuilding(id){
     const target=CITY_BUILDINGS.find(item=>item.id===id);
@@ -129,6 +179,18 @@
     state.cityBuildings.push(id);
     render();
     toast(target.icon+' '+target.name+' gebaut!');
+  }
+  function upgradeCityBuilding(id) {
+    const item=CITY_BUILDINGS.find(entry=>entry.id===id);
+    if (!item || !state.cityBuildings.includes(id)) return;
+    const level=buildingLevel(id);
+    if(level>=MAX_BUILDING_LEVEL) return;
+    const price=upgradeCost(item,level);
+    if(cityAvailable()<price){toast('Noch '+fmt(price-cityAvailable())+' Stadtmünzen für das Upgrade nötig.');return;}
+    state.wallet-=price;
+    state.cityUpgrades[id]=level+1;
+    render();
+    toast('🏗️ '+item.name+' auf Stufe '+(level+1)+' verbessert!');
   }
 
   const currentEntry = () => state.ledger.find(x=>x.date===todayKey());
