@@ -340,3 +340,44 @@ test('City purchase remains saved and daily coins still accrue once after purcha
   assert.equal(app.state().wallet,86);
   assert.deepEqual(app.state().cityBuildings,['park']);
 });
+
+
+test('City redesign renders nine comic parcels, paths and scenery without changing stored data',()=>{
+  const initial=baseState();
+  initial.cityBuildings=['park','lake','bakery'];
+  const app=harness(initial);
+  const before=app.state();
+  const tiles=app.get('cityMap').children;
+  assert.equal(tiles.length,9);
+  assert.match(html,/class="city-landscape"/);
+  assert.match(html,/STEPGO VALLEY/);
+  assert.match(html,/city-map-tip/);
+  assert.equal(tiles[4].attributes['aria-label'],'Rathaus – Startgebäude');
+  assert.match(tiles[4].className,/city-plot-center/);
+  assert.equal(tiles[4].children[0].children[0].textContent,'🏛️');
+  assert.match(tiles[0].className,/city-plot-park/);
+  assert.match(tiles[0].className,/city-plot-built/);
+  assert.match(tiles[5].className,/city-plot-lake/);
+  assert.match(tiles[2].className,/city-plot-bakery/);
+  assert.match(tiles[1].className,/city-plot-locked/);
+  assert.equal(tiles[1].children[1].textContent,'Bauplatz');
+  assert.equal(tiles[0].children[0].children[1].attributes['aria-hidden'],'true');
+  assert.deepEqual(app.state(),before,'City embellishments must not write back additional currency or buildings');
+});
+
+test('City themed project cards preserve purchase button and spending logic',()=>{
+  const state=baseState();
+  state.wallet=110;
+  const app=harness(state);
+  const cards=app.get('cityBuildList').children;
+  assert.equal(cards.length,8);
+  assert.match(cards[0].className,/city-build-park/);
+  assert.match(cards[2].className,/city-build-bakery/);
+  assert.match(cards[4].className,/city-build-lake/);
+  assert.equal(cards[0].children[2].disabled,false);
+  cards[0].children[2].click();
+  assert.equal(app.state().wallet,85);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+  assert.equal(app.get('cityBuiltCount').textContent,'2 / 9');
+  assert.equal(app.get('cityMap').children[0].children[0].children[0].textContent,'🌳');
+});
