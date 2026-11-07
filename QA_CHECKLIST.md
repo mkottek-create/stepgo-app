@@ -1,6 +1,6 @@
 # StepGo City – Prüfplan vor öffentlicher Veröffentlichung
 
-Stand: 06.11.2026 · Prototyp, noch keine Echtgeld-Prämien.
+Stand: 07.11.2026 · Wettkampf- und Stadt-Prototyp, keine Echtgeld-Prämien und keine echte Abo-Abrechnung.
 
 ## Bereits nachweisbar geprüft
 
@@ -9,7 +9,7 @@ Stand: 06.11.2026 · Prototyp, noch keine Echtgeld-Prämien.
 - [x] Schritt-Coins für 4.642 Schritte und 10.000 Schritte.
 - [x] Tagesziel-Bonus, Meilenstein-Boni und Obergrenzen bei 100.000 Schritten.
 - [x] Einmalige Tagesbestätigung, keine doppelte Gutschrift desselben Tages.
-- [x] Baupunkte für bestätigte Schritte, Gebäudekauf ohne Coin-Verbrauch, Kauf nicht doppelt möglich.
+- [x] Stadtmünzen als einzige Bauwährung: Gebäude ziehen Münzen ab, kein doppelter Kauf, kein negativer Kontostand; bereits gebaute Gebäude bleiben.
 - [x] Manuelle Health-Eingabe: gültige und ungültige Schritte.
 - [x] Neue Schrittzahl nach Tagesbestätigung führt nicht zu weiteren Coins.
 - [x] Löschen aller Testdaten setzt jetzt auch die Stadt zurück (Fehler korrigiert).
@@ -17,16 +17,21 @@ Stand: 06.11.2026 · Prototyp, noch keine Echtgeld-Prämien.
 - [x] Alte Bestätigungen können weiterhin angezeigt werden.
 - [x] Einfache Quelltextprüfung nach privaten Schlüsseln im GitHub-Workflow. **Kein vollständiger Geheimnis- oder Sicherheitsscan.**
 
-## Kritische Punkte – vor echten Belohnungen unbedingt lösen
+## Kritische Punkte – vor echten Online-Wettkämpfen oder Abos unbedingt lösen
 
 - [ ] Nutzerkonten / Authentifizierung und sichere Wiederherstellung nach Gerätewechsel.
-- [ ] Serverseitiges, manipulationsgeschütztes Buchungssystem für Coins und Auszahlungen.
+- [ ] Serverseitige, manipulationsgeschützte Schritte-/Wettkampfwertungen und sichere Abonnementsberechtigung.
 - [ ] Missbrauchsschutz gegen Fake-Schritte, manipulierte lokale Daten und Mehrfachkonten.
-- [ ] Sauberes Geschäftsmodell, nachvollziehbarer Coin-Wert, Auszahlungs- und Gutscheinbedingungen.
+- [ ] Monatlichen Wettkampf-Pass mit Apple StoreKit einführen: 1 Monat Probezeit für berechtigte Personen, danach gewünschter Preis von 6,99 €/Monat, inklusive Verwaltung/Wiederherstellung und Servervalidierung.
 - [ ] Datenschutzkonzept, Einwilligungen, Datenminimierung und Datenschutzerklärung; insbesondere Gesundheitsdaten.
 - [ ] Sichere API-Kommunikation, Rate-Limits, Zugriffsberechtigungen, serverseitige Validierung und Protokollierung.
 - [ ] Abhängigkeiten prüfen, Sicherheitsupdates und eine professionelle Sicherheitsprüfung.
 - [ ] Datensicherung, Migration vom Web-App-Speicher zur nativen iPhone-App und Wiederherstellung.
+
+- [x] Prämien- und Auszahlungsbereich aus der App entfernt; Stadtmünzen statt Baupunkte für neue Gebäudekäufe.
+- [x] Wettkampf-Pass ist eine reine Informationsvorschau; kein Probeabo oder Kauf wird ausgelöst.
+- [x] 20 Web-Funktionstests bestanden (Run 42361450123).
+- [ ] TestFlight: Apple-In-App-Kauf, Probezeit, Preisanzeige, Abo-Ende, Kündigung und Wiederherstellung auf echtem iPhone testen.
 
 ## Technische / praktische Tests – noch offen
 
@@ -47,6 +52,6 @@ Stand: 06.11.2026 · Prototyp, noch keine Echtgeld-Prämien.
 
 ## Veröffentlichungs-Gate
 
-**Keine echten Geld-/Gutschein-Prämien und kein öffentlicher Launch**, solange die kritischen Punkte nicht erledigt sind. Auch nach automatischen Tests ist Sicherheit nicht garantiert; eine zusätzliche manuelle und möglichst unabhängige Sicherheitsprüfung ist erforderlich.
+**Aktuell ausschließlich Demo ohne echte Online-Wettkämpfe, Abo-Buchung oder Geldpreise.** Vor einem öffentlichen Online-Start müssen Konten, Serverseite und Aboberechtigungen funktionieren. Sicherheit ist durch automatisierte Tests nicht garantiert; weitere manuelle und möglichst unabhängige Prüfungen sind erforderlich.
 
 Prüfnachweis: https://github.com/mkottek-create/stepgo-app/actions/runs/42274935198
