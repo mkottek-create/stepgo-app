@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=arena2" />
+  <link rel="stylesheet" href="styles.css?v=city-art1" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -246,8 +246,18 @@
         </div>
 
         <div class="city-map-card">
-          <div class="city-map-head"><div><span class="section-overline">STADTANSICHT</span><h2>🌳 Deine kleine Welt</h2></div><span class="city-map-label">Comic-Stadt</span></div>
-          <div id="cityMap" class="city-map" role="group" aria-label="Deine Stadt mit 9 Bauplätzen"></div>
+          <div class="city-map-head"><div><span class="section-overline">DEIN STADTPLAN</span><h2>🌳 Willkommen in StepGo Valley</h2></div><span class="city-map-label">Comic-Welt</span></div>
+          <div class="city-landscape" aria-hidden="true">
+            <span class="city-landscape-sun"></span>
+            <span class="city-landscape-cloud city-landscape-cloud-left"></span>
+            <span class="city-landscape-cloud city-landscape-cloud-right"></span>
+            <span class="city-landscape-hill city-landscape-hill-back"></span>
+            <span class="city-landscape-hill city-landscape-hill-front"></span>
+            <span class="city-landscape-trees">🌲 🌳 🌲</span>
+            <span class="city-landscape-sign">STEPGO VALLEY</span>
+          </div>
+          <div id="cityMap" class="city-map" role="group" aria-label="Deine Stadt mit 9 Bauplätzen und kleinen Straßen"></div>
+          <p class="city-map-tip">🌼 Jedes Gebäude macht dein kleines Städtchen ein Stück bunter.</p>
           <div class="city-map-bottom"><span>🏛️ Dein Rathaus steht bereits!</span><span id="cityMapProgress">0 von 8 gebaut</span></div>
         </div>
         <section class="city-wallet" aria-label="Stadtmünzen sammeln">
@@ -293,6 +303,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=arena2"></script>
+  <script src="app.js?v=city-art1"></script>
 </body>
 </html>
