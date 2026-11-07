@@ -99,57 +99,52 @@ test('Source syntax, DOM IDs and native/web fallback',()=>{
   assert.equal(allIds.length,new Set(allIds).size,'Duplicate DOM IDs');
 });
 
-test('4,642 steps = 46 basic coins, 5 milestone coins',()=>{
+test('4,642 steps earn 51 city coins with milestones',()=>{
   const app=harness();
   assert.equal(app.get('earnableCoins').textContent,'51');
-  assert.equal(app.get('baseCoinPreview').textContent,'46');
-  assert.equal(app.get('milestoneCoinPreview').textContent,'5');
-  assert.equal(app.get('goalCoinPreview').textContent,'0');
   assert.equal(app.state().wallet,170);
+  assert.equal(app.get('cityAvailablePoints').textContent,'170');
 });
 
-test('Claim once only; 51 coins and 46 building points are credited',()=>{
+test('Claim once only; 51 city coins are credited and available for building',()=>{
   const app=harness();
   app.event('claimBtn');
   assert.equal(app.state().wallet,221);
   assert.equal(app.state().ledger.length,1);
   assert.equal(app.state().ledger[0].coins,51);
-  assert.equal(app.get('cityAvailablePoints').textContent,'46');
+  assert.equal(app.get('cityAvailablePoints').textContent,'221');
   app.event('claimBtn'); // Even bypassing the disabled browser button, no duplicate payment.
   assert.equal(app.state().wallet,221);
   assert.equal(app.state().ledger.length,1);
 });
 
-test('10,000 steps with 10,000 daily goal = 150 test-coins',()=>{
+test('10,000 steps with 10,000 daily goal = 150 city coins',()=>{
   const state=baseState(); state.steps=10000;state.goal=10000;
   const app=harness(state);
-  assert.equal(app.get('baseCoinPreview').textContent,'100');
-  assert.equal(app.get('milestoneCoinPreview').textContent,'30');
-  assert.equal(app.get('goalCoinPreview').textContent,'20');
   assert.equal(app.get('earnableCoins').textContent,'150');
 });
 
-test('Daily caps: 100,000 steps cannot exceed 295 test-coins / 200 building points',()=>{
+test('Daily caps: 100,000 steps cannot exceed 295 daily city coins',()=>{
   const state=baseState();state.steps=100000;
   const app=harness(state);
   assert.equal(app.get('earnableCoins').textContent,'295');
   app.event('claimBtn');
-  assert.equal(app.get('cityAvailablePoints').textContent,'200');
+  assert.equal(app.get('cityAvailablePoints').textContent,'465');
 });
 
-test('Building only spends building points and prevents duplicate construction',()=>{
+test('Building spends city coins and prevents duplicate construction',()=>{
   const state=baseState();
   state.ledger=[{date:'2025-01-01',steps:4642,coins:46}];
   const app=harness(state);
-  assert.equal(app.get('cityAvailablePoints').textContent,'46');
+  assert.equal(app.get('cityAvailablePoints').textContent,'170');
   let firstPark=app.get('cityBuildList').children[0];
   assert.equal(firstPark.children[2].disabled,false);
   firstPark.children[2].click();
-  assert.equal(app.get('cityAvailablePoints').textContent,'21');
-  assert.equal(app.state().wallet,170);
+  assert.equal(app.get('cityAvailablePoints').textContent,'145');
+  assert.equal(app.state().wallet,145);
   assert.deepEqual(app.state().cityBuildings,['park']);
   firstPark.children[2].click(); // stale button, should not buy twice
-  assert.equal(app.get('cityAvailablePoints').textContent,'21');
+  assert.equal(app.get('cityAvailablePoints').textContent,'145');
 });
 
 test('Manual Health import validates input and leaves coins untouched',()=>{
@@ -202,7 +197,7 @@ test('Legacy confirmed days remain readable',()=>{
   const state=baseState();
   state.ledger=[{date:today(),steps:5000,coins:50}];
   const app=harness(state);
-  assert.equal(app.get('totalCoinPreview').textContent,'50');
+  assert.equal(app.state().wallet,170);
   assert.equal(app.get('earnableCoins').textContent,'0');
   assert.equal(app.get('claimBtn').disabled,true);
 });
@@ -280,4 +275,39 @@ test('Competition teaser and both panels explicitly identify fictional demo cont
   assert.match(html,/Keine Live-Daten, kein Gegnerkontakt und kein Echtgeld/);
   assert.match(html,/id="screen-activity"/);
   assert.match(html,/id="screen-city"/);
+});
+
+
+test('Competition pass is an informative preview, no subscription starts or is stored',()=>{
+  const app=harness();
+  const before=app.state();
+  assert.equal(app.get('membershipInfoPanel').hidden,true);
+  assert.equal(app.get('membershipInfoBtn').attributes['aria-expanded'],undefined);
+  app.event('membershipInfoBtn');
+  assert.equal(app.get('membershipInfoPanel').hidden,false);
+  assert.equal(app.get('membershipInfoBtn').attributes['aria-expanded'],'true');
+  app.event('membershipInfoBtn');
+  assert.equal(app.get('membershipInfoPanel').hidden,true);
+  assert.equal(app.get('membershipInfoBtn').attributes['aria-expanded'],'false');
+  assert.deepEqual(app.state(),before);
+  assert.match(html,/1 Monat gratis testen/);
+  assert.match(html,/6,99 € <small>\/ Monat<\/small>/);
+  assert.match(html,/Hier startet kein Probeabo und es wird nichts berechnet/);
+  assert.equal(html.includes('id="screen-rewards"'),false);
+  assert.equal(html.includes('data-tab="rewards"'),false);
+});
+
+test('Legacy coin wallet and built city survive switch to unified city currency',()=>{
+  const state=baseState();
+  state.wallet=180;
+  state.ledger=[{date:'2025-01-01',steps:10000,coins:100}];
+  state.cityBuildings=['park'];
+  const app=harness(state);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+  assert.equal(app.get('cityAvailablePoints').textContent,'180');
+  assert.equal(app.get('walletCoins').textContent,'180');
+  const first=app.get('cityBuildList').children[0]; // first is already built
+  assert.equal(first.children[2].disabled,true);
+  first.children[2].click();
+  assert.equal(app.state().wallet,180);
 });
