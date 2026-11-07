@@ -41,8 +41,8 @@
   };
 
 
-  // StepGo City: Baupunkte entstehen nur aus einmalig bestätigten Tagen.
-  // Es werden keine Coins abgezogen und keine nachträglich importierten Schritte doppelt gewertet.
+  // StepGo City: Stadtmuenzen sind die einzige Bauwaehrung. Bestehendes Coin-Guthaben
+  // und alte Gebaeude bleiben bei der Umstellung erhalten (ohne rueckwirkende Kosten).
   const CITY_BUILDINGS = Object.freeze([
     {id:'park',name:'Stadtpark',icon:'🌳',cost:25,plot:0,description:'Eine grüne Oase zum Entspannen.'},
     {id:'home',name:'Wohnviertel',icon:'🏡',cost:45,plot:1,description:'Die ersten Bewohner ziehen ein!'},
@@ -54,11 +54,7 @@
     {id:'tower',name:'Stadtturm',icon:'🏰',cost:450,plot:8,description:'Das Wahrzeichen deiner City.'}
   ]);
   // Niemals hypothetische (unbestätigte) Schrittzahlen gutschreiben.
-  const cityEarned = () => state.ledger.reduce((sum,entry) =>
-    sum + (Number.isFinite(entry.steps) ? Math.floor(Math.max(0,Math.min(20000,entry.steps))/100) : 0),0);
-  const citySpent = () => CITY_BUILDINGS.reduce((sum,building)=>
-    sum+(state.cityBuildings.includes(building.id)?building.cost:0),0);
-  const cityAvailable = () => Math.max(0,cityEarned()-citySpent());
+  const cityAvailable = () => state.wallet;
   const cityLevel = () => 1+Math.floor(state.cityBuildings.length/2);
   function renderCity(){
     const owned=new Set(state.cityBuildings);
@@ -99,9 +95,9 @@
       info.append(title,detail);
       const action=document.createElement('button');action.type='button';
       action.className='city-build-button'+(built?' city-build-button-done':'');
-      action.textContent=built?'✓ Gebaut':item.cost+' 🧱';
+      action.textContent=built?'✓ Gebaut':item.cost+' ✦';
       action.disabled=built||!canAfford;
-      action.setAttribute('aria-label',built?item.name+' bereits gebaut':item.name+' für '+item.cost+' Baupunkte bauen');
+      action.setAttribute('aria-label',built?item.name+' bereits gebaut':item.name+' für '+item.cost+' Stadtmünzen bauen');
       action.addEventListener('click',()=>buildCityBuilding(item.id));
       card.append(icon,info,action);
       list.append(card);
@@ -111,12 +107,13 @@
       ? '🎉 Deine erste Stadt ist komplett! Bald kommen neue Stadtteile.'
       : pts>=pending[0].cost
         ? '🎉 Du kannst jetzt '+pending[0].name+' bauen!'
-        : 'Noch '+fmt(pending[0].cost-pts)+' Baupunkte bis zum nächsten Gebäude ('+pending[0].name+').';
+        : 'Noch '+fmt(pending[0].cost-pts)+' Stadtmünzen bis zum nächsten Gebäude ('+pending[0].name+').';
   }
   function buildCityBuilding(id){
     const target=CITY_BUILDINGS.find(item=>item.id===id);
     if(!target || state.cityBuildings.includes(id))return;
-    if(cityAvailable()<target.cost){toast('Noch nicht genug Baupunkte!');return;}
+    if(cityAvailable()<target.cost){toast('Noch nicht genug Stadtmünzen!');return;}
+    state.wallet -= target.cost;
     state.cityBuildings.push(id);
     render();
     toast(target.icon+' '+target.name+' gebaut!');
@@ -139,12 +136,11 @@
     $('percentPill').textContent=`${pct} % vom Tagesziel`;
     $('earnableCoins').textContent=fmt(coinsAvailable());
     $('walletCoins').textContent=fmt(state.wallet);
-    $('rewardsCoins').textContent=fmt(state.wallet);
     $('statSteps').textContent=fmt(state.steps);
     $('statDays').textContent=fmt(state.ledger.length);
     $('activitySteps').textContent=fmt(state.steps);
     $('activityStepSource').textContent=state.stepSource==='health-import'?'Aus Apple Health übernommen (manuell)':'Schritte im Testmodus';
-    $('healthImportHint').textContent=state.stepSource==='health-import'?'Zuletzt übernommen: '+fmt(state.steps)+' Schritte · '+(state.importedAt ? new Date(state.importedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'heute')+'. Nur Test-Coins.':'Noch keine Health-Schritte für heute übernommen.';
+    $('healthImportHint').textContent=state.stepSource==='health-import'?'Zuletzt übernommen: '+fmt(state.steps)+' Schritte · '+(state.importedAt ? new Date(state.importedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'heute')+'. Nur Spielwährung.':'Noch keine Health-Schritte für heute übernommen.';
     $('historyCount').textContent=`${state.ledger.length} ${state.ledger.length===1?'Eintrag':'Einträge'}`;
     $('goalRange').value=String(state.goal);
     $('goalSettingLabel').textContent=fmt(state.goal);
@@ -152,20 +148,6 @@
     // Ist heute schon bestätigt, bleibt die Auszahlung eingefroren. Neue Health-Schritte
     // verändern niemals rückwirkend die Coins des bereits bestätigten Tages.
     const claimedEntry = currentEntry();
-    const projected = coinBreakdown(state.steps,state.goal);
-    const displayed = claimedEntry
-      ? {base: Number.isFinite(claimedEntry.baseCoins) ? claimedEntry.baseCoins : claimedEntry.coins,
-         milestones: Number.isFinite(claimedEntry.milestoneCoins) ? claimedEntry.milestoneCoins : 0,
-         target: Number.isFinite(claimedEntry.goalCoins) ? claimedEntry.goalCoins : 0,
-         total: claimedEntry.coins}
-      : projected;
-    $('baseCoinPreview').textContent=fmt(displayed.base);
-    $('milestoneCoinPreview').textContent=fmt(displayed.milestones);
-    $('goalCoinPreview').textContent=fmt(displayed.target);
-    $('totalCoinPreview').textContent=fmt(displayed.total);
-    $('coinBreakdownHint').textContent=claimedEntry
-      ? 'Heute bereits bestätigt – die Coin-Belohnung ist für heute fest. (Test-Coins)'
-      : 'Alle Boni werden zusammen einmal täglich gutgeschrieben – nur Test-Coins.';
     $('challengeProgress').textContent=fmt(state.steps)+' / '+fmt(state.goal)+' Schritte';
     $('challengeGoalText').textContent=state.steps>=state.goal
       ? 'Stark! Du hast dein Tagesziel geknackt. 🎉'
@@ -181,9 +163,8 @@
       button.setAttribute('aria-pressed',String(selected));
     });
     const lastClaimSteps=claimedEntry ? claimedEntry.steps : state.steps;
-    const listHome=$('milestoneHomeList'),listRewards=$('milestoneRewardList');
+    const listHome=$('milestoneHomeList');
     listHome.replaceChildren();
-    listRewards.replaceChildren();
     MILESTONES.forEach(m=>{
       const achieved=lastClaimSteps>=m.steps;
       const createTile=(detailed)=>{
@@ -203,11 +184,10 @@
         return el;
       };
       listHome.append(createTile(false));
-      listRewards.append(createTile(true));
     });
     const next=MILESTONES.find(m=>state.steps<m.steps);
     $('nextMilestoneText').textContent=claimedEntry
-      ? 'Heute wurden deine Coins schon eingesammelt. Morgen warten neue Boni!'
+      ? 'Heute wurden deine Stadtmünzen schon gesammelt. Morgen warten neue Boni!'
       : next ? 'Noch '+fmt(next.steps-state.steps)+' Schritte bis '+next.name+' (+'+next.coins+' Coins)!'
              : 'Alle fünf Meilensteine erreicht! 👑';
 
@@ -215,9 +195,9 @@
     const claimed=!!currentEntry();
     $('claimBtn').disabled=claimed || state.steps<100;
     $('claimBtnText').textContent=claimed?'Heute bereits bestätigt ✓':state.steps<100?'Mindestens 100 Schritte nötig':'Schritte bestätigen';
-    $('claimCaption').textContent=claimed?'Morgen warten neue Coins auf dich.':'1 Coin / 100 Schritte (max. 200) + Tagesziel- und Meilenstein-Boni · nur Demo';
+    $('claimCaption').textContent=claimed?'Morgen warten neue Coins auf dich.':'1 Stadtmünze / 100 Schritte (max. 200) + Tagesziel- und Meilenstein-Boni · kein Geldwert';
     const history=$('historyList');history.replaceChildren();
-    if (!state.ledger.length){const el=document.createElement('div');el.className='empty';el.textContent='Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!';history.append(el);}
+    if (!state.ledger.length){const el=document.createElement('div');el.className='empty';el.textContent='Noch keine Tage bestätigt. Deine ersten Stadtmünzen warten auf dich!';history.append(el);}
     else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte`+(Number.isFinite(entry.milestoneCoins)?` · Bonus +${entry.milestoneCoins+entry.goalCoins} Coins`:'');left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
     persist();
   }
@@ -253,6 +233,13 @@
       : (demoDuel.mine>demoDuel.rival?'Du liegst ':'LaufFuchs liegt ') +
         fmt(diff) + ' Demo-Schritte vorne. Keine echten Gewinne.';
   }
+  $('membershipInfoBtn').addEventListener('click',()=>{
+    const panel = $('membershipInfoPanel');
+    panel.hidden = !panel.hidden;
+    const expanded = !panel.hidden;
+    $('membershipInfoBtn').setAttribute('aria-expanded',String(expanded));
+    $('membershipInfoBtn').textContent = expanded ? 'Weniger anzeigen ↑' : 'Was ist enthalten? ↓';
+  });
   $('competitionLeagueTab').addEventListener('click',()=>showCompetitionView('league'));
   $('competitionDuelTab').addEventListener('click',()=>showCompetitionView('duel'));
   $('duelStartBtn').addEventListener('click',()=>{
@@ -305,7 +292,7 @@
     state.importedAt = new Date().toISOString();
     $('healthSteps').value = '';
     render();
-    toast(currentEntry() ? 'Schritte aktualisiert. Coins für heute sind schon bestätigt.' : fmt(count) + ' Schritte übernommen!');
+    toast(currentEntry() ? 'Schritte aktualisiert. Stadtmünzen für heute sind schon bestätigt.' : fmt(count) + ' Schritte übernommen!');
   };
   $('runHealthShortcut').addEventListener('click', () => {
     // Apple dokumentiert shortcuts://run-shortcut?name=...
@@ -440,8 +427,7 @@
       goalAtClaim:state.goal
     });
     render();
-    const gainedCityPoints = Math.floor(Math.min(state.steps,20000)/100);
-    $('modalText').textContent=`Du hast ${fmt(state.steps)} Schritte bestätigt und ${fmt(earned.total)} Test-Coins gesammelt! Außerdem +${fmt(gainedCityPoints)} Baupunkte für deine StepGo City!`;
+    $('modalText').textContent=`Du hast ${fmt(state.steps)} Schritte bestätigt und ${fmt(earned.total)} Stadtmünzen für deine StepGo City gesammelt!`;
     $('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('modalClose').focus();
   });
   $('modalClose').addEventListener('click',()=>{$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');});
