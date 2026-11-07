@@ -28,7 +28,7 @@
         <div class="hero-panel">
           <div class="overline" id="todayLabel">HEUTE</div>
           <h1>Mach jeden Schritt<br><em>wertvoll.</em></h1>
-          <div class="comic-stamp" aria-label="StepGo Comic Edition">✦ STEP GO CITY • V5 ✦</div>
+          <div class="comic-stamp" aria-label="StepGo City Comic Edition">✦ STEP GO CITY • ARENA ✦</div>
           <div class="step-ring" id="stepRing" role="progressbar" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="12458" aria-label="Tägliche Schrittanzahl">
             <div class="ring-inner">
               <div class="ring-icon">↟</div>
@@ -76,7 +76,7 @@
         <section class="milestone-section" aria-label="Schritt-Bonus-Meilensteine">
           <div class="section-heading milestone-heading"><h2>🏆 Bonus-Meilensteine</h2><span>Extra-Münzen</span></div>
           <div class="milestone-row" id="milestoneHomeList" aria-label="Deine heutigen Meilensteine"></div>
-          <p class="milestone-next" id="nextMilestoneText">Sammle Schritte und schalte Bonus-Coins frei.</p>
+          <p class="milestone-next" id="nextMilestoneText">Sammle Schritte und schalte Bonus-Stadtmünzen frei.</p>
         </section>
 
 
@@ -132,7 +132,7 @@
         <div class="page-intro"><div class="section-overline">DEINE BEWEGUNG</div><h1>Jeder Schritt zählt.</h1><p>Ob Spazieren, Walking oder Joggen – für StepGo spielt die Art deiner Bewegung keine Rolle.</p></div>
         <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small id="activityStepSource">Schritte im Testmodus</small></div></div>
         <div class="section-heading"><h2>Bestätigte Tage</h2><span id="historyCount">0 Einträge</span></div>
-        <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!</div></div>
+        <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Stadtmünzen warten auf dich!</div></div>
         <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Stadtmünzen haben keinen Geldwert.</p>
       </section>
 
@@ -207,7 +207,7 @@
             <div class="league-card-foot"><span>🟢 Aufstieg: beste 3</span><span>🟠 Abstieg: letzte 3</span></div>
           </div>
 
-          <div class="competition-prizes"><div class="competition-prize-icon">🏅</div><div><strong>Erfolge statt Geld</strong><p>Später gibt es für Liga-Platzierungen virtuelle Pokale und Stadt-Dekorationen. Noch keine echten Prämien.</p></div></div>
+          <div class="competition-prizes"><div class="competition-prize-icon">🏅</div><div><strong>Pokale &amp; Stadt-Dekorationen</strong><p>Später kannst du bei Liga-Platzierungen besondere Gebäude und Auszeichnungen freischalten.</p></div></div>
         </div>
 
         <div id="competitionDuelPanel" class="competition-panel" hidden>
@@ -222,7 +222,7 @@
             </div>
             <div class="duel-bars" aria-hidden="true"><div class="duel-progress"><span id="duelMyFill"></span></div><div class="duel-progress duel-progress-rival"><span id="duelOpponentFill"></span></div></div>
             <p id="duelStatus" class="duel-status" aria-live="polite">Beispielduell – noch nicht gestartet.</p>
-            <p id="duelResult" class="duel-result" aria-live="polite">Testschritte beeinflussen weder Coins noch deine Stadt.</p>
+            <p id="duelResult" class="duel-result" aria-live="polite">Testschritte verändern deine Stadtmünzen oder Gebäude nicht.</p>
             <div class="duel-actions">
               <button type="button" id="duelStartBtn" class="duel-primary">Demo-Duell starten</button>
               <button type="button" id="duelAddBtn" class="duel-secondary" disabled>+1.000 Demo-Duellschritte</button>
@@ -231,7 +231,7 @@
           </div>
           <p class="competition-future">🔒 <strong>Später:</strong> Freunde per Einladung herausfordern, echte Schritte aus Apple Health für den Duellzeitraum werten und Ergebnisse fair prüfen.</p>
         </div>
-        <p class="competition-disclaimer">Keine Live-Daten, kein Gegnerkontakt und kein Echtgeld. Die Vorschau verändert weder dein Coin-Guthaben noch deine Baupunkte.</p>
+        <p class="competition-disclaimer">Keine Live-Daten und kein Gegnerkontakt. Die Vorschau verändert weder deine Stadtmünzen noch deine Gebäude.</p>
       </section>
 
       <section class="screen" id="screen-city" aria-label="Meine StepGo City">
@@ -250,7 +250,7 @@
           <div id="cityMap" class="city-map" role="group" aria-label="Deine Stadt mit 9 Bauplätzen"></div>
           <div class="city-map-bottom"><span>🏛️ Dein Rathaus steht bereits!</span><span id="cityMapProgress">0 von 8 gebaut</span></div>
         </div>
-        <section class="city-wallet" aria-label="Baupunkte sammeln">
+        <section class="city-wallet" aria-label="Stadtmünzen sammeln">
           <div class="city-wallet-icon" aria-hidden="true">👟</div>
           <div><strong>100 bestätigte Schritte = 1 Stadtmünze</strong><p>Bis zu 200 Grundmünzen täglich plus Ziel- und Meilensteinboni. Damit baust du deine Stadt.</p></div>
         </section>
@@ -291,7 +291,7 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
   <script src="app.js?v=arena2"></script>
 </body>
