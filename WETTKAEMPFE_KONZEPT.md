@@ -25,14 +25,14 @@ StepGo City wird eine Schritt-Wettkampf-App mit zwei Kernmodi und der bestehende
 - Freundescode/Einladung ohne öffentliche Gesundheitsdaten, blockieren/melden und Einladungen abschalten können.
 
 ## 3. Stadt, Coins, Erfolge
-- Die Stadt bleibt klein und freiwillig; Baupunkte bleiben von Coins getrennt.
-- Wettbewerbsbelohnungen V1 nur virtuelle Abzeichen, Trophäen und besondere Deko. Keine zusätzlichen auszahlbaren Coins.
-- Alle bisherigen Coins bleiben ausschließlich Demo/Spielwährung. Niemals daraus einen versprochenen Euro-/Gutscheinwert ableiten.
+- Die Stadt bleibt klein und freiwillig. Seit der Produktentscheidung vom 07.11.2026 sind Stadtmünzen die einzige Bauwährung; alte Gebäude und Münzen bleiben erhalten.
+- Wettbewerbsbelohnungen V1 nur virtuelle Abzeichen, Trophäen und besondere Deko. Keine echten Geld-/Sachpreise oder auszahlbare Münzen.
+- Alle bisherigen Coins werden als Stadtmünzen genutzt und bleiben ausschließlich Demo-/Spielwährung. Niemals einen versprochenen Euro-/Gutscheinwert ableiten.
 - Beispiel-Erfolge: erste Liga, erster Duellsieg, fünf aktive Wochen, persönliche Bestleistung. Keine riskanten Schrittziele fördern.
 
 ## 4. Navigation – fünf Tabs statt sechs
-Start | Wettkämpfe | Stadt | Prämien | Profil.
-Die bisherige Schritte-Detailansicht wird von „Start“ erreichbar; innerhalb von Wettkämpfe zwei Reiter: „Wochenliga“ und „Duelle“.
+Start | Wettkämpfe | Stadt | Profil.
+Die Schritte-Detailansicht wird von „Start“ erreichbar; innerhalb von Wettkämpfe zwei Reiter: „Wochenliga“ und „Duelle“. Stadt und Schritte bleiben kostenlos. Echte Online-Wettkämpfe sollen später nur für einen aktiven Wettkampf-Pass oder während des berechtigten Probemonats offen sein.
 Wettkampftab soll freundlich und grün-golden bleiben, mit klarer Unterscheidung zwischen DEMO und echten Ranglisten.
 
 ## 5. Technische Architektur / Datenschutz
@@ -64,7 +64,7 @@ Wettkampftab soll freundlich und grün-golden bleiben, mit klarer Unterscheidung
 - App-Performance und iPhone-Bedienbarkeit auf kleinen Displays geprüft.
 
 ## 8. Umsetzungsreihenfolge
-Phase A – Design-Mock: eigener Wettkampftab, Demo-Rangliste und ein Demo-Duell mit **klar gekennzeichneten Beispieldaten**; keine Live-Gegner.
+Phase A – Design-Mock: eigener Wettkampftab, Demo-Rangliste, lokales Demo-Duell und eine **nicht buchbare** Wettkampf-Pass-Vorschau mit gewünschtem Preis 6,99 €/Monat nach einem Probemonat; keine Live-Gegner. **Umgesetzt am 07.11.2026.**
 Phase B – reale native Apple-Health-Verbindung auf echtem iPhone prüfen, inklusive Intervallabfragen.
 Phase C – Backend, sichere Profile, Zustimmung, Freunde und Einladungssystem.
 Phase D – serverseitige Ligawertungen und Duelle, technische Missbrauchsbegrenzung und Integrationstests.
