@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=health6" />
+  <link rel="stylesheet" href="styles.css?v=arena1" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -50,6 +50,13 @@
 
 
 
+
+        <section class="competition-teaser" aria-label="Neue Wettkämpfe entdecken">
+          <div class="competition-teaser-badge">🏆 NEU · WETTKÄMPFE</div>
+          <h2>Deine Schritte. Dein Sieg!</h2>
+          <p>Erlebe Wochenligen und 1-gegen-1-Duelle. Noch als Demo mit erfundenen Spielern.</p>
+          <button type="button" id="openCompetitionBtn" class="competition-teaser-button">Wettkämpfe ansehen →</button>
+        </section>
 
         <section class="city-teaser" aria-label="Deine eigene StepGo-Stadt">
           <div class="city-teaser-icon" aria-hidden="true">🏘️</div>
@@ -109,7 +116,7 @@
           </details>
         </section>
 
-        <div class="section-heading"><h2>Dein Fortschritt</h2><span>Heute</span></div>
+        <div class="section-heading"><h2>Dein Fortschritt</h2><button type="button" id="openStepsBtn" class="steps-detail-link">Schrittdetails →</button></div>
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-icon">⌁</div><strong id="statSteps">12.458</strong><span>Schritte gesammelt</span></div>
           <div class="stat-card"><div class="stat-icon">✦</div><strong id="statDays">0</strong><span>Bestätigte Tage</span></div>
@@ -129,6 +136,87 @@
         <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Coins bleiben Test-Coins.</p>
       </section>
 
+
+      <section class="screen" id="screen-competitions" aria-label="Wettkämpfe – Vorschau">
+        <div class="competition-hero">
+          <div class="competition-topline"><span>🏆 STEP GO ARENA</span><span class="competition-demo-mark">NUR DEMO</span></div>
+          <h1>Jeder Schritt.<br><em>Ein neuer Sieg!</em></h1>
+          <p>Miss dich mit anderen, steige in der Liga auf und gewinne virtuelle Trophäen. Die Stadt wächst nebenbei weiter.</p>
+          <div class="competition-hero-stats">
+            <div><span>🥇 Wochenliga</span><strong>Mo–So</strong></div>
+            <div><span>⚔️ Freundesduell</span><strong>72 Std.</strong></div>
+          </div>
+        </div>
+
+        <div class="competition-notice" role="note"><span aria-hidden="true">🧪</span><p><strong>Spielbare Vorschau:</strong> Alle Namen und Schrittzahlen hier sind erfunden. Es gibt noch keine echten Gegner, Server-Rangliste oder Gewinne.</p></div>
+
+        <div class="competition-switch" role="group" aria-label="Wettkampfart auswählen">
+          <button type="button" id="competitionLeagueTab" class="competition-switch-button active" aria-pressed="true">🏆 Wochenliga</button>
+          <button type="button" id="competitionDuelTab" class="competition-switch-button" aria-pressed="false">⚔️ 1 gegen 1</button>
+        </div>
+
+        <div id="competitionLeaguePanel" class="competition-panel">
+          <div class="league-card">
+            <div class="league-card-top">
+              <div><span class="section-overline">BEISPIELRUNDE</span><h2>🥇 Gold-Liga</h2></div>
+              <span class="league-season-badge">20er-Liga geplant</span>
+            </div>
+            <p class="league-intro">Eine Liga läuft von Montag bis Sonntag. Oben wartet der Aufstieg, unten der Abstieg. Hier siehst du fünf fiktive Beispielplätze.</p>
+            <div class="league-score-head"><span>PLATZ / SPIELER</span><span>SCHRITTE</span></div>
+            <div class="league-row league-row-first">
+              <span class="league-rank">🥇</span><span class="league-avatar" aria-hidden="true">🦊</span>
+              <div class="league-person"><strong>NordRunner</strong><small>Beispielspieler</small><div class="league-track"><span style="width:100%"></span></div></div>
+              <strong class="league-score">88.740</strong>
+            </div>
+            <div class="league-row league-row-you">
+              <span class="league-rank">2.</span><span class="league-avatar" aria-hidden="true">👟</span>
+              <div class="league-person"><strong>Du <small>DEMO</small></strong><small>Erfundene Wertung</small><div class="league-track"><span style="width:93%"></span></div></div>
+              <strong class="league-score">82.420</strong>
+            </div>
+            <div class="league-row">
+              <span class="league-rank">🥉</span><span class="league-avatar" aria-hidden="true">⚡</span>
+              <div class="league-person"><strong>SpeedyFox</strong><small>Beispielspieler</small><div class="league-track"><span style="width:89%"></span></div></div>
+              <strong class="league-score">79.100</strong>
+            </div>
+            <div class="league-row">
+              <span class="league-rank">4.</span><span class="league-avatar" aria-hidden="true">🌿</span>
+              <div class="league-person"><strong>WalkQueen</strong><small>Beispielspieler</small><div class="league-track"><span style="width:84%"></span></div></div>
+              <strong class="league-score">74.380</strong>
+            </div>
+            <div class="league-row">
+              <span class="league-rank">5.</span><span class="league-avatar" aria-hidden="true">🌞</span>
+              <div class="league-person"><strong>SonnenLäufer</strong><small>Beispielspieler</small><div class="league-track"><span style="width:75%"></span></div></div>
+              <strong class="league-score">66.730</strong>
+            </div>
+            <div class="league-card-foot"><span>🟢 Aufstieg: beste 3</span><span>🟠 Abstieg: letzte 3</span></div>
+          </div>
+
+          <div class="competition-prizes"><div class="competition-prize-icon">🏅</div><div><strong>Erfolge statt Geld</strong><p>Später gibt es für Liga-Platzierungen virtuelle Pokale und Stadt-Dekorationen. Noch keine echten Prämien.</p></div></div>
+        </div>
+
+        <div id="competitionDuelPanel" class="competition-panel" hidden>
+          <div class="duel-card">
+            <div class="duel-card-top"><span class="section-overline">FREUNDESDUELL · VORSCHAU</span><span class="duel-demo-chip">TESTMODUS</span></div>
+            <h2>⚔️ Eins gegen eins!</h2>
+            <p class="duel-subtitle">Wettkampf über 72 Stunden. Diese Vorschau hat keinen echten Timer und keine Online-Verbindung.</p>
+            <div class="duel-versus">
+              <div class="duel-player"><div class="duel-player-icon">👟</div><strong>Du</strong><small>Demo</small><span id="duelMySteps">12.400</span></div>
+              <div class="duel-versus-icon">VS</div>
+              <div class="duel-player"><div class="duel-player-icon">🦊</div><strong>LaufFuchs</strong><small>Fiktiver Gegner</small><span id="duelOpponentSteps">11.800</span></div>
+            </div>
+            <div class="duel-bars" aria-hidden="true"><div class="duel-progress"><span id="duelMyFill"></span></div><div class="duel-progress duel-progress-rival"><span id="duelOpponentFill"></span></div></div>
+            <p id="duelStatus" class="duel-status" aria-live="polite">Beispielduell – noch nicht gestartet.</p>
+            <p id="duelResult" class="duel-result" aria-live="polite">Testschritte beeinflussen weder Coins noch deine Stadt.</p>
+            <div class="duel-actions">
+              <button type="button" id="duelStartBtn" class="duel-primary">Demo-Duell starten</button>
+              <button type="button" id="duelAddBtn" class="duel-secondary" disabled>+1.000 Demo-Duellschritte</button>
+              <button type="button" id="duelResetBtn" class="duel-reset" disabled>Demo zurücksetzen</button>
+            </div>
+          </div>
+          <p class="competition-future">🔒 <strong>Später:</strong> Freunde per Einladung herausfordern, echte Schritte aus Apple Health für den Duellzeitraum werten und Ergebnisse fair prüfen.</p>
+        </div>
+        <p class="competition-disclaimer">Keine Live-Daten, kein Gegnerkontakt und kein Echtgeld. Die Vorschau verändert weder dein Coin-Guthaben noch deine Baupunkte.</p>
+      </section>
 
       <section class="screen" id="screen-city" aria-label="Meine StepGo City">
         <div class="city-hero">
@@ -198,7 +286,7 @@
 
     <nav class="bottom-nav" aria-label="Navigation">
       <button class="nav-link active" data-tab="home" aria-current="page"><span class="nav-icon">⌂</span><span>Start</span></button>
-      <button class="nav-link" data-tab="activity"><span class="nav-icon">↟</span><span>Schritte</span></button>
+      <button class="nav-link" data-tab="competitions"><span class="nav-icon">🏆</span><span>Wettkampf</span></button>
       <button class="nav-link" data-tab="city"><span class="nav-icon">🏙️</span><span>Stadt</span></button>
       <button class="nav-link" data-tab="rewards"><span class="nav-icon">◇</span><span>Prämien</span></button>
       <button class="nav-link" data-tab="profile"><span class="nav-icon">♙</span><span>Profil</span></button>
@@ -209,6 +297,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=health6"></script>
+  <script src="app.js?v=arena1"></script>
 </body>
 </html>
