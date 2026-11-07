@@ -4,11 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0d2820" />
-  <meta name="description" content="StepGo City – Schritte sammeln, Test-Coins verdienen und deine eigene Comic-Stadt aufbauen." />
+  <meta name="description" content="StepGo City – Schritte, Wochenligen, Duelle und deine eigene Comic-Stadt." />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=arena1" />
+  <link rel="stylesheet" href="styles.css?v=arena2" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -38,13 +38,13 @@
             </div>
           </div>
           <div class="progress-text"><span><b id="goalProgress">12.458</b> / <span id="goalText">15.000</span> Schritte</span><span id="stepsRemaining">Noch 2.542</span></div>
-          <div class="payout-preview"><span>Heute möglich</span><strong><span class="coin-mini">✦</span><span id="earnableCoins">124</span> Coins</strong></div>
+          <div class="payout-preview"><span>Heute möglich</span><strong><span class="coin-mini">✦</span><span id="earnableCoins">124</span> Stadtmünzen</strong></div>
           <button id="claimBtn" class="claim-btn"><span id="claimBtnText">Schritte bestätigen</span><span class="claim-arrow">↗</span></button>
-          <p class="hero-caption" id="claimCaption">Sammle deine heutigen Coins mit einem Klick.</p>
+          <p class="hero-caption" id="claimCaption">Sammle Stadtmünzen für deine Gebäude.</p>
         </div>
 
-        <section class="wallet-card" aria-label="Dein Coin-Guthaben">
-          <div><div class="section-overline">DEIN GUTHABEN</div><div class="wallet-value"><span id="walletCoins">0</span> <small>Coins</small></div><div class="wallet-hint">Dein Fortschritt. Deine Belohnungen.</div></div>
+        <section class="wallet-card" aria-label="Deine Stadtmünzen">
+          <div><div class="section-overline">DEINE STADTMÜNZEN</div><div class="wallet-value"><span id="walletCoins">0</span> <small>Münzen</small></div><div class="wallet-hint">Zum Bauen deiner Stadt – kein Geldwert.</div></div>
           <div class="coin-large" aria-hidden="true">✦</div>
         </section>
 
@@ -60,7 +60,7 @@
 
         <section class="city-teaser" aria-label="Deine eigene StepGo-Stadt">
           <div class="city-teaser-icon" aria-hidden="true">🏘️</div>
-          <div class="city-teaser-copy"><span class="section-overline">NEU · STEP GO CITY</span><h2>Deine Schritte bauen eine Stadt!</h2><p>Bestätige Schritte, sammle Baupunkte und schalte Comic-Gebäude frei.</p></div>
+          <div class="city-teaser-copy"><span class="section-overline">NEU · STEP GO CITY</span><h2>Deine Schritte bauen eine Stadt!</h2><p>Bestätige Schritte, sammle Stadtmünzen und schalte Comic-Gebäude frei.</p></div>
           <button type="button" id="openCityBtn" class="city-teaser-button">Stadt öffnen →</button>
         </section>
 
@@ -71,10 +71,10 @@
           </div>
           <p id="challengeGoalText" class="challenge-goal-text">Noch ein paar Schritte bis zum Ziel!</p>
           <div class="challenge-track" role="progressbar" id="challengeTrack" aria-label="Tagesziel-Fortschritt" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="0"><div id="challengeFill" class="challenge-fill"></div></div>
-          <div class="challenge-footer"><span id="challengeProgress">0 / 15.000 Schritte</span><strong><span aria-hidden="true">✦</span> +20 Coins bei Zielerreichung</strong></div>
+          <div class="challenge-footer"><span id="challengeProgress">0 / 15.000 Schritte</span><strong><span aria-hidden="true">✦</span> +20 Stadtmünzen bei Zielerreichung</strong></div>
         </section>
         <section class="milestone-section" aria-label="Schritt-Bonus-Meilensteine">
-          <div class="section-heading milestone-heading"><h2>🏆 Bonus-Meilensteine</h2><span>Extra-Coins</span></div>
+          <div class="section-heading milestone-heading"><h2>🏆 Bonus-Meilensteine</h2><span>Extra-Münzen</span></div>
           <div class="milestone-row" id="milestoneHomeList" aria-label="Deine heutigen Meilensteine"></div>
           <p class="milestone-next" id="nextMilestoneText">Sammle Schritte und schalte Bonus-Coins frei.</p>
         </section>
@@ -133,7 +133,7 @@
         <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small id="activityStepSource">Schritte im Testmodus</small></div></div>
         <div class="section-heading"><h2>Bestätigte Tage</h2><span id="historyCount">0 Einträge</span></div>
         <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Coins warten auf dich!</div></div>
-        <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Coins bleiben Test-Coins.</p>
+        <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Stadtmünzen haben keinen Geldwert.</p>
       </section>
 
 
@@ -149,6 +149,22 @@
         </div>
 
         <div class="competition-notice" role="note"><span aria-hidden="true">🧪</span><p><strong>Spielbare Vorschau:</strong> Alle Namen und Schrittzahlen hier sind erfunden. Es gibt noch keine echten Gegner, Server-Rangliste oder Gewinne.</p></div>
+
+        <section class="arena-membership" aria-label="Geplante Wettkampf-Mitgliedschaft">
+          <div class="arena-membership-head"><span class="arena-membership-icon" aria-hidden="true">👑</span><div><span class="section-overline">WETTKAMPF-PASS · IN PLANUNG</span><h2>1 Monat gratis testen</h2></div><span class="arena-membership-tag">VORSCHAU</span></div>
+          <div class="arena-membership-price"><strong>6,99 € <small>/ Monat</small></strong><span>nach dem kostenlosen Probemonat</span></div>
+          <p>Geplant für die Teilnahme an Wochenligen, Duellen und später Turnieren. Schritte sammeln und deine Stadt bauen bleiben kostenlos.</p>
+          <button type="button" id="membershipInfoBtn" class="arena-membership-button" aria-expanded="false" aria-controls="membershipInfoPanel">Was ist enthalten? ↓</button>
+          <div id="membershipInfoPanel" class="arena-membership-detail" hidden>
+            <ul>
+              <li>🏆 Teilnahme an echten Wochenligen</li>
+              <li>⚔️ Freunde zu 1-gegen-1-Duellen herausfordern</li>
+              <li>🎖️ Virtuelle Pokale und besondere Stadt-Dekorationen</li>
+              <li>🏘️ Schritte sammeln und Stadt bauen: auch ohne Abo kostenlos</li>
+            </ul>
+            <p><strong>Noch nicht buchbar:</strong> Hier startet kein Probeabo und es wird nichts berechnet. Später ist ein berechtigungsabhängiges, automatisch verlängerndes Apple-In-App-Abo geplant: 1 Monat gratis, danach 6,99 € pro Monat, bis du kündigst. Preis und Angebot müssen vor dem Kauf durch Apple bestätigt werden.</p>
+          </div>
+        </section>
 
         <div class="competition-switch" role="group" aria-label="Wettkampfart auswählen">
           <button type="button" id="competitionLeagueTab" class="competition-switch-button active" aria-pressed="true">🏆 Wochenliga</button>
@@ -224,7 +240,7 @@
           <h1>Deine Schritte.<br><em>Deine Stadt!</em></h1>
           <p>Jeder bestätigte Tag lässt deine eigene kleine Comic-Stadt wachsen.</p>
           <div class="city-stats">
-            <div class="city-stat"><span>🧱 Baupunkte frei</span><strong id="cityAvailablePoints">0</strong></div>
+            <div class="city-stat"><span>🪙 Stadtmünzen</span><strong id="cityAvailablePoints">0</strong></div>
             <div class="city-stat"><span>🏡 Gebäude</span><strong id="cityBuiltCount">1 / 9</strong></div>
           </div>
         </div>
@@ -236,34 +252,14 @@
         </div>
         <section class="city-wallet" aria-label="Baupunkte sammeln">
           <div class="city-wallet-icon" aria-hidden="true">👟</div>
-          <div><strong>100 bestätigte Schritte = 1 Baupunkt</strong><p>Bis zu 200 Baupunkte am Tag. Deine Coins bleiben erhalten.</p></div>
+          <div><strong>100 bestätigte Schritte = 1 Stadtmünze</strong><p>Bis zu 200 Grundmünzen täglich plus Ziel- und Meilensteinboni. Damit baust du deine Stadt.</p></div>
         </section>
         <section class="city-build-section">
-          <div class="section-heading"><h2>🏗️ Deine Bauprojekte</h2><span>Freischalten</span></div>
+          <div class="section-heading"><h2>🏗️ Bauprojekte mit Stadtmünzen</h2><span>Freischalten</span></div>
           <p class="city-explain" id="cityNextHint">Sammle Schritte und schalte dein erstes Gebäude frei!</p>
           <div id="cityBuildList" class="city-build-list"></div>
         </section>
-        <p class="city-disclaimer">StepGo City ist ein spielerischer Test. Baupunkte und Coins haben keinen Geldwert. Alle Daten bleiben in dieser Demo lokal auf deinem Gerät.</p>
-      </section>
-
-      <section class="screen" id="screen-rewards" aria-label="Prämien">
-        <div class="page-intro"><div class="section-overline">DEINE BELOHNUNGEN</div><h1>Schritte werden<br><em>belohnt.</em></h1><p>Hier werden später Gutscheine und Auszahlungen angeboten. In dieser Demo gibt es noch keine echten Prämien.</p></div>
-        <div class="reward-balance"><span>Deine gesammelten Coins</span><strong><span class="coin-mini">✦</span><span id="rewardsCoins">0</span></strong></div>
-
-        <section class="coin-breakdown-card" aria-label="Deine heutigen Coin-Belohnungen">
-          <div class="challenge-top"><div><span class="section-overline">COIN-SYSTEM</span><h2>🪙 Deine Coins heute</h2></div><span class="coin-breakdown-pill">TEST</span></div>
-          <div class="coin-breakdown-row"><span>👟 Schritte-Coins</span><strong id="baseCoinPreview">0</strong></div>
-          <div class="coin-breakdown-row"><span>🏆 Meilenstein-Boni</span><strong id="milestoneCoinPreview">0</strong></div>
-          <div class="coin-breakdown-row"><span>🎯 Tagesziel-Bonus</span><strong id="goalCoinPreview">0</strong></div>
-          <div class="coin-breakdown-total"><span>Heute insgesamt</span><strong><span id="totalCoinPreview">0</span> ✦</strong></div>
-          <p class="coin-breakdown-hint" id="coinBreakdownHint">Einmal pro Tag bestätigen. Alle Coins sind nur Testguthaben.</p>
-        </section>
-        <section class="milestone-section milestone-rewards" aria-label="Meilenstein-Belohnungen">
-          <div class="section-heading milestone-heading"><h2>🏆 Alle Bonus-Stufen</h2><span>täglich</span></div>
-          <div class="milestone-rewards-list" id="milestoneRewardList"></div>
-        </section>
-        <div class="reward-card"><div class="reward-icon">🎁</div><div><strong>Gutscheine</strong><p>Partnerangebote in Planung</p></div><span class="soon">BALD</span></div>
-        <div class="reward-card"><div class="reward-icon">💶</div><div><strong>Auszahlungen</strong><p>Erst nach sicherer Anbindung</p></div><span class="soon">BALD</span></div>
+        <p class="city-disclaimer">StepGo City ist ein spielerischer Test. Stadtmünzen haben keinen Geldwert. Alle Daten bleiben in dieser Demo lokal auf deinem Gerät.</p>
       </section>
 
       <section class="screen" id="screen-profile" aria-label="Profil">
@@ -271,7 +267,7 @@
         <div class="profile-card"><div class="profile-icon">👟</div><div><strong>StepGo-Tester</strong><span>Dein erstes Abenteuer beginnt hier.</span></div></div>
         <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
         <div class="goal-preset-card" aria-label="Schnelle Zielauswahl">
-          <div class="goal-preset-heading"><strong>Wähle dein Tempo</strong><span>+20 Coins beim Tagesziel</span></div>
+          <div class="goal-preset-heading"><strong>Wähle dein Tempo</strong><span>+20 Stadtmünzen beim Tagesziel</span></div>
           <div class="goal-preset-grid">
             <button type="button" class="goal-preset" data-goal-preset="5000"><span>🌱</span><strong>5.000</strong><small>Locker</small></button>
             <button type="button" class="goal-preset" data-goal-preset="10000"><span>⚡</span><strong>10.000</strong><small>Aktiv</small></button>
@@ -279,7 +275,7 @@
           </div>
           <p>Oder passe dein Ziel mit dem Regler darüber individuell an. Boni werden einmal am Tag beim Bestätigen vergeben.</p>
         </div>
-        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte kannst du manuell aus Apple Health übernehmen; Coins sind noch Test-Coins. Die Daten werden lokal auf diesem Gerät gespeichert und nicht an einen Server gesendet.</p></div>
+        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte kannst du manuell aus Apple Health übernehmen; Stadtmünzen sind reine Spielwährung. Die Daten werden lokal auf diesem Gerät gespeichert und nicht an einen Server gesendet.</p></div>
         <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
       </section>
     </main>
@@ -288,7 +284,7 @@
       <button class="nav-link active" data-tab="home" aria-current="page"><span class="nav-icon">⌂</span><span>Start</span></button>
       <button class="nav-link" data-tab="competitions"><span class="nav-icon">🏆</span><span>Wettkampf</span></button>
       <button class="nav-link" data-tab="city"><span class="nav-icon">🏙️</span><span>Stadt</span></button>
-      <button class="nav-link" data-tab="rewards"><span class="nav-icon">◇</span><span>Prämien</span></button>
+      
       <button class="nav-link" data-tab="profile"><span class="nav-icon">♙</span><span>Profil</span></button>
     </nav>
   </div>
@@ -297,6 +293,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Coins gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=arena1"></script>
+  <script src="app.js?v=arena2"></script>
 </body>
 </html>
