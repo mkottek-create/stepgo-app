@@ -41,7 +41,7 @@ function harness(initial = baseState()) {
   for(const id of allIds)elements.set(id,makeNode('div',id));
   const get = id => elements.get(id);
   const presets = [5000,10000,15000].map(n=>{const el=makeNode('button');el.dataset.goalPreset=String(n);return el});
-  const nav = ['home','competitions','city','rewards','profile'].map(tab=>{const el=makeNode('button');el.dataset.tab=tab;return el});
+  const nav = ['home','competitions','city','profile'].map(tab=>{const el=makeNode('button');el.dataset.tab=tab;return el});
   const screens = ['home','activity','competitions','city','profile'].map(tab=>get('screen-'+tab));
   let stored = snapshot(initial);
   let nextClipboard = '4.642';
