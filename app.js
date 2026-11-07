@@ -221,10 +221,69 @@
     else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte`+(Number.isFinite(entry.milestoneCoins)?` · Bonus +${entry.milestoneCoins+entry.goalCoins} Coins`:'');left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
     persist();
   }
+
+  // StepGo Arena: nur lokale UI-Vorschau. Keine Online-Spieler, keine echten Gewinne
+  // und keine Verbindung zu Coins, Tages-Schritten oder Baupunkten.
+  const demoDuel = {active:false,mine:12400,rival:11800};
+  function showCompetitionView(view) {
+    const showLeague = view === 'league';
+    $('competitionLeaguePanel').hidden = !showLeague;
+    $('competitionDuelPanel').hidden = showLeague;
+    $('competitionLeagueTab').setAttribute('aria-pressed',String(showLeague));
+    $('competitionDuelTab').setAttribute('aria-pressed',String(!showLeague));
+    $('competitionLeagueTab').classList.toggle('active',showLeague);
+    $('competitionDuelTab').classList.toggle('active',!showLeague);
+  }
+  function renderDemoDuel() {
+    $('duelMySteps').textContent = fmt(demoDuel.mine);
+    $('duelOpponentSteps').textContent = fmt(demoDuel.rival);
+    const top = Math.max(1,demoDuel.mine,demoDuel.rival);
+    $('duelMyFill').style.width = (demoDuel.mine/top*100).toFixed(1)+'%';
+    $('duelOpponentFill').style.width = (demoDuel.rival/top*100).toFixed(1)+'%';
+    $('duelStartBtn').disabled = demoDuel.active;
+    $('duelAddBtn').disabled = !demoDuel.active || demoDuel.mine>=100000;
+    $('duelResetBtn').disabled = !demoDuel.active;
+    $('duelStatus').textContent = demoDuel.active
+      ? '🟢 Demo läuft – ohne echten 72-Stunden-Timer'
+      : 'Beispielduell – noch nicht gestartet.';
+    const diff = Math.abs(demoDuel.mine-demoDuel.rival);
+    $('duelResult').textContent = !demoDuel.active
+      ? 'Die Beispielwerte zählen nicht für Coins oder deine Stadt.'
+      : diff===0 ? 'Gleichstand! Alle Schritte hier sind reine Testwerte.'
+      : (demoDuel.mine>demoDuel.rival?'Du liegst ':'LaufFuchs liegt ') +
+        fmt(diff) + ' Demo-Schritte vorne. Keine echten Gewinne.';
+  }
+  $('competitionLeagueTab').addEventListener('click',()=>showCompetitionView('league'));
+  $('competitionDuelTab').addEventListener('click',()=>showCompetitionView('duel'));
+  $('duelStartBtn').addEventListener('click',()=>{
+    if (demoDuel.active) return;
+    demoDuel.active = true;
+    renderDemoDuel();
+    toast('⚔️ Demo-Duell gestartet – nur Beispielwerte!');
+  });
+  $('duelAddBtn').addEventListener('click',()=>{
+    if (!demoDuel.active) return;
+    demoDuel.mine = Math.min(100000,demoDuel.mine+1000);
+    renderDemoDuel();
+    toast('+1.000 Demo-Duellschritte – kein Coin-Gewinn');
+  });
+  $('duelResetBtn').addEventListener('click',()=>{
+    if (!demoDuel.active) return;
+    demoDuel.active = false;
+    demoDuel.mine = 12400;
+    demoDuel.rival = 11800;
+    renderDemoDuel();
+    toast('Duell-Vorschau zurückgesetzt');
+  });
+  showCompetitionView('league');
+  renderDemoDuel();
+
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
   $('openCityBtn').addEventListener('click',()=>switchTab('city'));
+  $('openCompetitionBtn').addEventListener('click',()=>switchTab('competitions'));
+  $('openStepsBtn').addEventListener('click',()=>switchTab('activity'));
   $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);state.stepSource='demo';state.importedAt=null;render();toast('+1.000 Demo-Schritte hinzugefügt');});
   $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);state.stepSource='demo';state.importedAt=null;render();toast('+5.000 Demo-Schritte hinzugefügt');});
   $('resetDemo').addEventListener('click',()=>{state.steps=DEMO_START_STEPS;state.stepSource='demo';state.importedAt=null;render();toast('Demo-Schritte zurückgesetzt');});
