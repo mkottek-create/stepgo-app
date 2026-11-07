@@ -968,3 +968,137 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 @media(prefers-reduced-motion:reduce){
   .city-plot-built:not(.city-plot-center){animation:none}
 }
+
+
+/* StepGo City V10 – feste 3D-Ansicht mit sichtbaren Ausbaustufen */
+.city-map-card{background:linear-gradient(160deg,#fffef0,#e7f5ce 83%,#d2efbe);border-color:#2b5e41}
+.city-map{perspective:600px}
+.city-plot-built{
+  background-image:radial-gradient(ellipse at 50% 100%,#8bbb7e 0%,transparent 76%),linear-gradient(145deg,#e9ffd7,#b6da93);
+  overflow:visible;
+}
+.city-plot-built::after{
+  content:"";position:absolute;z-index:-1;left:2px;right:2px;bottom:-4px;height:13px;
+  background:#4f854d;border-radius:0 0 13px 13px;transform:skewX(-9deg);pointer-events:none;
+}
+.city-plot-scene{overflow:visible}
+.city-plot-built .city-plot-art{position:absolute;opacity:0;pointer-events:none}
+.city-plot-built .city-plot-decoration{right:1px;bottom:3px;font-size:12px;z-index:8}
+.city-model{
+  --wall:#f1dca9;--side:#b8936c;--roof:#ca8053;--roof-highlight:#ffdca1;
+  width:70px;height:70px;position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-55%) scale(.87);
+  transform-origin:center 65%;
+  pointer-events:none;
+  filter:drop-shadow(2px 5px 2px #19442758);
+  z-index:5;
+  transition:transform .24s ease,filter .24s ease;
+}
+.city-model span{position:absolute;display:block;box-sizing:border-box}
+.city-model-front{
+  left:8px;top:26px;width:36px;height:35px;
+  background:linear-gradient(105deg,#ffffff64 0%,transparent 34%),var(--wall);
+  clip-path:polygon(0 0,100% 26%,100% 100%,0 76%);
+  border-radius:1px;
+  filter:brightness(1.04);
+}
+.city-model-side{
+  left:44px;top:22px;width:18px;height:39px;
+  background:linear-gradient(110deg,var(--side),#273b2442);
+  clip-path:polygon(0 33%,100% 0,100% 72%,0 100%);
+}
+.city-model-roof{
+  left:8px;top:10px;width:54px;height:26px;
+  background:linear-gradient(125deg,var(--roof-highlight),var(--roof) 62%,#734a37);
+  clip-path:polygon(0 62%,37% 0,100% 46%,66% 100%);
+  z-index:3;
+}
+.city-model-window{
+  left:17px;top:39px;width:10px;height:10px;
+  background:linear-gradient(145deg,#f2ffff,#78bdcc);
+  border:2px solid #fff9de;
+  transform:skewY(14deg);
+  box-shadow:13px 3px 0 -1px #93cdd5;
+  z-index:4;
+}
+.city-model-door{
+  left:29px;top:51px;width:10px;height:11px;
+  background:#855f4c;border:1px solid #e9c98c;
+  transform:skewY(13deg);
+  z-index:4;
+}
+.city-model-emblem{
+  left:30px;top:11px;z-index:5;
+  font-size:18px;line-height:1;filter:drop-shadow(0 2px 1px #1c482a61);
+}
+.city-model-hall{--wall:#f3dca3;--side:#b88c53;--roof:#c68a3c;--roof-highlight:#fff1bd;transform:translate(-50%,-58%) scale(1.05)}
+.city-model-hall .city-model-emblem{font-size:22px;left:26px;top:6px}
+.city-model-park{--wall:#a5d88a;--side:#5e9a6b;--roof:#61b46c;--roof-highlight:#d5ff9b}
+.city-model-park .city-model-front{height:20px;top:40px}
+.city-model-park .city-model-side{height:24px;top:37px}
+.city-model-park .city-model-roof{top:24px;background:linear-gradient(125deg,#ddffa1,#5faa66)}
+.city-model-park .city-model-window,.city-model-park .city-model-door{display:none}
+.city-model-park .city-model-emblem{font-size:32px;left:23px;top:7px}
+.city-model-home{--wall:#ffe3ad;--side:#cc9966;--roof:#d47762;--roof-highlight:#ffc8a3}
+.city-model-bakery{--wall:#ffcfac;--side:#ba8065;--roof:#c96444;--roof-highlight:#f9b48b}
+.city-model-market{--wall:#f6e1b4;--side:#ae9967;--roof:#a56a44;--roof-highlight:#efc78b}
+.city-model-school{--wall:#f9d9b7;--side:#cba185;--roof:#bd7152;--roof-highlight:#f6bc95}
+.city-model-clinic{--wall:#e7faf3;--side:#8ac2b6;--roof:#4cae9a;--roof-highlight:#b2ead9}
+.city-model-tower{--wall:#dfd1f0;--side:#a58dba;--roof:#9f77c8;--roof-highlight:#e6c6fa}
+.city-model-tower .city-model-roof{top:4px}
+.city-model-tower .city-model-front{height:42px;top:22px}
+.city-model-tower .city-model-side{height:45px;top:19px}
+.city-model-tower .city-model-emblem{top:2px}
+.city-model-lake{--wall:#6dd3e9;--side:#439eba;--roof:#7ce7f7;--roof-highlight:#dcffff}
+.city-model-lake .city-model-front{top:38px;height:18px}
+.city-model-lake .city-model-side{top:35px;height:21px}
+.city-model-lake .city-model-roof{top:22px;background:linear-gradient(140deg,#daffff,#4ec6e2)}
+.city-model-lake .city-model-window,.city-model-lake .city-model-door{display:none}
+.city-model-lake .city-model-emblem{top:12px;left:26px;font-size:29px}
+.city-model-level-2{transform:translate(-50%,-57%) scale(.99);filter:drop-shadow(3px 7px 2px #19442763)}
+.city-model-level-3{transform:translate(-50%,-61%) scale(1.10);filter:drop-shadow(4px 9px 3px #19442770)}
+.city-model-level-2 .city-model-roof{background:linear-gradient(125deg,#fff1bc,var(--roof) 68%,#57382d)}
+.city-model-level-3 .city-model-roof{background:linear-gradient(125deg,#fffbd4,var(--roof-highlight) 26%,var(--roof) 76%)}
+.city-model-level-2 .city-model-window{box-shadow:14px 4px 0 -1px #74bacf,7px -7px 0 -2px #85d4df}
+.city-model-level-3 .city-model-window{box-shadow:14px 4px 0 -1px #78bcd0,7px -7px 0 -2px #a3e3e3,19px -7px 0 -2px #a2e0e9}
+.city-model-level-3::after{
+  content:"✦";position:absolute;top:-7px;right:5px;z-index:6;
+  color:#fff6b1;font-size:18px;text-shadow:0 2px 0 #99681e,0 0 5px #ffe888;
+}
+.city-plot-rank{
+  position:absolute;top:-7px;right:-6px;z-index:12;
+  border:1px solid #4c8649;border-radius:8px;
+  background:linear-gradient(140deg,#f6ffd7,#d8f9ac);
+  color:#275e36;box-shadow:1px 2px 0 #658e53;
+  font-size:9px;font-weight:950;padding:3px 5px;
+  pointer-events:none;
+}
+.city-plot-level-2 .city-plot-rank{background:#f9e7a4;border-color:#c49a40;color:#76521c}
+.city-plot-level-3 .city-plot-rank{background:#ffe4a1;border-color:#b97d24;color:#664017}
+.city-build-stage{
+  display:inline-block;margin-top:7px;padding:5px 7px;
+  border:1px solid #9cc48b;border-radius:7px;
+  color:#3d7850;background:#eafad9;
+  font-size:10px;line-height:1.2;font-weight:900;
+}
+.city-build-stage-max{color:#735018;background:#fff0b8;border-color:#d1a54e}
+.city-build-button-upgrade:not(:disabled){
+  background:linear-gradient(140deg,#ffe8a6,#f7c966)!important;
+  color:#614317!important;border-color:#a57928!important;
+  box-shadow:0 3px 0 #a98b41!important;
+}
+.city-build-button-upgrade:disabled{
+  background:#f1ebd8;color:#9b8964;border-color:#b9aa86
+}
+.city-plot-level-3{border-color:#bb8c39;box-shadow:0 5px 0 #a18a49,0 8px 13px #564b2852}
+.city-plot-level-3 .city-plot-label{background:#fff2c5;border-color:#c09b52}
+.city-map-tip{font-size:10px}
+@media(max-width:380px){
+  .city-model{transform:translate(-50%,-55%) scale(.77)}
+  .city-model-level-2{transform:translate(-50%,-57%) scale(.85)}
+  .city-model-level-3{transform:translate(-50%,-60%) scale(.96)}
+  .city-model-hall{transform:translate(-50%,-58%) scale(.91)}
+  .city-plot-rank{font-size:8px;top:-5px;right:-4px}
+  .city-build-stage{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){.city-model{transition:none}}
