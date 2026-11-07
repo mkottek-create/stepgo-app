@@ -24,7 +24,7 @@
   const persist = () => {try {localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}};
   let toastTimer;
   const toast = s => { const t=$('toast');t.textContent=s;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),2700); };
-  // StepGo V4: Nur virtuelle Test-Coins. Kein Geldwert / keine Auszahlungen.
+  // StepGo City: Stadtmuenzen sind reine, lokale Spielwaehrung ohne Geldwert.
   const MILESTONES = Object.freeze([
     {steps:3000,coins:5,icon:'👟',name:'Warm-up'},
     {steps:6000,coins:10,icon:'⚡',name:'In Bewegung'},
@@ -145,8 +145,8 @@
     $('goalRange').value=String(state.goal);
     $('goalSettingLabel').textContent=fmt(state.goal);
 
-    // Ist heute schon bestätigt, bleibt die Auszahlung eingefroren. Neue Health-Schritte
-    // verändern niemals rückwirkend die Coins des bereits bestätigten Tages.
+    // Ist heute schon bestätigt, bleibt die Tagesgutschrift eingefroren. Neue Health-Schritte
+    // verändern niemals rückwirkend die Stadtmuenzen des bereits bestätigten Tages.
     const claimedEntry = currentEntry();
     $('challengeProgress').textContent=fmt(state.steps)+' / '+fmt(state.goal)+' Schritte';
     $('challengeGoalText').textContent=state.steps>=state.goal
@@ -188,22 +188,22 @@
     const next=MILESTONES.find(m=>state.steps<m.steps);
     $('nextMilestoneText').textContent=claimedEntry
       ? 'Heute wurden deine Stadtmünzen schon gesammelt. Morgen warten neue Boni!'
-      : next ? 'Noch '+fmt(next.steps-state.steps)+' Schritte bis '+next.name+' (+'+next.coins+' Coins)!'
+      : next ? 'Noch '+fmt(next.steps-state.steps)+' Schritte bis '+next.name+' (+'+next.coins+' Stadtmünzen)!'
              : 'Alle fünf Meilensteine erreicht! 👑';
 
     renderCity();
     const claimed=!!currentEntry();
     $('claimBtn').disabled=claimed || state.steps<100;
     $('claimBtnText').textContent=claimed?'Heute bereits bestätigt ✓':state.steps<100?'Mindestens 100 Schritte nötig':'Schritte bestätigen';
-    $('claimCaption').textContent=claimed?'Morgen warten neue Coins auf dich.':'1 Stadtmünze / 100 Schritte (max. 200) + Tagesziel- und Meilenstein-Boni · kein Geldwert';
+    $('claimCaption').textContent=claimed?'Morgen warten neue Stadtmünzen auf dich.':'1 Stadtmünze / 100 Schritte (max. 200) + Tagesziel- und Meilenstein-Boni · kein Geldwert';
     const history=$('historyList');history.replaceChildren();
     if (!state.ledger.length){const el=document.createElement('div');el.className='empty';el.textContent='Noch keine Tage bestätigt. Deine ersten Stadtmünzen warten auf dich!';history.append(el);}
-    else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte`+(Number.isFinite(entry.milestoneCoins)?` · Bonus +${entry.milestoneCoins+entry.goalCoins} Coins`:'');left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
+    else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte`+(Number.isFinite(entry.milestoneCoins)?` · Bonus +${entry.milestoneCoins+entry.goalCoins} Stadtmünzen`:'');left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
     persist();
   }
 
   // StepGo Arena: nur lokale UI-Vorschau. Keine Online-Spieler, keine echten Gewinne
-  // und keine Verbindung zu Coins, Tages-Schritten oder Baupunkten.
+  // und keine Verbindung zu Stadtmuenzen, Tages-Schritten oder Gebaeuden.
   const demoDuel = {active:false,mine:12400,rival:11800};
   function showCompetitionView(view) {
     const showLeague = view === 'league';
@@ -228,7 +228,7 @@
       : 'Beispielduell – noch nicht gestartet.';
     const diff = Math.abs(demoDuel.mine-demoDuel.rival);
     $('duelResult').textContent = !demoDuel.active
-      ? 'Die Beispielwerte zählen nicht für Coins oder deine Stadt.'
+      ? 'Die Beispielwerte ändern keine Stadtmünzen oder Gebäude.'
       : diff===0 ? 'Gleichstand! Alle Schritte hier sind reine Testwerte.'
       : (demoDuel.mine>demoDuel.rival?'Du liegst ':'LaufFuchs liegt ') +
         fmt(diff) + ' Demo-Schritte vorne. Keine echten Gewinne.';
@@ -252,7 +252,7 @@
     if (!demoDuel.active) return;
     demoDuel.mine = Math.min(100000,demoDuel.mine+1000);
     renderDemoDuel();
-    toast('+1.000 Demo-Duellschritte – kein Coin-Gewinn');
+    toast('+1.000 Demo-Duellschritte – keine Stadtmünzen');
   });
   $('duelResetBtn').addEventListener('click',()=>{
     if (!demoDuel.active) return;
