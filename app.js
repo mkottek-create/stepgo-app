@@ -53,6 +53,11 @@
     {id:'clinic',name:'Klinik',icon:'🏥',cost:300,plot:7,description:'Versorgung für die ganze Stadt.'},
     {id:'tower',name:'Stadtturm',icon:'🏰',cost:450,plot:8,description:'Das Wahrzeichen deiner City.'}
   ]);
+  // Kleine, rein dekorative City-Details; beeinflussen weder Kaeufe noch Guthaben.
+  const CITY_DECORATIONS = Object.freeze({
+    park:'🌼 🌿',home:'🌳 🌻',bakery:'🌷 🥖',market:'🌿 🎈',
+    lake:'🦆 🌾',school:'🌳 🌼',clinic:'🌿 💚',tower:'🌲 ✨'
+  });
   // Niemals hypothetische (unbestätigte) Schrittzahlen gutschreiben.
   const cityAvailable = () => state.wallet;
   const cityLevel = () => 1+Math.floor(state.cityBuildings.length/2);
@@ -69,15 +74,22 @@
       const item=CITY_BUILDINGS.find(b=>b.plot===pos);
       const built=pos===4 || !!(item&&owned.has(item.id));
       const tile=document.createElement('div');
-      tile.className='city-plot'+(built?' city-plot-built':' city-plot-locked')+(pos===4?' city-plot-center':'');
+      tile.className='city-plot'+(built?' city-plot-built':' city-plot-locked')+(pos===4?' city-plot-center':'')+(item?' city-plot-'+item.id:'');
       tile.setAttribute('aria-label',pos===4?'Rathaus – Startgebäude':item.name+(built?' – gebaut':' – noch frei'));
+      const scene=document.createElement('div');
+      scene.className='city-plot-scene';
       const art=document.createElement('span');
       art.className='city-plot-art';
       art.textContent=pos===4?'🏛️':built?item.icon:'🌱';
+      const decoration=document.createElement('span');
+      decoration.className='city-plot-decoration';
+      decoration.setAttribute('aria-hidden','true');
+      decoration.textContent=pos===4?'🌳 🌼':built?CITY_DECORATIONS[item.id]:'🌱';
+      scene.append(art,decoration);
       const label=document.createElement('span');
       label.className='city-plot-label';
       label.textContent=pos===4?'Rathaus':built?item.name:'Bauplatz';
-      tile.append(art,label);
+      tile.append(scene,label);
       grid.append(tile);
     }
     const list=$('cityBuildList');
@@ -86,7 +98,7 @@
       const built=owned.has(item.id);
       const canAfford=pts>=item.cost;
       const card=document.createElement('article');
-      card.className='city-build-card'+(built?' city-build-done':'');
+      card.className='city-build-card city-build-'+item.id+(built?' city-build-done':'');
       const icon=document.createElement('span');
       icon.className='city-build-icon'; icon.textContent=item.icon;
       const info=document.createElement('div');info.className='city-build-info';
