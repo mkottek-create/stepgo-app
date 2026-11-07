@@ -447,6 +447,6 @@
   $('modalClose').addEventListener('click',()=>{$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');});
   $('modalBackdrop').addEventListener('click',ev=>{if(ev.target===$('modalBackdrop'))$('modalClose').click();});
   document.addEventListener('keydown',ev=>{if(ev.key==='Escape' && $('modalBackdrop').classList.contains('open'))$('modalClose').click();});
-  $('clearAll').addEventListener('click',()=>{if(!confirm('Wirklich alle StepGo-Testdaten löschen?'))return;state=fresh();render();switchTab('home');toast('Testdaten gelöscht');});
+  $('clearAll').addEventListener('click',()=>{if(!confirm('Wirklich alle StepGo-Testdaten löschen?'))return;state=fresh();demoDuel.active=false;demoDuel.mine=12400;demoDuel.rival=11800;showCompetitionView('league');renderDemoDuel();render();switchTab('home');toast('Testdaten gelöscht');});
   render();
 })();
