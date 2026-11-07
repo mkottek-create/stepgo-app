@@ -41,8 +41,8 @@ function harness(initial = baseState()) {
   for(const id of allIds)elements.set(id,makeNode('div',id));
   const get = id => elements.get(id);
   const presets = [5000,10000,15000].map(n=>{const el=makeNode('button');el.dataset.goalPreset=String(n);return el});
-  const nav = ['home','activity','city','rewards','profile'].map(tab=>{const el=makeNode('button');el.dataset.tab=tab;return el});
-  const screens = ['home','activity','city','rewards','profile'].map(tab=>get('screen-'+tab));
+  const nav = ['home','competitions','city','rewards','profile'].map(tab=>{const el=makeNode('button');el.dataset.tab=tab;return el});
+  const screens = ['home','activity','competitions','city','rewards','profile'].map(tab=>get('screen-'+tab));
   let stored = snapshot(initial);
   let nextClipboard = '4.642';
   let clipboardFailure = false;
@@ -95,6 +95,8 @@ test('Source syntax, DOM IDs and native/web fallback',()=>{
   assert.equal(app.get('nativeHealthCard').hidden,true);
   assert.ok(allIds.includes('pasteHealthSteps'));
   assert.ok(allIds.includes('screen-city'));
+  assert.ok(allIds.includes('screen-competitions'));
+  assert.equal(allIds.length,new Set(allIds).size,'Duplicate DOM IDs');
 });
 
 test('4,642 steps = 46 basic coins, 5 milestone coins',()=>{
@@ -205,3 +207,77 @@ test('Legacy confirmed days remain readable',()=>{
   assert.equal(app.get('claimBtn').disabled,true);
 });
 
+
+
+test('Competition navigation works and previous step history remains reachable',()=>{
+  const app=harness();
+  app.event('openCompetitionBtn');
+  assert.equal(app.get('screen-competitions').classList.contains('active'),true);
+  assert.equal(app.nav.find(b=>b.dataset.tab==='competitions').attributes['aria-current'],'page');
+  assert.equal(app.get('screen-city').classList.contains('active'),false);
+  app.event('openStepsBtn');
+  assert.equal(app.get('screen-activity').classList.contains('active'),true);
+  app.nav.find(b=>b.dataset.tab==='city').click();
+  assert.equal(app.get('screen-city').classList.contains('active'),true);
+});
+
+test('Week league and duel previews switch accessibly without changing user data',()=>{
+  const app=harness();
+  const before=app.state();
+  assert.equal(app.get('competitionLeaguePanel').hidden,false);
+  assert.equal(app.get('competitionDuelPanel').hidden,true);
+  assert.equal(app.get('competitionLeagueTab').attributes['aria-pressed'],'true');
+  app.event('competitionDuelTab');
+  assert.equal(app.get('competitionLeaguePanel').hidden,true);
+  assert.equal(app.get('competitionDuelPanel').hidden,false);
+  assert.equal(app.get('competitionDuelTab').attributes['aria-pressed'],'true');
+  app.event('competitionLeagueTab');
+  assert.equal(app.get('competitionLeaguePanel').hidden,false);
+  assert.deepEqual(app.state(),before);
+});
+
+test('Demo duel starts, simulates +1000 and resets without coins, steps or city changes',()=>{
+  const state=baseState();
+  state.cityBuildings=['park'];
+  state.ledger=[{date:'2025-01-01',steps:10000,coins:100}];
+  const app=harness(state);
+  const before=app.state();
+  assert.equal(app.get('duelMySteps').textContent,'12.400');
+  assert.equal(app.get('duelAddBtn').disabled,true);
+  app.event('duelAddBtn'); // disabled button cannot mint anything even if handler is triggered
+  assert.equal(app.get('duelMySteps').textContent,'12.400');
+  app.event('duelStartBtn');
+  assert.equal(app.get('duelStartBtn').disabled,true);
+  assert.equal(app.get('duelAddBtn').disabled,false);
+  app.event('duelAddBtn');
+  assert.equal(app.get('duelMySteps').textContent,'13.400');
+  assert.match(app.get('duelResult').textContent,/Demo-Schritte/);
+  assert.deepEqual(app.state(),before,'Simulated duel must never change persistable wallet/step/city state');
+  app.event('duelResetBtn');
+  assert.equal(app.get('duelMySteps').textContent,'12.400');
+  assert.equal(app.get('duelAddBtn').disabled,true);
+  assert.deepEqual(app.state(),before);
+});
+
+test('Delete test data resets demo duel as well as city and coins',()=>{
+  const app=harness();
+  app.event('competitionDuelTab');
+  app.event('duelStartBtn');
+  app.event('duelAddBtn');
+  app.event('clearAll');
+  assert.equal(app.get('duelMySteps').textContent,'12.400');
+  assert.equal(app.get('duelStartBtn').disabled,false);
+  assert.equal(app.get('competitionLeaguePanel').hidden,false);
+  assert.deepEqual(app.state().cityBuildings,[]);
+  assert.equal(app.state().wallet,0);
+});
+
+test('Competition teaser and both panels explicitly identify fictional demo content',()=>{
+  assert.match(html,/id="screen-competitions"/);
+  assert.match(html,/NUR DEMO/);
+  assert.match(html,/Alle Namen und Schrittzahlen hier sind erfunden/);
+  assert.match(html,/keine echten Gegner/);
+  assert.match(html,/Keine Live-Daten, kein Gegnerkontakt und kein Echtgeld/);
+  assert.match(html,/id="screen-activity"/);
+  assert.match(html,/id="screen-city"/);
+});
