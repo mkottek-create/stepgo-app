@@ -1629,3 +1629,162 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   #cityMap.city-map-diorama .city-plot{animation:none}
   #cityMap.city-map-diorama .city-model{transition:none}
 }
+
+
+/* StepGo City V13 – GERADE STADTPLATTE UND ORDNUNG
+   Breite, oben und unten gerade Stadtflaeche statt langer Raute.
+   Nur Darstellung: 9 Positionen, Stadtmuenzen und Ausbaustufen bleiben gleich. */
+#cityMap.city-map-diorama{
+  height:clamp(400px,116vw,480px);
+  min-height:0;
+  background:
+    radial-gradient(ellipse at 20% 12%,#ffffffb0 0 10px,transparent 11px),
+    radial-gradient(ellipse at 82% 17%,#ffffff80 0 8px,transparent 9px),
+    linear-gradient(180deg,#8dd9f7 0%,#c9f0fb 44%,#e3f1cb 100%);
+}
+/* Flacher Plateaurand: breite Oberkante und gerade Unterkante. */
+#cityMap.city-map-diorama::before{
+  inset:0;
+  clip-path:polygon(
+    7% 17%,93% 17%,98% 29%,98% 78%,
+    93% 91%,7% 91%,2% 78%,2% 29%
+  );
+  background:linear-gradient(180deg,
+    #90db83 0%,
+    #60b56b 56%,#367f53 78%,
+    #235c45 80%,#1a533d 100%);
+  filter:drop-shadow(0 5px 4px #153c2d55);
+}
+/* Eine breite, fast rechteckige Wiesenflaeche mit verbundenen Querstrassen. */
+#cityMap.city-map-diorama::after{
+  inset:0;
+  clip-path:polygon(
+    7% 17%,93% 17%,98% 29%,98% 76%,
+    93% 83%,7% 83%,2% 76%,2% 29%
+  );
+  background:
+    radial-gradient(circle at 12% 30%,#fff4ac9e 0 2px,transparent 3px),
+    radial-gradient(circle at 85% 73%,#f8ffbca8 0 3px,transparent 4px),
+    linear-gradient(90deg,
+      transparent 35%,
+      #b8996a 35% 35.6%,#edd6a8 35.6% 39.4%,#ad9065 39.4% 40%,
+      transparent 40% 60%,
+      #b8996a 60% 60.6%,#edd6a8 60.6% 64.4%,#ad9065 64.4% 65%,
+      transparent 65%),
+    linear-gradient(0deg,
+      transparent 36%,
+      #ae8f62 36% 36.7%,#eed8ad 36.7% 42.3%,#ae8f62 42.3% 43%,
+      transparent 43% 57%,
+      #ae8f62 57% 57.7%,#eed8ad 57.7% 63.3%,#ae8f62 63.3% 64%,
+      transparent 64%),
+    repeating-linear-gradient(145deg,#b6ea91 0 20px,#a9e284 20px 40px);
+  box-shadow:none;
+}
+#cityMap.city-map-diorama .city-plot{
+  width:24%;
+  max-width:100px;
+  height:99px;
+  min-height:0;
+  transform:translate(-50%,-50%);
+}
+/* Drei ordentlich versetzungsfreie Reihen, Rathaus exakt in der Mitte. */
+#cityMap.city-map-diorama .city-plot:nth-child(1){left:23%;top:30%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(2){left:50%;top:30%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(3){left:77%;top:30%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(4){left:23%;top:51%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(5){left:50%;top:51%;z-index:5}
+#cityMap.city-map-diorama .city-plot:nth-child(6){left:77%;top:51%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(7){left:23%;top:72%;z-index:6}
+#cityMap.city-map-diorama .city-plot:nth-child(8){left:50%;top:72%;z-index:7}
+#cityMap.city-map-diorama .city-plot:nth-child(9){left:77%;top:72%;z-index:6}
+/* Natuerliche kleine Grundstuecke anstelle freischwebender ovaler Sockel. */
+#cityMap.city-map-diorama .city-plot::before{
+  top:27px;left:11%;width:78%;height:46px;
+  transform:rotate(-5deg) scaleY(.62);
+  background:linear-gradient(165deg,#e8ffc1,#8fcb7c);
+  border-radius:45%;
+  box-shadow:0 2px 0 #6eaa65,0 4px 3px #264c3254;
+  opacity:.92;
+}
+#cityMap.city-map-diorama .city-plot-locked::before{
+  background:repeating-linear-gradient(135deg,#f0dfb0 0 9px,#d9cda0 9px 18px);
+  box-shadow:0 1px 0 #b0a578,0 3px 3px #284b3050;
+  border:1px dashed #ad996c;
+  opacity:.82;
+}
+#cityMap.city-map-diorama .city-plot-center::before{
+  background:linear-gradient(150deg,#fff3b9,#eac271);
+  border:2px solid #b78c45;
+  box-shadow:0 2px 0 #9a733c,0 4px 4px #66432357;
+  opacity:1;
+}
+#cityMap.city-map-diorama .city-plot-park::before{
+  background:linear-gradient(#dfffaf,#80d278);
+}
+#cityMap.city-map-diorama .city-plot-lake::before{
+  background:linear-gradient(#c4fbff,#71cbe6);
+  border:1px solid #71b7cb;
+  box-shadow:0 2px 0 #3b8fa8,0 4px 3px #18566a60;
+}
+#cityMap.city-map-diorama .city-plot-tower::before{
+  background:linear-gradient(#e9dcff,#bda1de);
+}
+#cityMap.city-map-diorama .city-plot-scene{
+  height:76px;
+}
+#cityMap.city-map-diorama .city-plot-scene::before{
+  width:63%;left:19%;height:13px;bottom:6px;
+  background:#2f60374d;
+  filter:blur(2px);
+}
+#cityMap.city-map-diorama .city-plot-decoration{
+  right:0;bottom:2px;font-size:10px;
+  letter-spacing:-4px;
+}
+/* Das Rathaus ist der sichtbare Mittelpunkt. */
+#cityMap.city-map-diorama .city-model-hall{
+  transform:translate(-50%,-59%) scale(1.16);
+  filter:drop-shadow(3px 6px 1px #74552eaa);
+}
+#cityMap.city-map-diorama .city-plot-center .city-plot-label{
+  background:linear-gradient(145deg,#fff5c6,#ffe19b);
+  border:2px solid #9b6d29;
+  color:#664315;
+  box-shadow:0 3px 0 #a27c37;
+  padding:4px 7px;
+}
+#cityMap.city-map-diorama .city-plot-label{
+  bottom:-1px;
+  min-width:55px;
+  max-width:105%;
+  padding:3px 4px;
+  font-size:9px;
+  background:#fffdf0f2;
+  box-shadow:0 2px 0 #34664f;
+}
+#cityMap.city-map-diorama .city-plot-rank{
+  top:5px;right:-2px;padding:3px 4px;
+  font-size:9px;
+}
+.city-map-card .city-map-tip{
+  margin:10px 2px 5px;
+  font-size:10px;line-height:1.5;
+}
+@media(max-width:380px){
+  #cityMap.city-map-diorama{height:395px;min-height:0}
+  #cityMap.city-map-diorama .city-plot{width:25%;height:91px}
+  #cityMap.city-map-diorama .city-plot-scene{height:70px}
+  #cityMap.city-map-diorama .city-model{transform:translate(-50%,-57%) scale(.76)}
+  #cityMap.city-map-diorama .city-model-level-2{transform:translate(-50%,-59%) scale(.84)}
+  #cityMap.city-map-diorama .city-model-level-3{transform:translate(-50%,-62%) scale(.93)}
+  #cityMap.city-map-diorama .city-model-hall{transform:translate(-50%,-59%) scale(1)}
+  #cityMap.city-map-diorama .city-plot-label{
+    font-size:8px;min-width:50px;padding:3px 2px;
+  }
+  #cityMap.city-map-diorama .city-plot-rank{font-size:8px;top:5px;right:-2px}
+}
+@media(min-width:580px){
+  #cityMap.city-map-diorama{height:480px;min-height:0}
+  #cityMap.city-map-diorama .city-plot{height:103px;width:23%}
+  #cityMap.city-map-diorama .city-plot-scene{height:83px}
+}
