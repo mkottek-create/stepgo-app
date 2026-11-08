@@ -475,3 +475,56 @@ test('Deleting test data also removes building upgrade levels',()=>{
   assert.equal(app.get('cityMap').children.length,9);
   assert.equal(app.get('cityBuiltCount').textContent,'1 / 9');
 });
+
+
+test('Comic Level 2 keeps fixed city parcels and stored currency untouched',()=>{
+  const state=baseState();
+  state.cityBuildings=['park','home','bakery','market','lake','school','clinic','tower'];
+  state.cityUpgrades={home:2,clinic:3};
+  state.wallet=284;
+  const app=harness(state);
+  const before=app.state();
+  const plots=app.get('cityMap').children;
+  assert.equal(plots.length,9);
+  assert.equal(plots[4].attributes['aria-label'],'Rathaus – Startgebäude');
+  assert.match(html,/🎨 COMIC 2/);
+  assert.match(html,/city-landscape-kite/);
+  const cityOrder=['park','home','bakery','market',null,'lake','school','clinic','tower'];
+  cityOrder.forEach((id,pos)=>{
+    if(id)assert.match(plots[pos].className,new RegExp('city-plot-'+id));
+  });
+  assert.equal(plots[1].children[0].children[1].textContent,'🌻 🌳 🪁');
+  assert.equal(plots[2].children[0].children[1].textContent,'🥖 🌼 ☕');
+  assert.equal(plots[7].children[0].children[1].textContent,'💚 🌷 🌿');
+  assert.equal(plots[0].children[0].children[2].children[9].textContent,'🦋');
+  assert.equal(plots[7].children[0].children[2].children[9].textContent,'✚');
+  assert.equal(plots[1].children[0].children[2].children[10].textContent,'✦');
+  assert.equal(plots[7].children[0].children[2].children[10].textContent,'✦ ✦');
+  assert.equal(plots[0].children[0].children[2].children.length,10); // Stufe 1 ohne Extra-Ornament
+  assert.deepEqual(app.state(),before);
+});
+
+test('Comic Level 2 color and contrast styles exist and do not remove building interactions',()=>{
+  const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
+  const comic=css.slice(css.indexOf('/* StepGo City V11 – COMIC STUFE 2'));
+  assert.ok(comic.length>5000,'Comic theme must be present');
+  for(const selector of [
+    '.city-map-card{','.city-landscape{','.city-map{','.city-plot{',
+    '.city-model-roof{','.city-model-canopy{','.city-model-chimney{',
+    '.city-model-level-3{','.city-build-card{','.city-build-button{',
+    '@media(max-width:380px)'
+  ])assert.ok(comic.includes(selector),'Missing comic theme style: '+selector);
+  const state=baseState();
+  state.wallet=400;
+  const app=harness(state);
+  const park=app.get('cityBuildList').children[0].children[2];
+  assert.equal(park.disabled,false);
+  park.click();
+  assert.equal(app.state().wallet,375);
+  assert.deepEqual(app.state().cityBuildings,['park']);
+  const upgrade=app.get('cityBuildList').children[0].children[2];
+  assert.equal(upgrade.disabled,false);
+  upgrade.click();
+  assert.equal(app.state().wallet,325);
+  assert.equal(app.state().cityUpgrades.park,2);
+});
