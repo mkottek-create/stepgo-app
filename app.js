@@ -99,7 +99,7 @@
       scene.className='city-plot-scene';
       const art=document.createElement('span');
       art.className='city-plot-art';
-      art.textContent=pos===4?'🏛️':built?item.icon:'🌱';
+      art.textContent=pos===4?'🏛️':built?item.icon:'＋';
       const decoration=document.createElement('span');
       decoration.className='city-plot-decoration';
       decoration.setAttribute('aria-hidden','true');
