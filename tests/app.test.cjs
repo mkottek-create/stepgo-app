@@ -496,11 +496,11 @@ test('Comic Level 2 keeps fixed city parcels and stored currency untouched',()=>
   assert.equal(plots[1].children[0].children[1].textContent,'🌻 🌳 🪁');
   assert.equal(plots[2].children[0].children[1].textContent,'🥖 🌼 ☕');
   assert.equal(plots[7].children[0].children[1].textContent,'💚 🌷 🌿');
-  assert.equal(plots[0].children[0].children[2].children[9].textContent,'🦋');
-  assert.equal(plots[7].children[0].children[2].children[9].textContent,'✚');
-  assert.equal(plots[1].children[0].children[2].children[10].textContent,'✦');
-  assert.equal(plots[7].children[0].children[2].children[10].textContent,'✦ ✦');
-  assert.equal(plots[0].children[0].children[2].children.length,10); // Stufe 1 ohne Extra-Ornament
+  assert.equal(plots[0].children[0].children[2].children[10].textContent,'🦋');
+  assert.equal(plots[7].children[0].children[2].children[10].textContent,'✚');
+  assert.equal(plots[1].children[0].children[2].children[11].textContent,'✦');
+  assert.equal(plots[7].children[0].children[2].children[11].textContent,'✦ ✦');
+  assert.equal(plots[0].children[0].children[2].children.length,11); // Stufe 1 ohne Extra-Ornament
   assert.deepEqual(app.state(),before);
 });
 
