@@ -64,8 +64,12 @@
   ]);
   // Kleine, rein dekorative City-Details; beeinflussen weder Kaeufe noch Guthaben.
   const CITY_DECORATIONS = Object.freeze({
-    park:'🌼 🌿',home:'🌳 🌻',bakery:'🌷 🥖',market:'🌿 🎈',
-    lake:'🦆 🌾',school:'🌳 🌼',clinic:'🌿 💚',tower:'🌲 ✨'
+    park:'🌷 🦋 🌿',home:'🌻 🌳 🪁',bakery:'🥖 🌼 ☕',market:'🍎 🎈 🌼',
+    lake:'🦆 🌾 🐸',school:'🌳 ⚽ 🌼',clinic:'💚 🌷 🌿',tower:'🌲 ✨ 🎏'
+  });
+  const CITY_COMIC_ACCENTS = Object.freeze({
+    hall:'⭐',park:'🦋',home:'🌻',bakery:'🥨',market:'🍎',
+    lake:'🐸',school:'✏️',clinic:'✚',tower:'👑'
   });
   // Niemals hypothetische (unbestätigte) Schrittzahlen gutschreiben.
   const cityAvailable = () => state.wallet;
@@ -99,7 +103,7 @@
       const decoration=document.createElement('span');
       decoration.className='city-plot-decoration';
       decoration.setAttribute('aria-hidden','true');
-      decoration.textContent=pos===4?'🌳 🌼':built?CITY_DECORATIONS[item.id]:'🌱';
+      decoration.textContent=pos===4?'🌳 🌼 🦋':built?CITY_DECORATIONS[item.id]:'🌱';
       scene.append(art,decoration);
       if (built) {
         // Feste perspektivische 3D-Ansicht: Dach, Vorderwand und Seitenwand.
@@ -107,7 +111,7 @@
         const model=document.createElement('div');
         model.className='city-model city-model-'+(pos===4?'hall':item.id)+' city-model-level-'+level;
         model.setAttribute('aria-hidden','true');
-        ['roof','front','side','window','door'].forEach(part=>{
+        ['roof','front','side','window','door','canopy','chimney','trim','flowerbox'].forEach(part=>{
           const layer=document.createElement('span');
           layer.className='city-model-'+part;
           model.append(layer);
@@ -116,6 +120,16 @@
         emblem.className='city-model-emblem';
         emblem.textContent=pos===4?'🏛️':item.icon;
         model.append(emblem);
+        const accent=document.createElement('span');
+        accent.className='city-model-accent';
+        accent.textContent=CITY_COMIC_ACCENTS[pos===4?'hall':item.id];
+        model.append(accent);
+        if (level>=2) {
+          const ornament=document.createElement('span');
+          ornament.className='city-model-ornament';
+          ornament.textContent=level===3?'✦ ✦':'✦';
+          model.append(ornament);
+        }
         scene.append(model);
       }
       const label=document.createElement('span');
