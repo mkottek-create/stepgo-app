@@ -1788,3 +1788,207 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   #cityMap.city-map-diorama .city-plot{height:103px;width:23%}
   #cityMap.city-map-diorama .city-plot-scene{height:83px}
 }
+
+
+/* StepGo City V14 – WIRKLICH GERADE STADTFLAECHE
+   Die bisherigen Diorama-Polygone werden absichtlich AUSGESCHALTET.
+   90-Grad-Kanten, geradlinige Strassen, 3x3 Bauplaetze.
+   Nur die Dach-/Wand-Modelle behalten die leichte Comic-3D-Optik. */
+#cityMap.city-map-diorama{
+  position:relative;
+  height:clamp(405px,112vw,465px);
+  min-height:0;
+  perspective:none;
+  transform:none;
+  overflow:hidden;
+  isolation:isolate;
+  border:3px solid #31694b;
+  border-radius:15px;
+  background:#9ada7c;
+  box-shadow:inset 0 3px 0 #f0ffc7,0 5px 0 #568c55;
+}
+/* WIRKLICH RECHTECKIG: kein clip-path, keine Raute, kein Trapez. */
+#cityMap.city-map-diorama::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  inset:0;
+  width:auto;
+  height:auto;
+  clip-path:none;
+  transform:none;
+  border:0;
+  border-radius:11px;
+  filter:none;
+  background:
+    radial-gradient(circle at 9% 8%,#fff5b8 0 2px,transparent 3px),
+    radial-gradient(circle at 83% 12%,#fdf7bd 0 2px,transparent 3px),
+    radial-gradient(circle at 92% 87%,#f7f0b0 0 3px,transparent 4px),
+    radial-gradient(circle at 13% 76%,#fff0ad 0 2px,transparent 3px),
+    repeating-linear-gradient(130deg,#b6e990 0 23px,#a9e180 23px 46px);
+  box-shadow:none;
+  pointer-events:none;
+}
+/* Alle Wege laufen senkrecht oder waagerecht, ohne Schraegstreifen. */
+#cityMap.city-map-diorama::after{
+  content:"";
+  position:absolute;
+  z-index:1;
+  inset:0;
+  width:auto;
+  height:auto;
+  clip-path:none;
+  transform:none;
+  border:0;
+  border-radius:11px;
+  filter:none;
+  background:
+    linear-gradient(90deg,
+      transparent 31%,
+      #ad9167 31% 32%,#edd7a9 32% 35%,#ad9167 35% 36%,
+      transparent 36% 64%,
+      #ad9167 64% 65%,#edd7a9 65% 68%,#ad9167 68% 69%,
+      transparent 69%),
+    linear-gradient(0deg,
+      transparent 31%,
+      #ad9167 31% 32%,#edd7a9 32% 35%,#ad9167 35% 36%,
+      transparent 36% 64%,
+      #ad9167 64% 65%,#edd7a9 65% 68%,#ad9167 68% 69%,
+      transparent 69%);
+  box-shadow:none;
+  pointer-events:none;
+}
+/* Die Parzellen liegen auf einem normalen rechtwinkligen Raster. */
+#cityMap.city-map-diorama .city-plot{
+  position:absolute;
+  display:block;
+  box-sizing:border-box;
+  width:27%;
+  max-width:112px;
+  height:112px;
+  min-height:0;
+  margin:0;
+  padding:0;
+  border:0;
+  background:transparent;
+  box-shadow:none;
+  transform:translate(-50%,-50%);
+  animation:none;
+  overflow:visible;
+}
+#cityMap.city-map-diorama .city-plot:nth-child(1){left:17%;top:20%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(2){left:50%;top:20%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(3){left:83%;top:20%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(4){left:17%;top:50%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(5){left:50%;top:50%;z-index:5}
+#cityMap.city-map-diorama .city-plot:nth-child(6){left:83%;top:50%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(7){left:17%;top:80%;z-index:6}
+#cityMap.city-map-diorama .city-plot:nth-child(8){left:50%;top:80%;z-index:7}
+#cityMap.city-map-diorama .city-plot:nth-child(9){left:83%;top:80%;z-index:6}
+/* Flache, rechtwinklige Grundstuecke statt schwebender ovaler Inseln. */
+#cityMap.city-map-diorama .city-plot::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  top:22px;
+  left:5%;
+  width:90%;
+  height:64px;
+  border:1px solid #60965b;
+  border-radius:11px;
+  background:linear-gradient(155deg,#dcf8ad,#a4d989);
+  transform:none;
+  clip-path:none;
+  filter:none;
+  opacity:.75;
+  box-shadow:0 2px 0 #76ac62;
+  pointer-events:none;
+}
+#cityMap.city-map-diorama .city-plot::after{content:none}
+#cityMap.city-map-diorama .city-plot-locked::before{
+  border:2px dashed #a79d79;
+  background:repeating-linear-gradient(0deg,#e8dfae 0 12px,#e2d4a8 12px 24px);
+  opacity:.85;
+  box-shadow:none;
+}
+#cityMap.city-map-diorama .city-plot-center::before{
+  border:2px solid #ae8545;
+  background:linear-gradient(#fff4c3,#ebd398);
+  opacity:1;
+  box-shadow:0 2px 0 #b99453;
+}
+#cityMap.city-map-diorama .city-plot-park::before{background:linear-gradient(#e9ffca,#91d884)}
+#cityMap.city-map-diorama .city-plot-lake::before{background:linear-gradient(#d9fbff,#8bd2e4);border-color:#60a5bb}
+#cityMap.city-map-diorama .city-plot-tower::before{background:linear-gradient(#f6e3ff,#c8a9e3)}
+#cityMap.city-map-diorama .city-plot-scene{
+  position:absolute;
+  z-index:1;
+  top:0;
+  left:0;
+  right:0;
+  height:86px;
+  min-height:0;
+  display:grid;
+  place-items:center;
+  overflow:visible;
+}
+#cityMap.city-map-diorama .city-plot-scene::before{
+  width:61%;
+  left:19%;
+  bottom:6px;
+  height:13px;
+  border-radius:50%;
+  transform:none;
+  background:#38633b36;
+  filter:blur(2px);
+}
+/* Die Hauskoerper bleiben 3D, aber die Standorte sind nicht gedreht. */
+#cityMap.city-map-diorama .city-model{transform:translate(-50%,-58%) scale(.86)}
+#cityMap.city-map-diorama .city-model-level-2{transform:translate(-50%,-60%) scale(.95)}
+#cityMap.city-map-diorama .city-model-level-3{transform:translate(-50%,-62%) scale(1.05)}
+#cityMap.city-map-diorama .city-model-hall{transform:translate(-50%,-59%) scale(1.14)}
+#cityMap.city-map-diorama .city-plot-decoration{
+  right:0;bottom:4px;
+  font-size:11px;
+}
+#cityMap.city-map-diorama .city-plot-label{
+  left:50%;bottom:0;
+  transform:translateX(-50%);
+  width:auto;
+  max-width:100%;
+  min-width:52px;
+  border:2px solid #3b7254;
+  border-radius:9px;
+  background:#fffeec;
+  padding:4px 4px;
+  font-size:9px;
+  text-overflow:ellipsis;
+  box-shadow:0 2px 0 #39724c;
+}
+#cityMap.city-map-diorama .city-plot-center .city-plot-label{
+  background:#fff3b8;
+  border-color:#a17836;
+  box-shadow:0 2px 0 #bc924b;
+}
+#cityMap.city-map-diorama .city-plot-rank{
+  top:0;right:-4px;
+  font-size:9px;
+  padding:3px 5px;
+}
+@media(max-width:380px){
+  #cityMap.city-map-diorama{height:400px;min-height:0}
+  #cityMap.city-map-diorama .city-plot{width:28%;height:101px}
+  #cityMap.city-map-diorama .city-plot::before{top:20px;height:60px}
+  #cityMap.city-map-diorama .city-plot-scene{height:78px}
+  #cityMap.city-map-diorama .city-model{transform:translate(-50%,-57%) scale(.77)}
+  #cityMap.city-map-diorama .city-model-level-2{transform:translate(-50%,-59%) scale(.85)}
+  #cityMap.city-map-diorama .city-model-level-3{transform:translate(-50%,-62%) scale(.94)}
+  #cityMap.city-map-diorama .city-model-hall{transform:translate(-50%,-59%) scale(1.0)}
+  #cityMap.city-map-diorama .city-plot-label{font-size:8px;min-width:48px;padding:3px 2px}
+  #cityMap.city-map-diorama .city-plot-rank{right:-3px;font-size:8px;padding:2px 3px}
+}
+@media(min-width:580px){
+  #cityMap.city-map-diorama{height:465px;min-height:0}
+  #cityMap.city-map-diorama .city-plot{height:112px}
+  #cityMap.city-map-diorama .city-plot-scene{height:86px}
+}
