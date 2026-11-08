@@ -1434,3 +1434,198 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 @media(prefers-reduced-motion:reduce){
   .city-model{transition:none}
 }
+
+
+/* StepGo City V12 – ISOMETRISCHE STADTWELT
+   Eine durchgaengige Diorama-Landschaft statt neun sichtbarer Karten.
+   Die DOM-Reihenfolge und die neun festen Bauplaetze bleiben unveraendert. */
+.city-map-card{
+  padding:16px 10px 15px;
+  background:linear-gradient(165deg,#fffdea 0%,#e5f7d0 100%);
+  border:4px solid #28563d;
+  box-shadow:0 7px 0 #92bb83,0 13px 23px #1b50342b;
+}
+.city-map-card .city-map-head{margin:0 4px 14px}
+.city-map-head h2{font-size:16px}
+.city-map-card .city-landscape{display:none}
+.city-map-card .city-map-label{
+  background:linear-gradient(140deg,#fff1ab,#ffce65);
+  border:2px solid #946a2d;color:#674c22;
+  box-shadow:2px 3px 0 #ad8d48;transform:rotate(3deg);
+  font-size:9px;
+}
+/* Ein gemeinsamer schwebender Stadtboden mit sichtbaren Seitenflaechen. */
+#cityMap.city-map-diorama{
+  display:block;position:relative;isolation:isolate;
+  box-sizing:border-box;
+  width:100%;height:clamp(390px,122vw,510px);
+  min-height:0;padding:0;margin:0;
+  overflow:hidden;border-radius:18px;
+  border:3px solid #2b6a60;
+  background:
+    radial-gradient(circle at 19% 11%,#ffffffb6 0 9px,transparent 11px),
+    radial-gradient(circle at 85% 21%,#ffffff99 0 7px,transparent 9px),
+    linear-gradient(180deg,#89d9ff 0%,#cbf2ff 42%,#e7f5cb 90%,#d4ebb9 100%);
+  box-shadow:inset 0 3px 0 #fff8,0 5px 0 #8fc29a;
+  perspective:600px;
+}
+#cityMap.city-map-diorama::before{
+  content:"";position:absolute;z-index:0;inset:2.7% 0 3%;
+  pointer-events:none;
+  background:linear-gradient(147deg,#95e88d 0%,#60b969 48%,#3d915a 51%,#276c4d 78%,#205e47 100%);
+  clip-path:polygon(50% 7%,96% 43%,96% 57%,50% 96%,4% 57%,4% 43%);
+  filter:drop-shadow(0 4px 3px #184f3e6b);
+}
+#cityMap.city-map-diorama::after{
+  content:"";position:absolute;z-index:1;inset:2.7% 0 3%;
+  pointer-events:none;
+  clip-path:polygon(50% 7%,96% 43%,50% 81%,4% 43%);
+  background:
+    radial-gradient(ellipse at 24% 34%,#fff2a679 0 3px,transparent 4px),
+    radial-gradient(ellipse at 78% 72%,#dcf9a67d 0 5px,transparent 7px),
+    linear-gradient(46deg,
+      transparent 24%,#a48e69 24% 25%,
+      #e6cb9e 25% 30%,#b39a74 30% 31%,
+      transparent 31% 64%,#b39a74 64% 65%,
+      #e6cb9e 65% 70%,#b39a74 70% 71%,transparent 71%),
+    linear-gradient(-46deg,
+      transparent 24%,#b59c73 24% 25%,
+      #ead4a5 25% 30%,#b59c73 30% 31%,
+      transparent 31% 64%,#b59c73 64% 65%,
+      #ead4a5 65% 70%,#b59c73 70% 71%,transparent 71%),
+    repeating-linear-gradient(128deg,#a7e889 0 14px,#9add7e 14px 28px);
+  box-shadow:inset 0 12px 15px #e8ffc25e;
+}
+/* Feste, isometrisch projizierte Standorte. Horizontale Bauten stehen
+   tiefer als die dahinterliegenden und duerfen bewusst ueberlappen. */
+#cityMap.city-map-diorama .city-plot{
+  position:absolute;display:block;box-sizing:border-box;
+  width:27%;max-width:110px;height:108px;
+  min-height:0;padding:0;margin:0;gap:0;
+  transform:translate(-50%,-50%);
+  overflow:visible;
+  border:0;border-radius:0;background:transparent;
+  box-shadow:none;
+  text-align:center;
+  animation:none;
+}
+#cityMap.city-map-diorama .city-plot:nth-child(1){left:50%;top:20%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(2){left:65%;top:31%;z-index:3}
+#cityMap.city-map-diorama .city-plot:nth-child(3){left:80%;top:42%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(4){left:35%;top:31%;z-index:3}
+#cityMap.city-map-diorama .city-plot:nth-child(5){left:50%;top:42%;z-index:5}
+#cityMap.city-map-diorama .city-plot:nth-child(6){left:65%;top:53%;z-index:6}
+#cityMap.city-map-diorama .city-plot:nth-child(7){left:20%;top:42%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(8){left:35%;top:53%;z-index:6}
+#cityMap.city-map-diorama .city-plot:nth-child(9){left:50%;top:64%;z-index:7}
+/* Kleine Grueninseln ersetzen sichtbare Kaestchenraender. */
+#cityMap.city-map-diorama .city-plot::before{
+  content:"";position:absolute;z-index:0;
+  top:27px;left:6%;width:88%;height:57px;
+  border:0;border-radius:50%;
+  transform:rotate(-11deg) scaleY(.55);
+  background:linear-gradient(#e7ffb5,#6fb873);
+  box-shadow:0 6px 0 #377f51,0 8px 5px #24513c55;
+  pointer-events:none;
+}
+#cityMap.city-map-diorama .city-plot::after{content:none}
+#cityMap.city-map-diorama .city-plot-locked::before{
+  background:repeating-linear-gradient(120deg,#e7e3ae 0 9px,#d6d8a7 9px 18px);
+  box-shadow:0 4px 0 #a1a775,0 6px 4px #34583a52;
+  border:1px dashed #8e9663;
+}
+#cityMap.city-map-diorama .city-plot-center::before{
+  background:linear-gradient(#fff1b1,#ecbd6b);
+  box-shadow:0 6px 0 #a07743,0 9px 6px #4f4c3355;
+}
+#cityMap.city-map-diorama .city-plot-park::before{background:linear-gradient(#e2ffaf,#66bb67)}
+#cityMap.city-map-diorama .city-plot-lake::before{background:linear-gradient(#d4ffff,#50b4d7);box-shadow:0 5px 0 #3d829a,0 7px 4px #24576e55}
+#cityMap.city-map-diorama .city-plot-tower::before{background:linear-gradient(#e8d4ff,#a77ed7)}
+#cityMap.city-map-diorama .city-plot-scene{
+  position:absolute;z-index:1;left:0;right:0;top:0;
+  width:100%;height:80px;min-height:0;flex:none;
+  display:grid;place-items:center;
+  overflow:visible;
+}
+#cityMap.city-map-diorama .city-plot-scene::before{
+  width:74%;left:13%;height:16px;bottom:8px;
+  background:#24533454;
+}
+#cityMap.city-map-diorama .city-model{
+  transform:translate(-50%,-57%) scale(.91);
+  filter:drop-shadow(2px 6px 1px #25453680);
+}
+#cityMap.city-map-diorama .city-model-level-2{
+  transform:translate(-50%,-59%) scale(1.00)
+}
+#cityMap.city-map-diorama .city-model-level-3{
+  transform:translate(-50%,-62%) scale(1.09)
+}
+#cityMap.city-map-diorama .city-model-hall{
+  transform:translate(-50%,-58%) scale(1.12);
+  filter:drop-shadow(3px 7px 1px #63472594)
+}
+#cityMap.city-map-diorama .city-plot-decoration{
+  right:3px;bottom:4px;font-size:12px;
+  filter:drop-shadow(1px 2px 0 #234933c5);
+}
+#cityMap.city-map-diorama .city-plot-locked .city-plot-art{
+  position:relative;display:block;
+  opacity:.9;font-size:26px;
+  filter:drop-shadow(0 2px 0 #6e9956);
+}
+#cityMap.city-map-diorama .city-plot-locked .city-plot-decoration{font-size:12px}
+#cityMap.city-map-diorama .city-plot-label{
+  position:absolute;z-index:9;
+  left:50%;bottom:0;transform:translateX(-50%);
+  display:block;max-width:100%;min-width:58px;
+  margin:0;padding:4px 5px;
+  border:2px solid #397351;border-radius:10px;
+  background:#fffbe8ee;color:#255338;
+  box-shadow:0 2px 0 #2d6949;
+  font-size:9px;line-height:1.15;font-weight:950;
+  white-space:nowrap;text-overflow:ellipsis;overflow:hidden;
+  pointer-events:none;
+}
+#cityMap.city-map-diorama .city-plot-center .city-plot-label{
+  background:#fff0ad;border-color:#a07832;color:#5d481a;
+}
+#cityMap.city-map-diorama .city-plot-locked .city-plot-label{
+  color:#52754c;background:#eefaD4dc;border-color:#7aa26c;
+}
+#cityMap.city-map-diorama .city-plot-rank{
+  position:absolute;top:7px;right:-2px;z-index:11;
+  border:2px solid #77551a;
+  background:linear-gradient(145deg,#fff8a0,#ffc346);
+  color:#60410c;
+  border-radius:99px;padding:3px 5px;
+  box-shadow:1px 2px 0 #997536;
+}
+#cityMap.city-map-diorama .city-plot-level-3 .city-plot-label{
+  border-color:#b17b2f;background:#fff5c7;
+}
+#cityMap.city-map-diorama .city-plot-level-3::before{
+  box-shadow:0 5px 0 #b8933c,0 8px 5px #68543385;
+}
+.city-map-card .city-map-tip{padding:9px 6px 2px;margin:11px 0 4px;font-size:10px}
+.city-map-card .city-map-bottom{padding:0 4px;gap:8px}
+@media(max-width:380px){
+  #cityMap.city-map-diorama{height:390px;min-height:0}
+  #cityMap.city-map-diorama .city-plot{width:28%;height:100px}
+  #cityMap.city-map-diorama .city-plot-scene{height:74px}
+  #cityMap.city-map-diorama .city-model{transform:translate(-50%,-57%) scale(.81)}
+  #cityMap.city-map-diorama .city-model-level-2{transform:translate(-50%,-59%) scale(.9)}
+  #cityMap.city-map-diorama .city-model-level-3{transform:translate(-50%,-62%) scale(.98)}
+  #cityMap.city-map-diorama .city-model-hall{transform:translate(-50%,-58%) scale(1.0)}
+  #cityMap.city-map-diorama .city-plot-label{font-size:8px;min-width:54px;padding:4px 3px}
+  #cityMap.city-map-diorama .city-plot-rank{font-size:8px;padding:3px 4px}
+}
+@media(min-width:580px){
+  #cityMap.city-map-diorama{height:510px}
+  #cityMap.city-map-diorama .city-plot{height:115px}
+  #cityMap.city-map-diorama .city-plot-scene{height:90px}
+}
+@media(prefers-reduced-motion:reduce){
+  #cityMap.city-map-diorama .city-plot{animation:none}
+  #cityMap.city-map-diorama .city-model{transition:none}
+}
