@@ -528,3 +528,41 @@ test('Comic Level 2 color and contrast styles exist and do not remove building i
   assert.equal(app.state().wallet,325);
   assert.equal(app.state().cityUpgrades.park,2);
 });
+
+
+test('Isometric diorama layout shows one continuous landscape and nine fixed places',()=>{
+  assert.match(html,/class="city-map city-map-diorama"/);
+  assert.match(html,/Zusammenhängende isometrische Comic-Stadt mit 9 festen Bauplätzen/);
+  const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
+  const iso=css.slice(css.indexOf('/* StepGo City V12 – ISOMETRISCHE STADTWELT'));
+  assert.ok(iso.length>5500,'Diorama CSS needs the full scenery and responsive layout');
+  assert.match(iso,/#cityMap\.city-map-diorama::before\{/);
+  assert.match(iso,/#cityMap\.city-map-diorama::after\{/);
+  assert.match(iso,/#cityMap\.city-map-diorama \.city-plot\{/);
+  assert.match(iso,/clip-path:polygon\(/);
+  assert.match(iso,/#cityMap\.city-map-diorama \.city-plot:nth-child\(5\)\{left:50%;top:42%;z-index:5\}/);
+  for(let i=1;i<=9;i++) {
+    assert.ok(iso.includes('city-plot:nth-child('+i+')'),'Missing fixed building place '+i);
+  }
+  assert.match(iso,/@media\(max-width:380px\)/);
+});
+
+test('Diorama changes only layout: coins, saved buildings and upgrade cost stay intact',()=>{
+  const state=baseState();
+  state.wallet=380;
+  state.cityBuildings=['park','clinic'];
+  state.cityUpgrades={park:2,clinic:3};
+  const app=harness(state);
+  const before=app.state();
+  assert.equal(app.get('cityMap').children.length,9);
+  assert.equal(app.get('cityMap').children[0].attributes['aria-label'],'Stadtpark – Stufe 2 von 3');
+  assert.equal(app.get('cityMap').children[7].attributes['aria-label'],'Klinik – Stufe 3 von 3');
+  assert.deepEqual(app.state(),before);
+  const card=app.get('cityBuildList').children[0];
+  assert.match(card.children[2].attributes['aria-label'],/Stufe 2 auf 3 für 100 Stadtmünzen/);
+  card.children[2].click();
+  assert.equal(app.state().wallet,280);
+  assert.equal(app.state().cityUpgrades.park,3);
+  assert.deepEqual(app.state().cityBuildings,['park','clinic']);
+  assert.equal(app.get('cityMap').children.length,9);
+});
