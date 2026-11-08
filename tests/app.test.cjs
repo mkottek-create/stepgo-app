@@ -403,7 +403,7 @@ test('Fixed 3D map shows geometric models and one unchanged plot per building',(
   assert.equal(tower.children[0].children[2].className,'city-model city-model-tower city-model-level-1');
   assert.equal(hall.children[0].children[2].className,'city-model city-model-hall city-model-level-1');
   assert.equal(home.attributes['aria-label'],'Wohnviertel – Stufe 3 von 3');
-  assert.match(html,/isometrische Comic-Stadt/);
+  assert.match(html,/rechteckige Comic-Stadt/);
   assert.match(html,/festen Bauplätzen/);
 });
 
@@ -487,7 +487,7 @@ test('Comic Level 2 keeps fixed city parcels and stored currency untouched',()=>
   const plots=app.get('cityMap').children;
   assert.equal(plots.length,9);
   assert.equal(plots[4].attributes['aria-label'],'Rathaus – Startgebäude');
-  assert.match(html,/🌳 STADTPLATTE/);
+  assert.match(html,/🏡 GERADE STADT/);
   assert.match(html,/city-landscape-kite/);
   const cityOrder=['park','home','bakery','market',null,'lake','school','clinic','tower'];
   cityOrder.forEach((id,pos)=>{
@@ -532,7 +532,7 @@ test('Comic Level 2 color and contrast styles exist and do not remove building i
 
 test('Isometric diorama layout shows one continuous landscape and nine fixed places',()=>{
   assert.match(html,/class="city-map city-map-diorama"/);
-  assert.match(html,/Zusammenhängende isometrische Comic-Stadt mit 9 festen Bauplätzen/);
+  assert.match(html,/Gerade rechteckige Comic-Stadt mit 9 festen Bauplätzen/);
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
   const iso=css.slice(css.indexOf('/* StepGo City V12 – ISOMETRISCHE STADTWELT'));
   assert.ok(iso.length>5500,'Diorama CSS needs the full scenery and responsive layout');
@@ -588,8 +588,8 @@ test('Straight city plateau replaces diamond and keeps all nine plots in three r
     assert.ok(updated.includes('city-plot:nth-child('+pos+'){left:'+left+'%;top:'+top+'%;z-index:'),
       'Missing straight row coordinates for plot '+pos);
   });
-  assert.match(html,/Gerade Stadtfläche/);
-  assert.match(html,/styles\.css\?v=cityboard2/);
+  assert.match(html,/rechteckige Stadtfläche/);
+  assert.match(html,/styles\.css\?v=cityflat3/);
   assert.match(updated,/@media\(max-width:380px\)/);
 });
 
@@ -611,4 +611,63 @@ test('Straight city plateau preserves purchased buildings and all upgrades',()=>
   assert.equal(app.state().wallet,260);
   assert.equal(app.state().cityUpgrades.bakery,3);
   assert.equal(app.get('cityMap').children.length,9);
+});
+
+
+test('Final flat city surface has rectangular 90 degree edges, no diamond or rotated pads',()=>{
+  const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
+  const marker='/* StepGo City V14 – WIRKLICH GERADE STADTFLAECHE';
+  assert.ok(css.includes(marker));
+  const final=css.slice(css.indexOf(marker));
+  const rule=selector=>{
+    const start=final.indexOf(selector+'{');
+    assert.ok(start>=0,'Missing final style override for '+selector);
+    const begin=start+selector.length+1;
+    return final.slice(begin,final.indexOf('}',begin));
+  };
+  const floor=rule('#cityMap.city-map-diorama');
+  const surface=rule('#cityMap.city-map-diorama::before');
+  const roads=rule('#cityMap.city-map-diorama::after');
+  assert.match(floor,/perspective:none/);
+  assert.match(floor,/transform:none/);
+  for(const name of ['surface','roads']){
+    const body=name==='surface'?surface:roads;
+    assert.match(body,/clip-path:none/);
+    assert.match(body,/transform:none/);
+    assert.match(body,/inset:0/);
+    assert.doesNotMatch(body,/polygon|rotate|skew/);
+  }
+  assert.match(roads,/linear-gradient\(90deg/);
+  assert.match(roads,/linear-gradient\(0deg/);
+  const pad=rule('#cityMap.city-map-diorama .city-plot::before');
+  assert.match(pad,/transform:none/);
+  assert.match(pad,/clip-path:none/);
+  assert.match(pad,/border-radius:11px/);
+  assert.doesNotMatch(pad,/rotate|skew/);
+});
+
+test('The final city ground has 3 aligned rows and columns with the Rathaus centered',()=>{
+  const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
+  const marker='/* StepGo City V14 – WIRKLICH GERADE STADTFLAECHE';
+  const final=css.slice(css.indexOf(marker));
+  const places=[
+    [17,20],[50,20],[83,20],
+    [17,50],[50,50],[83,50],
+    [17,80],[50,80],[83,80]
+  ];
+  places.forEach(([left,top],i)=>{
+    assert.ok(final.includes('city-plot:nth-child('+(i+1)+'){left:'+left+'%;top:'+top+'%;z-index:'),'Plot '+(i+1)+' not on straight grid');
+  });
+  const initial=baseState();
+  initial.cityBuildings=['park','home','clinic'];
+  initial.cityUpgrades={home:3,clinic:2};
+  const app=harness(initial);
+  assert.equal(app.get('cityMap').children.length,9);
+  assert.equal(app.get('cityMap').children[4].children[1].textContent,'Rathaus');
+  assert.equal(app.get('cityMap').children[1].children[2].textContent,'★ 3');
+  assert.equal(app.get('cityMap').children[7].children[2].textContent,'★ 2');
+  assert.deepEqual(app.state().cityBuildings,['park','home','clinic']);
+  assert.deepEqual(app.state().cityUpgrades,{home:3,clinic:2});
+  assert.match(html,/styles\.css\?v=cityflat3/);
+  assert.match(html,/waagerechten Straßen/);
 });
