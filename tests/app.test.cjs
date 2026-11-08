@@ -403,8 +403,8 @@ test('Fixed 3D map shows geometric models and one unchanged plot per building',(
   assert.equal(tower.children[0].children[2].className,'city-model city-model-tower city-model-level-1');
   assert.equal(hall.children[0].children[2].className,'city-model city-model-hall city-model-level-1');
   assert.equal(home.attributes['aria-label'],'Wohnviertel – Stufe 3 von 3');
-  assert.match(html,/rechteckige Comic-Stadt/);
-  assert.match(html,/festen Bauplätzen/);
+  assert.match(html,/Comic-Spielstadt/);
+  assert.match(html,/festen Gebäudestandorten/);
 });
 
 test('Upgrade journey from level 1 to 3 spends coins exactly twice and retains plot',()=>{
@@ -487,7 +487,7 @@ test('Comic Level 2 keeps fixed city parcels and stored currency untouched',()=>
   const plots=app.get('cityMap').children;
   assert.equal(plots.length,9);
   assert.equal(plots[4].attributes['aria-label'],'Rathaus – Startgebäude');
-  assert.match(html,/🏡 GERADE STADT/);
+  assert.match(html,/🌳 DEINE STADTWELT/);
   assert.match(html,/city-landscape-kite/);
   const cityOrder=['park','home','bakery','market',null,'lake','school','clinic','tower'];
   cityOrder.forEach((id,pos)=>{
@@ -532,7 +532,7 @@ test('Comic Level 2 color and contrast styles exist and do not remove building i
 
 test('Isometric diorama layout shows one continuous landscape and nine fixed places',()=>{
   assert.match(html,/class="city-map city-map-diorama"/);
-  assert.match(html,/Gerade rechteckige Comic-Stadt mit 9 festen Bauplätzen/);
+  assert.match(html,/Zusammenhängende Comic-Spielstadt mit neun festen Gebäudestandorten/);
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
   const iso=css.slice(css.indexOf('/* StepGo City V12 – ISOMETRISCHE STADTWELT'));
   assert.ok(iso.length>5500,'Diorama CSS needs the full scenery and responsive layout');
@@ -568,30 +568,32 @@ test('Diorama changes only layout: coins, saved buildings and upgrade cost stay 
 });
 
 
-test('Straight city plateau replaces diamond and keeps all nine plots in three rows',()=>{
+
+test('Natural town background replaces raster with winding footpaths, pond and trees',()=>{
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
-  const updated=css.slice(css.indexOf('/* StepGo City V13 – GERADE STADTPLATTE UND ORDNUNG'));
-  assert.ok(updated.length>4500,'Final straight-board override must be present');
-  assert.match(updated,/#cityMap\.city-map-diorama::before\{/);
-  assert.match(updated,/#cityMap\.city-map-diorama::after\{/);
-  assert.match(updated,/7% 17%,93% 17%,98% 29%,98% 78%/);
-  assert.match(updated,/93% 91%,7% 91%,2% 78%,2% 29%/);
-  assert.match(updated,/93% 83%,7% 83%,2% 76%,2% 29%/);
-  const expected=[
-    [23,30],[50,30],[77,30],
-    [23,51],[50,51],[77,51],
-    [23,72],[50,72],[77,72]
-  ];
-  expected.forEach(([left,top],i)=>{
-    const pos=i+1;
-    // Positions are exact fixed coordinates rather than computed from player state.
-    assert.ok(updated.includes('city-plot:nth-child('+pos+'){left:'+left+'%;top:'+top+'%;z-index:'),
-      'Missing straight row coordinates for plot '+pos);
-  });
-  assert.match(html,/rechteckige Stadtfläche/);
-  assert.match(html,/styles\.css\?v=cityflat3/);
-  assert.match(updated,/@media\(max-width:380px\)/);
+  const marker='/* StepGo City V15 – ORGANISCHE COMIC-STADT';
+  assert.ok(css.includes(marker),'Latest town style must exist');
+  const town=css.slice(css.indexOf(marker));
+  assert.match(town,/background-image:url\("city-townscape\.svg"\)/);
+  assert.match(town,/#cityMap\.city-map-diorama::before,/);
+  assert.match(town,/#cityMap\.city-map-diorama::after\{/);
+  assert.match(town,/content:none/);
+  assert.match(town,/#cityMap\.city-map-diorama \.city-plot-locked \.city-plot-label\{display:none\}/);
+  assert.match(town,/#cityMap\.city-map-diorama \.city-plot-built \.city-plot-label\{display:none\}/);
+  const graphic=fs.readFileSync(path.join(root,'city-townscape.svg'),'utf8');
+  assert.match(graphic,/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
+  assert.match(graphic,/viewBox="0 0 480 630"/);
+  assert.match(graphic,/stroke-linecap="round"/);
+  assert.match(graphic,/C115 118 137 184/);
+  assert.match(graphic,/linearGradient id="water"/);
+  assert.match(graphic,/circle cx=/);
+  assert.ok((graphic.match(/<g transform="translate\(/g)||[]).length>=35,
+    'Town should have enough decorative trees and flowers to read as a living landscape');
+  assert.doesNotMatch(town,/repeating-linear-gradient\(0deg/);
+  assert.match(html,/natürlichen Wegen/);
+  assert.match(html,/styles\.css\?v=town1/);
 });
+
 
 test('Straight city plateau preserves purchased buildings and all upgrades',()=>{
   const state=baseState();
@@ -614,51 +616,52 @@ test('Straight city plateau preserves purchased buildings and all upgrades',()=>
 });
 
 
-test('Final flat city surface has rectangular 90 degree edges, no diamond or rotated pads',()=>{
+
+test('Latest visual override hides all old grid, rectangular lots and raised islands',()=>{
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
-  const marker='/* StepGo City V14 – WIRKLICH GERADE STADTFLAECHE';
-  assert.ok(css.includes(marker));
-  const final=css.slice(css.indexOf(marker));
+  const marker='/* StepGo City V15 – ORGANISCHE COMIC-STADT';
+  const latest=css.slice(css.indexOf(marker));
   const rule=selector=>{
-    const start=final.indexOf(selector+'{');
-    assert.ok(start>=0,'Missing final style override for '+selector);
-    const begin=start+selector.length+1;
-    return final.slice(begin,final.indexOf('}',begin));
+    const idx=latest.indexOf(selector+'{');
+    assert.ok(idx>=0,'Missing final style '+selector);
+    const start=idx+selector.length+1;
+    return latest.slice(start,latest.indexOf('}',start));
   };
-  const floor=rule('#cityMap.city-map-diorama');
-  const surface=rule('#cityMap.city-map-diorama::before');
-  const roads=rule('#cityMap.city-map-diorama::after');
-  assert.match(floor,/perspective:none/);
-  assert.match(floor,/transform:none/);
-  for(const name of ['surface','roads']){
-    const body=name==='surface'?surface:roads;
-    assert.match(body,/clip-path:none/);
-    assert.match(body,/transform:none/);
-    assert.match(body,/inset:0/);
-    assert.doesNotMatch(body,/polygon|rotate|skew/);
-  }
-  assert.match(roads,/linear-gradient\(90deg/);
-  assert.match(roads,/linear-gradient\(0deg/);
-  const pad=rule('#cityMap.city-map-diorama .city-plot::before');
-  assert.match(pad,/transform:none/);
-  assert.match(pad,/clip-path:none/);
-  assert.match(pad,/border-radius:11px/);
-  assert.doesNotMatch(pad,/rotate|skew/);
+  const map=rule('#cityMap.city-map-diorama');
+  assert.match(map,/background-image:url\("city-townscape\.svg"\)/);
+  assert.match(map,/background-size:100% 100%/);
+  assert.match(map,/perspective:none/);
+  const hidden=latest.slice(latest.indexOf('#cityMap.city-map-diorama::before,'),latest.indexOf('#cityMap.city-map-diorama .city-plot{'));
+  assert.match(hidden,/content:none/);
+  assert.match(hidden,/display:none/);
+  assert.match(hidden,/background:none/);
+  const island=latest.slice(latest.indexOf('#cityMap.city-map-diorama .city-plot::before,'),latest.indexOf('#cityMap.city-map-diorama .city-plot-scene{'));
+  assert.match(island,/content:none/);
+  assert.match(island,/display:none/);
+  assert.ok(!latest.includes('linear-gradient(90deg'),'Town should not reintroduce hard-edged street grid');
+  const native=fs.readFileSync(path.join(root,'scripts/prepare-native.mjs'),'utf8');
+  assert.match(native,/city-townscape\.svg/);
 });
 
-test('The final city ground has 3 aligned rows and columns with the Rathaus centered',()=>{
+
+
+test('Town buildings have organic fixed positions while coins, levels and Rathaus are preserved',()=>{
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
-  const marker='/* StepGo City V14 – WIRKLICH GERADE STADTFLAECHE';
-  const final=css.slice(css.indexOf(marker));
+  const latest=css.slice(css.indexOf('/* StepGo City V15 – ORGANISCHE COMIC-STADT'));
   const places=[
-    [17,20],[50,20],[83,20],
-    [17,50],[50,50],[83,50],
-    [17,80],[50,80],[83,80]
+    [21,24],[58,18],[82,34],
+    [23,44],[51,47],[79,64],
+    [20,75],[47,75],[80,87]
   ];
   places.forEach(([left,top],i)=>{
-    assert.ok(final.includes('city-plot:nth-child('+(i+1)+'){left:'+left+'%;top:'+top+'%;z-index:'),'Plot '+(i+1)+' not on straight grid');
+    const pos=i+1;
+    assert.ok(latest.includes('city-plot:nth-child('+pos+'){left:'+left+'%;top:'+top+'%;z-index:'),
+      'Missing natural fixed position for site '+pos);
   });
+  const distinctRows=new Set(places.map(([x,y])=>y));
+  assert.ok(distinctRows.size>=6,'Town must not visually be aligned in a strict 3x3 grid');
   const initial=baseState();
+  initial.wallet=360;
   initial.cityBuildings=['park','home','clinic'];
   initial.cityUpgrades={home:3,clinic:2};
   const app=harness(initial);
@@ -666,8 +669,10 @@ test('The final city ground has 3 aligned rows and columns with the Rathaus cent
   assert.equal(app.get('cityMap').children[4].children[1].textContent,'Rathaus');
   assert.equal(app.get('cityMap').children[1].children[2].textContent,'★ 3');
   assert.equal(app.get('cityMap').children[7].children[2].textContent,'★ 2');
+  assert.equal(app.get('cityMap').children[5].children[0].children[0].textContent,'＋');
+  assert.equal(app.state().wallet,360);
   assert.deepEqual(app.state().cityBuildings,['park','home','clinic']);
   assert.deepEqual(app.state().cityUpgrades,{home:3,clinic:2});
-  assert.match(html,/styles\.css\?v=cityflat3/);
-  assert.match(html,/waagerechten Straßen/);
+  assert.match(html,/styles\.css\?v=town1/);
 });
+
