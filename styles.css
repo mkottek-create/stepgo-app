@@ -1102,3 +1102,335 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .city-build-stage{font-size:9px}
 }
 @media(prefers-reduced-motion:reduce){.city-model{transition:none}}
+
+
+/* StepGo City V11 – COMIC STUFE 2
+   Stilwechsel ohne Eingriff in Waehrung, Bauplaetze oder Upgradelogik. */
+.city-map-card{
+  border:4px solid #264d36;border-radius:24px;
+  background:linear-gradient(155deg,#fffde7 0%,#dbfac1 100%);
+  box-shadow:0 7px 0 #8bc47a,0 12px 0 #527f55,0 16px 25px #29472725;
+}
+.city-map-head h2{
+  color:#204d31;letter-spacing:-.45px;
+  text-shadow:1px 2px 0 #e2f8c8;
+}
+.city-map-label{
+  border:2px solid #75511f;border-radius:11px;
+  padding:7px 8px;
+  background:linear-gradient(150deg,#fff2a3,#ffc44c);
+  color:#653d0a;box-shadow:2px 3px 0 #9d742b;
+  transform:rotate(5deg);font-size:9px;
+}
+.city-landscape{
+  height:103px;
+  border:4px solid #244e3c;border-bottom:0;
+  border-radius:18px 18px 0 0;
+  background:linear-gradient(180deg,#51b8ff 0%,#a4e5ff 69%,#e7ffad 100%);
+  box-shadow:inset 0 5px 0 #d6f6ff7f;
+}
+.city-landscape-sun{
+  top:9px;right:17%;width:42px;height:42px;
+  background:radial-gradient(circle at 35% 30%,#ffffd2 0%,#ffe06c 65%,#ffba30);
+  border:3px solid #ed9c23;
+  box-shadow:0 0 0 7px #ffeb9470,0 0 0 13px #fff1b43b;
+}
+.city-landscape-cloud{
+  width:59px;height:18px;
+  background:#fffef3;
+  box-shadow:13px -11px 0 2px #fffef3,31px -4px 0 2px #fffef3,1px 3px 0 #91bedd;
+  border-radius:30px;
+  opacity:1;
+}
+.city-landscape-cloud-left{left:3%;top:16px;transform:scale(.82)}
+.city-landscape-cloud-right{right:8%;top:49px;transform:scale(.63)}
+.city-landscape-hill-back{
+  background:linear-gradient(160deg,#93e39c,#3cae74);
+  border-top:4px solid #277c4c;
+}
+.city-landscape-hill-front{
+  background:linear-gradient(160deg,#a7ed78,#5dbb66);
+  border-top:4px solid #318b50;
+}
+.city-landscape-trees{bottom:2px;left:4%;font-size:25px;filter:drop-shadow(1px 2px 0 #28593b)}
+.city-landscape-sign{
+  background:linear-gradient(145deg,#ffec92,#ffcc5e);
+  border:3px solid #365d35;color:#4d5229;
+  box-shadow:3px 4px 0 #224a31;font-size:10px;
+  transform:rotate(-4deg);letter-spacing:.7px;
+}
+.city-landscape-kite{
+  position:absolute;z-index:4;right:43%;top:8px;font-size:23px;
+  filter:drop-shadow(1px 2px 0 #315e623b);transform:rotate(-11deg);
+}
+.city-landscape-spark{position:absolute;z-index:4;color:#fff8b6;font-weight:950;font-size:15px;text-shadow:1px 2px 0 #c18a34}
+.city-landscape-spark-left{left:38%;top:31px}
+.city-landscape-spark-right{right:30%;top:65px}
+.city-map{
+  gap:14px;padding:19px 10px 20px;min-height:374px;
+  border:4px solid #244e3c;border-top:0;border-radius:0 0 18px 18px;
+  box-shadow:inset 0 5px 0 #497e3570,inset 0 -6px 0 #6dad5c4a;
+  background:
+    radial-gradient(circle at 12% 12%,#fff5a860 0 5px,transparent 6px),
+    radial-gradient(circle at 87% 77%,#e9fca580 0 6px,transparent 7px),
+    linear-gradient(90deg,transparent calc(33.333% - 10px),#d1ad7d calc(33.333% - 10px),#ecd5a7 calc(33.333% - 8px),#ecd5a7 calc(33.333% + 8px),#d1ad7d calc(33.333% + 10px),transparent calc(33.333% + 10px),
+      transparent calc(66.666% - 10px),#d1ad7d calc(66.666% - 10px),#ecd5a7 calc(66.666% - 8px),#ecd5a7 calc(66.666% + 8px),#d1ad7d calc(66.666% + 10px),transparent calc(66.666% + 10px)),
+    linear-gradient(0deg,transparent calc(33.333% - 10px),#c9a876 calc(33.333% - 10px),#e8d5a9 calc(33.333% - 8px),#e8d5a9 calc(33.333% + 8px),#c9a876 calc(33.333% + 10px),transparent calc(33.333% + 10px),
+      transparent calc(66.666% - 10px),#c9a876 calc(66.666% - 10px),#e8d5a9 calc(66.666% - 8px),#e8d5a9 calc(66.666% + 8px),#c9a876 calc(66.666% + 10px),transparent calc(66.666% + 10px)),
+    repeating-linear-gradient(140deg,#b6e98d 0px,#b6e98d 15px,#a3dd7d 15px,#a3dd7d 31px);
+}
+.city-plot{
+  min-height:107px;border:3px solid #274d37;border-radius:17px;
+  background:linear-gradient(150deg,#fbffdf 0%,#c3ee99 66%,#8bc96e 100%);
+  box-shadow:0 5px 0 #53824d,0 8px 10px #1a452c38;
+  padding:5px 3px 6px;
+}
+.city-plot::before{
+  top:4px;left:8px;right:8px;height:6px;
+  background:#ffffff6e;
+  border-radius:50%;
+}
+.city-plot-built::after{background:#326a48;height:11px}
+.city-plot-center{
+  border-color:#865b27;
+  background:linear-gradient(153deg,#fff9ba,#f5cf75 73%,#e4a949);
+  box-shadow:0 6px 0 #a2763f,0 10px 9px #6a532840;
+}
+.city-plot-locked{
+  border:3px dashed #71986b;
+  background:repeating-linear-gradient(130deg,#e8f0c9 0 11px,#dae8bc 11px 22px);
+  box-shadow:0 3px 0 #90ad80;
+}
+.city-plot-locked .city-plot-art{font-size:32px;opacity:.8}
+.city-plot-scene::before{
+  width:75%;height:19px;bottom:6px;left:12%;
+  background:#204a2970;border-radius:50%;
+  filter:blur(2px);
+}
+.city-plot-decoration{right:0;bottom:0;font-size:13px;letter-spacing:-4px;filter:drop-shadow(1px 2px 0 #285c34a3)}
+.city-plot-label{
+  border:2px solid #2b5c40;border-radius:9px;
+  background:linear-gradient(160deg,#fffef1,#f1f8df);
+  color:#254d36;font-size:10px;font-weight:950;
+  padding:4px 2px 3px;
+  box-shadow:1px 3px 0 #2e664a25;
+}
+.city-plot-locked .city-plot-label{border-color:#8ba77d;color:#71886b}
+.city-plot-center .city-plot-label{border-color:#9b702e;background:#fff3c7;color:#684718}
+.city-plot-rank{
+  top:-10px;right:-8px;
+  border:2px solid #2d573b;border-radius:999px;
+  background:linear-gradient(140deg,#fffcae,#ffc94a);
+  color:#65410c;box-shadow:1px 3px 0 #956f26;
+  font-size:10px;font-weight:950;padding:4px 6px;
+}
+.city-plot-level-2 .city-plot-rank{background:linear-gradient(140deg,#fff8b0,#ffd369);border-color:#966c26}
+.city-plot-level-3 .city-plot-rank{background:linear-gradient(140deg,#fff5b5,#ffb942);border-color:#9b5d1b}
+.city-plot-level-3{border-color:#a96d26;box-shadow:0 6px 0 #a78537,0 9px 10px #51402555}
+.city-plot-level-3 .city-plot-label{background:#fff2c4;border-color:#bd8b2e}
+.city-plot-built.city-plot-park{background:linear-gradient(150deg,#e7ffae,#8bdd79)}
+.city-plot-built.city-plot-home{background:linear-gradient(150deg,#fffbd4,#aadd89)}
+.city-plot-built.city-plot-bakery{background:linear-gradient(150deg,#ffedbb,#edb87b)}
+.city-plot-built.city-plot-market{background:linear-gradient(150deg,#fff9c8,#e4d68c)}
+.city-plot-built.city-plot-lake{background:linear-gradient(150deg,#d2fcff,#70cfe5)}
+.city-plot-built.city-plot-school{background:linear-gradient(150deg,#fff3cd,#decb86)}
+.city-plot-built.city-plot-clinic{background:linear-gradient(150deg,#edfffa,#9ce0d0)}
+.city-plot-built.city-plot-tower{background:linear-gradient(150deg,#f7e5ff,#c4a1ec)}
+/* Der stilisierte 3D-Hauskoerper erhaelt eine comicartige Kontur.
+   Die bestehenden Dach-/Wand-Flaechen bleiben dieselben. */
+.city-model{
+  filter:drop-shadow(3px 6px 0 #274b3499);
+  transition:transform .22s ease,filter .22s ease;
+}
+.city-model-front{
+  left:7px;top:25px;width:40px;height:37px;
+  background:linear-gradient(110deg,#ffffff9c,transparent 39%),var(--wall);
+  filter:drop-shadow(-2px 1px 0 #294735) drop-shadow(0 2px 0 #294735);
+}
+.city-model-side{
+  left:47px;top:21px;width:19px;height:42px;
+  background:linear-gradient(120deg,var(--side),#384c3d6e);
+  filter:drop-shadow(2px 1px 0 #294735);
+}
+.city-model-roof{
+  left:4px;top:6px;width:64px;height:32px;
+  background:linear-gradient(135deg,#fff1c1 0%,var(--roof-highlight) 32%,var(--roof) 78%);
+  clip-path:polygon(0 69%,37% 0,100% 47%,68% 100%);
+  filter:drop-shadow(0 2px 0 #263b2d);
+  z-index:6;
+}
+.city-model-window{
+  left:14px;top:37px;width:11px;height:12px;
+  border:2px solid #2d5d57;border-radius:3px;
+  background:linear-gradient(155deg,#e3ffff,#75cbe7);
+  transform:skewY(14deg);
+  box-shadow:17px 4px 0 -1px #75cbe7,17px 4px 0 1px #2d5d57;
+  z-index:7;
+}
+.city-model-door{
+  left:29px;top:50px;width:11px;height:12px;
+  border:2px solid #5f422c;border-radius:5px 5px 1px 1px;
+  background:linear-gradient(130deg,#a77a55,#744831);
+  transform:skewY(14deg);z-index:7;
+}
+.city-model-emblem{
+  z-index:8;top:7px;left:27px;
+  font-size:21px;line-height:1;
+  filter:drop-shadow(1px 2px 0 #274938bd);
+}
+.city-model-canopy{
+  display:none;left:10px;top:43px;width:42px;height:13px;
+  border:2px solid #674b2d;border-radius:2px 2px 6px 5px;
+  background:repeating-linear-gradient(90deg,#fffbdd 0 8px,#fa745b 8px 16px);
+  transform:skewY(12deg);box-shadow:0 3px 0 #7b5130;
+  z-index:9;
+}
+.city-model-chimney{
+  display:none;left:45px;top:3px;width:9px;height:17px;
+  border:2px solid #65432e;border-radius:3px 3px 0 0;
+  background:#d3735a;z-index:4;
+}
+.city-model-trim{
+  left:10px;top:54px;width:33px;height:5px;
+  background:linear-gradient(#fff9c8,#efc968);
+  border:1px solid #6c6340;
+  transform:skewY(13deg);z-index:8;
+}
+.city-model-flowerbox{
+  display:none;left:11px;top:49px;width:13px;height:5px;
+  background:#73ad5e;border:1px solid #365b3b;
+  transform:skewY(14deg);z-index:9;
+}
+.city-model-flowerbox::before{content:"✿";position:absolute;top:-11px;left:1px;color:#ff4f7b;font-size:13px;line-height:1}
+.city-model-accent{
+  left:46px;top:42px;z-index:10;
+  display:grid!important;place-items:center;
+  width:22px;height:21px;font-size:14px;
+  border:2px solid #375c42;border-radius:9px;
+  background:#fff2bf;box-shadow:1px 2px 0 #548759;
+  line-height:1;
+}
+.city-model-ornament{
+  z-index:12;top:-8px;right:-5px;
+  color:#fff5ab;font-size:15px;font-weight:950;
+  text-shadow:1px 2px 0 #a76c2d,0 0 5px #fffac9;
+  white-space:nowrap;
+}
+.city-model-level-2{transform:translate(-50%,-59%) scale(1.03);filter:drop-shadow(3px 7px 0 #274b3499)}
+.city-model-level-3{transform:translate(-50%,-63%) scale(1.11);filter:drop-shadow(3px 8px 0 #224331ac)}
+.city-model-level-2 .city-model-roof{background:linear-gradient(135deg,#fff8c1,var(--roof-highlight) 26%,var(--roof) 81%)}
+.city-model-level-3 .city-model-roof{background:linear-gradient(135deg,#fff9d8 0%,var(--roof-highlight) 29%,var(--roof) 75%)}
+.city-model-level-2 .city-model-window{box-shadow:16px 4px 0 -1px #71cbdb,16px 4px 0 1px #2d5d57,8px -8px 0 -3px #83d9e8}
+.city-model-level-3 .city-model-window{box-shadow:17px 4px 0 -1px #71cbdb,17px 4px 0 1px #2d5d57,7px -9px 0 -3px #83d9e8,24px -5px 0 -3px #83d9e8}
+.city-model-level-3::after{content:"✦";top:-11px;right:2px;font-size:20px}
+.city-model-hall{--wall:#ffe4ac;--side:#c8924d;--roof:#f5b24a;--roof-highlight:#fff3a3;transform:translate(-50%,-61%) scale(1.06)}
+.city-model-hall .city-model-emblem{font-size:24px;top:5px;left:24px}
+.city-model-hall .city-model-accent{background:#ffe589}
+.city-model-hall .city-model-trim{background:#eec66e}
+.city-model-park{--wall:#9be588;--side:#57a87d;--roof:#3ea65e;--roof-highlight:#d4ff82}
+.city-model-park .city-model-roof{top:24px;background:linear-gradient(135deg,#f7ffb0,#45bd64)}
+.city-model-park .city-model-front{top:41px;height:19px}
+.city-model-park .city-model-side{top:38px;height:22px}
+.city-model-park .city-model-emblem{left:19px;top:6px;font-size:37px}
+.city-model-park .city-model-trim{top:57px}
+.city-model-park .city-model-accent{left:45px;top:32px;background:#e4ffaf}
+.city-model-home{--wall:#ffe7a8;--side:#ca985a;--roof:#ec7767;--roof-highlight:#ffd09f}
+.city-model-home .city-model-chimney{display:block}
+.city-model-home .city-model-flowerbox{display:block}
+.city-model-bakery{--wall:#ffd8b1;--side:#bc7d5b;--roof:#dd6f46;--roof-highlight:#ffc09d}
+.city-model-bakery .city-model-canopy{display:block}
+.city-model-bakery .city-model-chimney{display:block}
+.city-model-bakery .city-model-accent{top:29px;background:#ffe29c}
+.city-model-market{--wall:#f3e7aa;--side:#b89c62;--roof:#f39143;--roof-highlight:#fff4a2}
+.city-model-market .city-model-canopy{display:block;background:repeating-linear-gradient(90deg,#fff6be 0 8px,#66bb79 8px 16px)}
+.city-model-market .city-model-accent{top:25px}
+.city-model-school{--wall:#ffe1b9;--side:#cd9475;--roof:#dc835d;--roof-highlight:#ffde9a}
+.city-model-school .city-model-canopy{display:block;background:repeating-linear-gradient(90deg,#fff3b0 0 8px,#ffb75e 8px 16px)}
+.city-model-clinic{--wall:#edfffa;--side:#78c4ba;--roof:#45bba7;--roof-highlight:#befff1}
+.city-model-clinic .city-model-accent{background:#f1fff9;color:#0f9079;font-size:19px;font-weight:950}
+.city-model-tower{--wall:#e6d3ff;--side:#9878bd;--roof:#9865d0;--roof-highlight:#f0cdff}
+.city-model-tower .city-model-roof{top:0;height:37px}
+.city-model-tower .city-model-front{top:20px;height:44px}
+.city-model-tower .city-model-side{top:18px;height:47px}
+.city-model-tower .city-model-chimney{display:block;top:-4px;left:17px;background:#cfb3f9;border-color:#694b8a}
+.city-model-tower .city-model-emblem{top:2px;left:27px}
+.city-model-tower .city-model-accent{top:37px;background:#f4e0ff}
+.city-model-lake{--wall:#9beeff;--side:#46adce;--roof:#4dd3ee;--roof-highlight:#e1ffff}
+.city-model-lake .city-model-roof{top:24px;background:linear-gradient(125deg,#e7ffff,#4cc9ed)}
+.city-model-lake .city-model-front{top:40px;height:17px}
+.city-model-lake .city-model-side{top:38px;height:20px}
+.city-model-lake .city-model-emblem{top:11px;left:20px;font-size:32px}
+.city-model-lake .city-model-accent{top:29px;background:#d7faff}
+.city-model-park .city-model-window,.city-model-park .city-model-door,
+.city-model-lake .city-model-window,.city-model-lake .city-model-door{display:none}
+.city-build-section .section-heading h2{color:#224b35;text-shadow:1px 2px 0 #f1ffe6}
+.city-build-card{
+  border:3px solid #2a523a;border-radius:19px;
+  background:linear-gradient(135deg,#fffef5,#e9ffd6);
+  box-shadow:0 5px 0 #92bb80,0 9px 10px #29553425;
+  padding:14px 10px 15px 16px;
+}
+.city-build-card.city-build-done{
+  background:linear-gradient(145deg,#f1ffdc,#d7f4ba);
+  border-color:#4f844b;
+}
+.city-build-card::before{background:#7bc865;width:6px}
+.city-build-bakery::before,.city-build-market::before{background:#f9ae53}
+.city-build-lake::before,.city-build-clinic::before{background:#64b7d7}
+.city-build-tower::before{background:#ab7bd9}
+.city-build-icon{
+  border:3px solid #416d43;border-radius:16px;
+  background:linear-gradient(150deg,#ffffff,#c6f2a5);
+  box-shadow:inset 1px 2px 0 #fff,0 3px 0 #659451;
+  font-size:31px;
+}
+.city-build-bakery .city-build-icon,.city-build-market .city-build-icon{background:#fff0c2;border-color:#c78e45}
+.city-build-lake .city-build-icon,.city-build-clinic .city-build-icon{background:#d4faff;border-color:#66a8bb}
+.city-build-tower .city-build-icon{background:#f6e4ff;border-color:#9e78bb}
+.city-build-info strong{font-weight:950}
+.city-build-stage{
+  border:2px solid #689d56;border-radius:999px;
+  background:#f0ffda;color:#2b693e;
+  padding:5px 8px;font-size:10px;
+  box-shadow:0 2px 0 #92bf8e;
+}
+.city-build-stage-max{background:#ffe7a0;border-color:#b88630;color:#754a11;box-shadow:0 2px 0 #d6b55a}
+.city-build-button{
+  border:3px solid #275438;border-radius:13px;
+  background:linear-gradient(150deg,#dfffab,#a9e46e);
+  color:#24492e;font-weight:950;
+  box-shadow:0 4px 0 #5e9454;
+  min-height:43px;
+}
+.city-build-card .city-build-button:not(:disabled){
+  background:linear-gradient(160deg,#e9ffb7,#a7e56b);
+  box-shadow:0 4px 0 #4d8746;
+}
+.city-build-card .city-build-button-upgrade:not(:disabled){
+  background:linear-gradient(145deg,#ffefad,#ffbb4f)!important;
+  color:#64400b!important;border-color:#8e5a20!important;
+  box-shadow:0 4px 0 #aa7b32!important;
+}
+.city-build-button-done:disabled{background:#ffe7a7;border-color:#ab7c29;color:#7e591b}
+.city-map-tip{
+  color:#3f6636;font-weight:950;font-size:10px;
+  padding:5px 8px;
+}
+@media(max-width:380px){
+  .city-map{gap:11px;padding:16px 6px 18px;min-height:339px}
+  .city-plot{min-height:94px;padding:3px 1px 5px;border-radius:13px}
+  .city-plot-scene{min-height:53px}
+  .city-model{transform:translate(-50%,-56%) scale(.75)}
+  .city-model-level-2{transform:translate(-50%,-59%) scale(.84)}
+  .city-model-level-3{transform:translate(-50%,-62%) scale(.93)}
+  .city-model-hall{transform:translate(-50%,-60%) scale(.88)}
+  .city-plot-label{font-size:9px;padding:3px 1px}
+  .city-plot-rank{top:-7px;right:-5px;padding:3px 5px}
+  .city-landscape{height:82px}
+  .city-landscape-kite{font-size:18px}
+  .city-landscape-sign{font-size:8px}
+  .city-build-stage{font-size:9px;padding:4px 6px}
+}
+@media(prefers-reduced-motion:reduce){
+  .city-model{transition:none}
+}
