@@ -487,7 +487,7 @@ test('Comic Level 2 keeps fixed city parcels and stored currency untouched',()=>
   const plots=app.get('cityMap').children;
   assert.equal(plots.length,9);
   assert.equal(plots[4].attributes['aria-label'],'Rathaus – Startgebäude');
-  assert.match(html,/🏘️ STADTWELT/);
+  assert.match(html,/🌳 STADTPLATTE/);
   assert.match(html,/city-landscape-kite/);
   const cityOrder=['park','home','bakery','market',null,'lake','school','clinic','tower'];
   cityOrder.forEach((id,pos)=>{
@@ -564,5 +564,51 @@ test('Diorama changes only layout: coins, saved buildings and upgrade cost stay 
   assert.equal(app.state().wallet,280);
   assert.equal(app.state().cityUpgrades.park,3);
   assert.deepEqual(app.state().cityBuildings,['park','clinic']);
+  assert.equal(app.get('cityMap').children.length,9);
+});
+
+
+test('Straight city plateau replaces diamond and keeps all nine plots in three rows',()=>{
+  const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
+  const updated=css.slice(css.indexOf('/* StepGo City V13 – GERADE STADTPLATTE UND ORDNUNG'));
+  assert.ok(updated.length>4500,'Final straight-board override must be present');
+  assert.match(updated,/#cityMap\.city-map-diorama::before\{/);
+  assert.match(updated,/#cityMap\.city-map-diorama::after\{/);
+  assert.match(updated,/7% 17%,93% 17%,98% 29%,98% 78%/);
+  assert.match(updated,/93% 91%,7% 91%,2% 78%,2% 29%/);
+  assert.match(updated,/93% 83%,7% 83%,2% 76%,2% 29%/);
+  const expected=[
+    [23,30],[50,30],[77,30],
+    [23,51],[50,51],[77,51],
+    [23,72],[50,72],[77,72]
+  ];
+  expected.forEach(([left,top],i)=>{
+    const pos=i+1;
+    // Positions are exact fixed coordinates rather than computed from player state.
+    assert.ok(updated.includes('city-plot:nth-child('+pos+'){left:'+left+'%;top:'+top+'%;z-index:'),
+      'Missing straight row coordinates for plot '+pos);
+  });
+  assert.match(html,/Gerade Stadtfläche/);
+  assert.match(html,/styles\.css\?v=cityboard2/);
+  assert.match(updated,/@media\(max-width:380px\)/);
+});
+
+test('Straight city plateau preserves purchased buildings and all upgrades',()=>{
+  const state=baseState();
+  state.wallet=600;
+  state.cityBuildings=['park','home','bakery'];
+  state.cityUpgrades={home:3,bakery:2};
+  const app=harness(state);
+  assert.equal(app.get('cityMap').children.length,9);
+  assert.equal(app.get('cityMap').children[4].children[1].textContent,'Rathaus');
+  assert.equal(app.get('cityMap').children[1].children[2].textContent,'★ 3');
+  assert.equal(app.get('cityMap').children[2].children[2].textContent,'★ 2');
+  assert.equal(app.state().wallet,600);
+  assert.deepEqual(app.state().cityBuildings,['park','home','bakery']);
+  const bakery=app.get('cityBuildList').children[2].children[2];
+  assert.match(bakery.attributes['aria-label'],/Bäckerei von Stufe 2 auf 3 für 340 Stadtmünzen/);
+  bakery.click();
+  assert.equal(app.state().wallet,260);
+  assert.equal(app.state().cityUpgrades.bakery,3);
   assert.equal(app.get('cityMap').children.length,9);
 });
