@@ -1992,3 +1992,217 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   #cityMap.city-map-diorama .city-plot{height:112px}
   #cityMap.city-map-diorama .city-plot-scene{height:86px}
 }
+
+
+/* StepGo City V15 – ORGANISCHE COMIC-STADT
+   Keine Kreuzstrassen / 3x3-Rasterdarstellung / schwimmende Bauplatz-Inseln.
+   Eine zusammenhaengende, handgezeichnete Mobile-Game-Welt wie beim Stadtbau.
+   Die neun IDs bleiben an ihren festen Positionen. */
+#cityMap.city-map-diorama{
+  display:block;
+  height:clamp(475px,145vw,605px);
+  min-height:0;
+  position:relative;
+  isolation:isolate;
+  box-sizing:border-box;
+  overflow:hidden;
+  border:3px solid #467f60;
+  border-radius:22px;
+  box-shadow:inset 0 3px 0 #ffffff70,0 5px 0 #80b07c,0 10px 16px #35613d26;
+  perspective:none;
+  transform:none;
+  background-color:#91d47c;
+  background-image:url("city-townscape.svg");
+  background-size:100% 100%;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+/* Die Hintergrundgrafik liefert die natuerlichen Pfade, Baeume und Gruenflaechen.
+   Kein pseudo-element darf die alte Strassen-Geometrie darueber zeichnen. */
+#cityMap.city-map-diorama::before,
+#cityMap.city-map-diorama::after{
+  content:none;
+  display:none;
+  background:none;
+  clip-path:none;
+  border:0;
+  box-shadow:none;
+}
+#cityMap.city-map-diorama .city-plot{
+  position:absolute;
+  box-sizing:border-box;
+  display:block;
+  width:28%;
+  max-width:120px;
+  height:105px;
+  min-height:0;
+  padding:0;
+  margin:0;
+  border:0;
+  box-shadow:none;
+  background:none;
+  transform:translate(-50%,-50%);
+  overflow:visible;
+  text-align:center;
+  animation:none;
+}
+/* Nicht als Reihen angelegt – feste, individuell im Stadtviertel gesetzte Orte. */
+#cityMap.city-map-diorama .city-plot:nth-child(1){left:21%;top:24%;z-index:2}
+#cityMap.city-map-diorama .city-plot:nth-child(2){left:58%;top:18%;z-index:3}
+#cityMap.city-map-diorama .city-plot:nth-child(3){left:82%;top:34%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(4){left:23%;top:44%;z-index:4}
+#cityMap.city-map-diorama .city-plot:nth-child(5){left:51%;top:47%;z-index:5}
+#cityMap.city-map-diorama .city-plot:nth-child(6){left:79%;top:64%;z-index:6}
+#cityMap.city-map-diorama .city-plot:nth-child(7){left:20%;top:75%;z-index:7}
+#cityMap.city-map-diorama .city-plot:nth-child(8){left:47%;top:75%;z-index:8}
+#cityMap.city-map-diorama .city-plot:nth-child(9){left:80%;top:87%;z-index:9}
+/* Die Bauteile stehen direkt auf Wiese, Naturboden und Wegen – ohne Parzellenkarten. */
+#cityMap.city-map-diorama .city-plot::before,
+#cityMap.city-map-diorama .city-plot::after{
+  content:none;
+  display:none;
+  background:none;
+  border:0;
+  box-shadow:none;
+}
+#cityMap.city-map-diorama .city-plot-scene{
+  position:absolute;
+  top:0;left:0;right:0;
+  width:100%;height:100px;min-height:0;
+  display:grid;place-items:center;
+  overflow:visible;
+}
+#cityMap.city-map-diorama .city-plot-scene::before{
+  content:"";
+  position:absolute;
+  z-index:0;
+  left:18%;
+  width:64%;
+  height:14px;
+  bottom:11px;
+  background:#275b3b48;
+  border-radius:50%;
+  filter:blur(3px);
+  transform:none;
+}
+/* Kleine Markierung fuer noch freie Standorte, nicht neun Platzschildchen. */
+#cityMap.city-map-diorama .city-plot-locked .city-plot-scene::before{
+  background:#4a873f25;
+  width:36%;left:32%;height:12px;
+  bottom:29px;
+}
+#cityMap.city-map-diorama .city-plot-locked .city-plot-art{
+  position:relative;
+  display:block;
+  width:32px;height:32px;
+  margin:0 auto;
+  font-size:21px;
+  line-height:27px;
+  text-align:center;
+  opacity:.62;
+  filter:none;
+  background:#d8f5ae9a;
+  border:2px dashed #73a66c;
+  border-radius:50%;
+  box-shadow:0 2px 0 #88b07555;
+  transform:translateY(-12px);
+}
+#cityMap.city-map-diorama .city-plot-locked .city-plot-decoration{display:none}
+#cityMap.city-map-diorama .city-plot-locked .city-plot-label{display:none}
+/* Kein Schriftteppich in der Spielwelt: Name und Kosten stehen in der Bauliste. */
+#cityMap.city-map-diorama .city-plot-built .city-plot-label{display:none}
+#cityMap.city-map-diorama .city-plot-rank{
+  position:absolute;
+  z-index:12;
+  top:6px;right:5%;
+  font-size:9px;font-weight:950;
+  border:2px solid #8e6c30;
+  border-radius:999px;
+  padding:3px 6px;
+  color:#674b14;
+  background:#fff1b0ea;
+  box-shadow:0 2px 0 #a58850;
+  pointer-events:none;
+}
+#cityMap.city-map-diorama .city-plot-level-1 .city-plot-rank{opacity:.82}
+#cityMap.city-map-diorama .city-plot-level-3 .city-plot-rank{
+  background:#ffe187;border-color:#ae7827;color:#603c11;
+}
+/* Groessere Comic-Haeuser statt winziger Emojis in Kacheln. */
+#cityMap.city-map-diorama .city-model{
+  transform:translate(-50%,-58%) scale(1.05);
+  filter:drop-shadow(3px 7px 2px #24513e66);
+  transition:transform .2s ease;
+}
+#cityMap.city-map-diorama .city-model-level-2{
+  transform:translate(-50%,-60%) scale(1.16)
+}
+#cityMap.city-map-diorama .city-model-level-3{
+  transform:translate(-50%,-64%) scale(1.27)
+}
+#cityMap.city-map-diorama .city-model-hall{
+  transform:translate(-50%,-60%) scale(1.29);
+  filter:drop-shadow(4px 8px 2px #6a583d7a);
+}
+/* Die Schrift-Emojis verdecken keine ganzen Haeuser mehr. Details bleiben. */
+#cityMap.city-map-diorama .city-model-home .city-model-emblem,
+#cityMap.city-map-diorama .city-model-bakery .city-model-emblem,
+#cityMap.city-map-diorama .city-model-market .city-model-emblem,
+#cityMap.city-map-diorama .city-model-school .city-model-emblem,
+#cityMap.city-map-diorama .city-model-clinic .city-model-emblem,
+#cityMap.city-map-diorama .city-model-hall .city-model-emblem,
+#cityMap.city-map-diorama .city-model-tower .city-model-emblem{display:none}
+#cityMap.city-map-diorama .city-model-home .city-model-accent,
+#cityMap.city-map-diorama .city-model-hall .city-model-accent,
+#cityMap.city-map-diorama .city-model-tower .city-model-accent{display:none!important}
+#cityMap.city-map-diorama .city-model-clinic .city-model-accent{
+  left:24px;top:28px;width:19px;height:20px;
+  background:#f4fffb;border-color:#67ada1;
+}
+#cityMap.city-map-diorama .city-model-bakery .city-model-accent{
+  left:45px;top:20px;width:19px;height:18px;
+}
+#cityMap.city-map-diorama .city-model-market .city-model-accent{
+  left:44px;top:21px;width:20px;height:19px;
+}
+#cityMap.city-map-diorama .city-model-school .city-model-accent{
+  left:45px;top:25px;width:19px;height:18px;
+}
+#cityMap.city-map-diorama .city-plot-decoration{
+  bottom:12px;right:5px;
+  font-size:11px;
+  letter-spacing:-4px;
+  opacity:.94;
+  pointer-events:none;
+}
+/* Stadtzentrum als Mittelpunkt – ohne goldene isolierte Plattform. */
+#cityMap.city-map-diorama .city-plot-center .city-plot-scene::before{
+  width:84%;left:8%;height:17px;bottom:4px;
+  background:#846d415c;filter:blur(3px);
+}
+.city-map-card .city-map-tip{
+  font-size:11px;
+  text-align:center;
+  color:#47784d;
+  font-weight:850;
+  padding:10px 7px 2px;
+}
+/* Schmale iPhones: keine Ueberlagerung mit der Bottom Navigation. */
+@media(max-width:380px){
+  #cityMap.city-map-diorama{height:470px;min-height:0}
+  #cityMap.city-map-diorama .city-plot{width:29%;height:94px}
+  #cityMap.city-map-diorama .city-plot-scene{height:90px}
+  #cityMap.city-map-diorama .city-model{transform:translate(-50%,-58%) scale(.91)}
+  #cityMap.city-map-diorama .city-model-level-2{transform:translate(-50%,-60%) scale(1.03)}
+  #cityMap.city-map-diorama .city-model-level-3{transform:translate(-50%,-64%) scale(1.14)}
+  #cityMap.city-map-diorama .city-model-hall{transform:translate(-50%,-59%) scale(1.16)}
+  #cityMap.city-map-diorama .city-plot-rank{right:2%;top:4px;font-size:8px;padding:2px 4px}
+}
+@media(min-width:580px){
+  #cityMap.city-map-diorama{height:605px}
+  #cityMap.city-map-diorama .city-plot{width:24%;height:116px}
+  #cityMap.city-map-diorama .city-plot-scene{height:109px}
+}
+@media(prefers-reduced-motion:reduce){
+  #cityMap.city-map-diorama .city-model{transition:none}
+}
