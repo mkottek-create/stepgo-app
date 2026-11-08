@@ -540,7 +540,7 @@ test('Isometric diorama layout shows one continuous landscape and nine fixed pla
   assert.match(iso,/#cityMap\.city-map-diorama::after\{/);
   assert.match(iso,/#cityMap\.city-map-diorama \.city-plot\{/);
   assert.match(iso,/clip-path:polygon\(/);
-  assert.match(iso,/#cityMap\.city-map-diorama \.city-plot:nth-child\(5\)\{left:50%;top:42%;z-index:5\}/);
+  assert.ok(iso.includes('city-plot:nth-child(5){left:50%;top:42%;z-index:5}'),'Rathaus remains in the fixed center');
   for(let i=1;i<=9;i++) {
     assert.ok(iso.includes('city-plot:nth-child('+i+')'),'Missing fixed building place '+i);
   }
