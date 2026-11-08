@@ -403,8 +403,8 @@ test('Fixed 3D map shows geometric models and one unchanged plot per building',(
   assert.equal(tower.children[0].children[2].className,'city-model city-model-tower city-model-level-1');
   assert.equal(hall.children[0].children[2].className,'city-model city-model-hall city-model-level-1');
   assert.equal(home.attributes['aria-label'],'Wohnviertel – Stufe 3 von 3');
-  assert.match(html,/3D-Optik/);
-  assert.match(html,/Feste Bauplätze/);
+  assert.match(html,/isometrische Comic-Stadt/);
+  assert.match(html,/festen Bauplätzen/);
 });
 
 test('Upgrade journey from level 1 to 3 spends coins exactly twice and retains plot',()=>{
@@ -487,7 +487,7 @@ test('Comic Level 2 keeps fixed city parcels and stored currency untouched',()=>
   const plots=app.get('cityMap').children;
   assert.equal(plots.length,9);
   assert.equal(plots[4].attributes['aria-label'],'Rathaus – Startgebäude');
-  assert.match(html,/🎨 COMIC 2/);
+  assert.match(html,/🏘️ STADTWELT/);
   assert.match(html,/city-landscape-kite/);
   const cityOrder=['park','home','bakery','market',null,'lake','school','clinic','tower'];
   cityOrder.forEach((id,pos)=>{
