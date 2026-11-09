@@ -436,7 +436,6 @@
     $('profileLoginInfo').hidden=true;
     $('profileLoginButton').setAttribute('aria-expanded','false');
   });
-  $('openCityBtn').addEventListener('click',()=>switchTab('city'));
   $('openCompetitionBtn').addEventListener('click',()=>switchTab('competitions'));
   $('openStepsBtn').addEventListener('click',()=>switchTab('activity'));
   $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);state.stepSource='demo';state.importedAt=null;render();toast('+1.000 Demo-Schritte hinzugefügt');});
