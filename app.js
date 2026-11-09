@@ -235,6 +235,7 @@
     $('profileAccountNote').textContent=profile
       ? 'Nur auf diesem Gerät gespeichert. Deine E-Mail ist noch nicht verifiziert; eine echte Anmeldung ist noch nicht aktiviert.'
       : 'Du spielst bisher ohne Benutzerkonto. Ein Testprofil kannst du hier auf diesem Gerät speichern.';
+    $('settingsEmailValue').textContent=profile?profile.email:'E-Mail-Adresse hinterlegen';
   }
 
   function render(){
@@ -384,6 +385,59 @@
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
+  // Einstellungen im Profil: eigene App-Ansicht statt verschachtelter Karten.
+  const closeSettings=()=>{
+    $('profileOverview').hidden=false;
+    $('profileSettings').hidden=true;
+    $('settingsDetail').hidden=true;
+  };
+  const openSettings=()=>{
+    $('profileOverview').hidden=true;
+    $('profileSettings').hidden=false;
+    $('settingsDetail').hidden=true;
+  };
+  const openSettingsDetail=(heading,kind='text',message='')=>{
+    $('profileOverview').hidden=true;
+    $('profileSettings').hidden=true;
+    $('settingsDetail').hidden=false;
+    $('settingsDetailHeading').textContent=heading;
+    $('settingsDetailText').hidden=kind!=='text';
+    $('settingsGoalContent').hidden=kind!=='goal';
+    $('settingsPrivacyContent').hidden=kind!=='privacy';
+    $('settingsLoginContent').hidden=kind!=='login';
+    if(kind==='text') $('settingsDetailText').textContent=message;
+  };
+  $('openSettingsButton').addEventListener('click',openSettings);
+  $('settingsBackButton').addEventListener('click',closeSettings);
+  $('settingsDetailBackButton').addEventListener('click',openSettings);
+  const openProfileEditFromSettings=()=>{
+    closeSettings();
+    $('profileEditButton').click();
+  };
+  $('settingsEmailButton').addEventListener('click',openProfileEditFromSettings);
+  $('settingsNameButton').addEventListener('click',openProfileEditFromSettings);
+  $('settingsLocalProfileButton').addEventListener('click',openProfileEditFromSettings);
+  $('settingsInviteButton').addEventListener('click',()=>openSettingsDetail('Freund:innen einladen','text','Freunde-Einladungen gibt es in der Testversion noch nicht. Dafür brauchen wir zuerst echte Benutzerkonten und eine sichere Einladung.'));
+  $('settingsBlockedButton').addEventListener('click',()=>openSettingsDetail('Blockierte Personen','text','Bisher gibt es keine echten Kontakte oder Spielergegner, die du blockieren könntest. Diese Verwaltung folgt mit den Online-Konten.'));
+  $('settingsLoginButton').addEventListener('click',()=>openSettingsDetail('Anmelden & registrieren','login'));
+  $('settingsLogoutButton').addEventListener('click',()=>openSettingsDetail('Ausloggen','text','Du bist noch nicht mit einem Online-Konto angemeldet. Ein lokales Testprofil ist keine Anmeldung. Deshalb gibt es zurzeit nichts auszuloggen.'));
+  $('settingsGoalButton').addEventListener('click',()=>openSettingsDetail('Schrittziel','goal'));
+  $('settingsUnitsButton').addEventListener('click',()=>openSettingsDetail('Maßeinheit & Entfernung','text','StepGo City zählt im Moment Schritte. Eine umschaltbare Entfernungsanzeige in Kilometern oder Meilen ist für eine spätere Version geplant.'));
+  $('settingsNotificationsButton').addEventListener('click',()=>openSettingsDetail('Benachrichtigungen','text','Push-Mitteilungen werden in dieser Testversion nicht verschickt. Später kannst du Erinnerungen und Wettkampfmeldungen hier selbst ein- und ausschalten.'));
+  $('settingsSupportButton').addEventListener('click',()=>openSettingsDetail('Support kontaktieren','text','Der offizielle StepGo-Supportkanal ist noch nicht eingerichtet. In dieser Testversion werden keine Nachrichten versendet.'));
+  $('settingsTermsButton').addEventListener('click',()=>openSettingsDetail('Nutzungsbedingungen','text','StepGo City ist derzeit ein lokaler Spielprototyp. Es gibt noch keine abgeschlossene Konto-Registrierung, keine kostenpflichtige Mitgliedschaft und keine Gewinne mit Geldwert. Verbindliche Nutzungsbedingungen werden vor dem öffentlichen Start bereitgestellt.'));
+  $('settingsPrivacyButton').addEventListener('click',()=>openSettingsDetail('Datenschutz','privacy'));
+  $('settingsRemoveProfileButton').addEventListener('click',()=>{
+    if(!state.profile){
+      openSettingsDetail('Profilangaben löschen','text','Es sind noch keine lokalen Profilangaben gespeichert. Deine Stadt und Stadtmünzen bleiben unverändert.');
+      return;
+    }
+    // Bestehender bestaetigter Loeschvorgang fuer reine Profilfelder.
+    $('profileRemoveButton').click();
+    openSettings();
+  });
+  $('settingsClearButton').addEventListener('click',()=>$('clearAll').click());
+
   $('profileEditButton').addEventListener('click',()=>{
     $('profileLoginInfo').hidden=true;
     $('profileLoginButton').setAttribute('aria-expanded','false');
@@ -600,6 +654,6 @@
   $('modalClose').addEventListener('click',()=>{$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');});
   $('modalBackdrop').addEventListener('click',ev=>{if(ev.target===$('modalBackdrop'))$('modalClose').click();});
   document.addEventListener('keydown',ev=>{if(ev.key==='Escape' && $('modalBackdrop').classList.contains('open'))$('modalClose').click();});
-  $('clearAll').addEventListener('click',()=>{if(!confirm('Wirklich alle StepGo-Testdaten löschen?'))return;state=fresh();demoDuel.active=false;demoDuel.mine=12400;demoDuel.rival=11800;showCompetitionView('league');renderDemoDuel();render();switchTab('home');toast('Testdaten gelöscht');});
+  $('clearAll').addEventListener('click',()=>{if(!confirm('Wirklich alle StepGo-Testdaten löschen?'))return;closeSettings();state=fresh();demoDuel.active=false;demoDuel.mine=12400;demoDuel.rival=11800;showCompetitionView('league');renderDemoDuel();render();switchTab('home');toast('Testdaten gelöscht');});
   render();
 })();
