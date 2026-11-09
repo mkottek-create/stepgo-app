@@ -2499,3 +2499,131 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 /* Navigations-Feinschliff: Der Stadt-Button auf der Startseite wird nicht mehr gebraucht. */
 #openCityBtn,
 .city-teaser-button{display:none!important}
+
+
+/* StepGo City V18 – EINSTELLUNGEN WIE IN DER APP
+   Videoreferenz: luftige weiße Seite, feine Gruppenüberschriften,
+   abgerundete graue Zeilen und einfache Zurueck-Navigation. */
+#screen-profile #profileOverview[hidden],
+#screen-profile #profileSettings[hidden],
+#screen-profile #settingsDetail[hidden],
+#screen-profile #settingsGoalContent[hidden],
+#screen-profile #settingsPrivacyContent[hidden],
+#screen-profile #settingsLoginContent[hidden],
+#screen-profile #settingsDetailText[hidden]{display:none!important}
+.profile-settings-entry{
+  display:flex;align-items:center;gap:13px;box-sizing:border-box;
+  width:calc(100% - 34px);margin:19px 17px 26px;
+  padding:18px 16px;background:#f4f7f1;color:#29483a;
+  border:2px solid #b2c8af;border-radius:15px;
+  box-shadow:0 4px 0 #d3e3ce;
+  font:inherit;font-size:23px;cursor:pointer;
+}
+.profile-settings-entry>span:nth-child(1){
+  display:flex;flex:1;min-width:0;flex-direction:column;align-items:start;gap:4px;
+}
+.profile-settings-entry strong{font-size:15px}
+.profile-settings-entry small{font-size:11px;color:#698273;text-align:left;font-weight:650}
+.profile-settings-entry>span:last-child{color:#607e6a;font-size:28px;font-weight:600}
+.app-settings{
+  box-sizing:border-box;
+  min-height:calc(100dvh - 160px);
+  padding:21px 17px 100px;
+  background:#fbfbfc;color:#202328;
+  font-family:inherit;
+}
+.app-settings-header{
+  display:flex;align-items:center;gap:11px;
+  margin:0 0 30px;
+}
+.app-settings-header h2{
+  font-size:25px;line-height:1.25;letter-spacing:-.7px;
+  color:#191b1f;margin:0;font-weight:900;
+}
+.app-settings-back{
+  flex-shrink:0;width:30px;height:30px;
+  display:grid;place-items:center;
+  border:1px solid #e0e2e7;border-radius:50%;
+  color:#20242b;background:#fff;font-size:26px;line-height:1;
+  cursor:pointer;padding:0;
+}
+.app-settings-group{margin:0 0 28px}
+.app-settings-group h3{
+  font-size:13px;line-height:1.3;font-weight:900;
+  color:#1e2228;margin:0 0 12px;
+}
+.app-settings-row{
+  width:100%;min-height:52px;box-sizing:border-box;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;
+  padding:13px 13px;
+  margin:0 0 9px;
+  border:0;border-radius:12px;
+  background:#e9eaee;color:#22252b;
+  font:inherit;font-size:13px;font-weight:800;line-height:1.35;
+  text-align:left;cursor:pointer;
+}
+.app-settings-row>span:first-child{min-width:0;overflow-wrap:anywhere}
+.app-settings-row>span:last-child{color:#4a4f57;font-size:20px;font-weight:500;flex-shrink:0}
+.app-settings-row:active{background:#dadee4}
+.app-settings-note{
+  margin:7px 2px 0;font-size:11px;line-height:1.5;color:#7b808b;
+}
+.app-settings-promo{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:center;gap:3px 7px;position:relative;
+  width:100%;min-height:72px;box-sizing:border-box;
+  margin:0 0 9px;padding:11px 12px;border:0;border-radius:12px;
+  background:linear-gradient(110deg,#cbffeb 0%,#b2fbe7 42%,#fff39e 100%);
+  color:#142d25;text-align:left;cursor:pointer;
+}
+.app-settings-promo strong{display:block;font-weight:950;font-size:13px;line-height:1.2}
+.app-settings-promo small{display:block;font-size:10px;color:#3b6054;margin-top:4px}
+.app-settings-promo-icon{font-size:22px;white-space:nowrap}
+.app-settings-promo-tag{
+  grid-column:1/-1;
+  justify-self:start;
+  background:#20392f;color:#fff;border-radius:999px;
+  padding:3px 8px;font-size:9px;font-weight:800;
+}
+.app-settings-danger{
+  border-top:1px solid #e3e4e8;padding-top:22px;margin-top:32px;
+}
+.app-settings-danger .app-settings-row{background:#e8e9ed}
+.app-settings-footer{
+  margin:19px 0 0;color:#a0a4af;
+  font-size:10px;line-height:1.6;text-align:center;
+}
+.app-settings-detail{padding-top:21px}
+.app-settings-detail .settings-card,.app-settings-detail .goal-preset-card{
+  margin-left:0;margin-right:0;
+}
+.app-settings-explanation{
+  background:#f0f1f4;border-radius:15px;padding:17px 15px;
+  margin:0 0 17px;color:#41454d;
+}
+.app-settings-explanation h3{
+  font-size:16px;color:#252b2d;margin:0 0 10px;
+}
+.app-settings-explanation p{
+  margin:0 0 12px;font-size:12px;line-height:1.6;
+}
+.app-settings-explanation p:last-child{margin-bottom:0}
+.app-settings-cta{
+  display:block;width:100%;min-height:45px;
+  margin-top:16px;padding:10px 12px;
+  background:#b9ee86;border:2px solid #337747;
+  border-radius:12px;color:#1d462b;font:inherit;font-size:12px;
+  font-weight:900;cursor:pointer;
+}
+.app-settings-row:focus-visible,.app-settings-back:focus-visible,
+.app-settings-promo:focus-visible,.app-settings-cta:focus-visible,
+.profile-settings-entry:focus-visible{
+  outline:3px solid #3f9864;outline-offset:3px;
+}
+@media(max-width:380px){
+  .app-settings{padding:18px 13px 100px}
+  .app-settings-header{margin-bottom:25px}
+  .app-settings-header h2{font-size:23px}
+  .app-settings-row{min-height:48px;font-size:12px}
+}
