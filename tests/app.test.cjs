@@ -817,3 +817,20 @@ test('Invalid legacy profile data is discarded and reset clears local profile',(
   assert.equal(saved.state().profile,null);
   assert.equal(saved.get('profileAccountBadge').textContent,'NICHT ANGEMELDET');
 });
+
+
+test('Home city teaser has no redundant city-open button but city tab stays available',()=>{
+  assert.match(html,/class="city-teaser"/);
+  assert.match(html,/Deine Schritte bauen eine Stadt!/);
+  assert.doesNotMatch(html,/id="openCityBtn"/);
+  assert.doesNotMatch(html,/Stadt öffnen →/);
+  assert.doesNotMatch(script,/openCityBtn/);
+  assert.match(html,/data-tab="city"/);
+  const app=harness();
+  const cityTab=app.nav.find(n=>n.dataset.tab==='city');
+  assert.ok(cityTab);
+  cityTab.click();
+  assert.equal(app.get('screen-city').classList.contains('active'),true);
+  assert.equal(cityTab.attributes['aria-current'],'page');
+  assert.equal(app.get('cityMap').children.length,9);
+});
