@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=navfix3" />
+  <link rel="stylesheet" href="styles.css?v=settings1" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -275,6 +275,7 @@
       </section>
 
       <section class="screen" id="screen-profile" aria-label="Profil">
+        <div id="profileOverview">
         <div class="page-intro profile-intro"><div class="section-overline">DEIN STEP<span class="profile-step-logo">GO</span> PROFIL</div><h1>Dein Profil.<br><em>Deine City.</em></h1><p>Dein Spielername, deine E-Mail-Adresse und deine Fortschritte an einem Ort.</p></div>
         <section class="profile-account-card" aria-labelledby="profileAccountHeading">
           <div class="profile-account-top"><span>👤 SPIELERPROFIL</span><span id="profileAccountBadge" class="profile-account-badge">NICHT ANGEMELDET</span></div>
@@ -318,7 +319,49 @@
           <p class="profile-login-warning">Aktuell ist keine echte Registrierung oder Anmeldung aktiv. Dafür muss noch ein sicherer Kontodienst angebunden werden. Bitte hier kein Passwort eingeben.</p>
           <button type="button" id="profileLoginCloseButton" class="profile-account-secondary">Verstanden</button>
         </section>
-        <div class="profile-section-label"><strong>⚙️ Meine Einstellungen</strong><span>Schritte &amp; Datenschutz</span></div>
+
+          <button type="button" id="openSettingsButton" class="profile-settings-entry" aria-controls="profileSettings">⚙️ <span><strong>Einstellungen</strong><small>Deine Daten, Schrittziel, Datenschutz &amp; Konto</small></span><span aria-hidden="true">›</span></button>
+        </div>
+        <div id="profileSettings" class="app-settings" hidden>
+          <header class="app-settings-header"><button type="button" id="settingsBackButton" class="app-settings-back" aria-label="Zurück zum Profil">‹</button><h2>Einstellungen</h2></header>
+          <section class="app-settings-group" aria-label="Deine Daten">
+            <h3>Deine Daten</h3>
+            <button type="button" id="settingsEmailButton" class="app-settings-row"><span>✉️ <span id="settingsEmailValue">E-Mail-Adresse hinterlegen</span></span><span aria-hidden="true">✎</span></button>
+            <button type="button" id="settingsNameButton" class="app-settings-row"><span>👤 Spielername bearbeiten</span><span aria-hidden="true">›</span></button>
+            <p class="app-settings-note">Lokales Testprofil: Die Angaben werden bisher nur auf diesem Gerät gespeichert.</p>
+          </section>
+          <section class="app-settings-group" aria-label="Freunde">
+            <h3>Freund:innen</h3>
+            <button type="button" id="settingsInviteButton" class="app-settings-promo"><span><strong>Freund:innen einladen</strong><small>Zusammen Schritte sammeln</small></span><span class="app-settings-promo-icon" aria-hidden="true">👟 🏆</span><span class="app-settings-promo-tag">Bald verfügbar</span></button>
+            <button type="button" id="settingsBlockedButton" class="app-settings-row"><span>Blockierte Personen</span><span aria-hidden="true">›</span></button>
+          </section>
+          <section class="app-settings-group" aria-label="Kontoeinstellungen">
+            <h3>Konto</h3>
+            <button type="button" id="settingsLoginButton" class="app-settings-row"><span>Anmelden &amp; registrieren</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsLogoutButton" class="app-settings-row"><span>Ausloggen</span><span aria-hidden="true">›</span></button>
+          </section>
+          <section class="app-settings-group" aria-label="App-Einstellungen">
+            <h3>Einstellungen</h3>
+            <button type="button" id="settingsGoalButton" class="app-settings-row"><span>Schrittziel festlegen</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsUnitsButton" class="app-settings-row"><span>Maßeinheit &amp; Entfernung</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsNotificationsButton" class="app-settings-row"><span>Benachrichtigungen</span><span aria-hidden="true">›</span></button>
+          </section>
+          <section class="app-settings-group" aria-label="Support und rechtliche Informationen">
+            <h3>Support &amp; Rechtliches</h3>
+            <button type="button" id="settingsSupportButton" class="app-settings-row"><span>Support kontaktieren</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsTermsButton" class="app-settings-row"><span>Nutzungsbedingungen</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsPrivacyButton" class="app-settings-row"><span>Datenschutz</span><span aria-hidden="true">›</span></button>
+          </section>
+          <section class="app-settings-group app-settings-danger" aria-label="Lokale Daten">
+            <button type="button" id="settingsRemoveProfileButton" class="app-settings-row"><span>Profilangaben löschen</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsClearButton" class="app-settings-row"><span>Alle Testdaten löschen</span><span aria-hidden="true">›</span></button>
+          </section>
+          <p class="app-settings-footer">StepGo City · Testversion – noch keine echte Kontoanmeldung</p>
+        </div>
+        <div id="settingsDetail" class="app-settings app-settings-detail" hidden>
+          <header class="app-settings-header"><button type="button" id="settingsDetailBackButton" class="app-settings-back" aria-label="Zurück zu Einstellungen">‹</button><h2 id="settingsDetailHeading">Einstellungen</h2></header>
+          <div id="settingsDetailText" class="app-settings-explanation" hidden></div>
+          <div id="settingsGoalContent" hidden>
         <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
         <div class="goal-preset-card" aria-label="Schnelle Zielauswahl">
           <div class="goal-preset-heading"><strong>Wähle dein Tempo</strong><span>+20 Stadtmünzen beim Tagesziel</span></div>
@@ -329,8 +372,21 @@
           </div>
           <p>Oder passe dein Ziel mit dem Regler darüber individuell an. Boni werden einmal am Tag beim Bestätigen vergeben.</p>
         </div>
+
+          </div>
+          <div id="settingsPrivacyContent" hidden>
         <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte und Stadtmünzen sowie ein freiwilliger Spielername und eine E-Mail-Adresse werden in dieser Testversion nur lokal in deinem Browser gespeichert. Es gibt noch keinen Server, kein echtes Benutzerkonto und keine geräteübergreifende Anmeldung.</p></div>
-        <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
+
+          </div>
+          <div id="settingsLoginContent" class="app-settings-explanation" hidden>
+            <h3>Konto erstellen und anmelden</h3>
+            <p>Für eine echte Anmeldung brauchen wir einen sicheren Kontodienst mit E-Mail-Bestätigung. Diese Funktion ist noch nicht aktiv. Dein Spielstand bleibt vorerst auf diesem Gerät.</p>
+            <p>Du kannst bereits ein lokales Profil einrichten, aber bitte hier keine Passwörter eingeben.</p>
+            <button type="button" id="settingsLocalProfileButton" class="app-settings-cta">Lokales Testprofil bearbeiten</button>
+          </div>
+        </div>
+        <button id="clearAll" hidden class="danger-button">Alle Testdaten löschen</button>
+
       </section>
     </main>
 
@@ -347,6 +403,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=profile2"></script>
+  <script src="app.js?v=settings1"></script>
 </body>
 </html>
