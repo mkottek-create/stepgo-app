@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=paths2" />
+  <link rel="stylesheet" href="styles.css?v=profile1" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -276,8 +276,50 @@
       </section>
 
       <section class="screen" id="screen-profile" aria-label="Profil">
-        <div class="page-intro"><div class="section-overline">DEIN BEREICH</div><h1>Dein Tempo.<br><em>Dein Ziel.</em></h1><p>Passe deine Tagesziele an und behalte deine Fortschritte im Blick.</p></div>
-        <div class="profile-card"><div class="profile-icon">👟</div><div><strong>StepGo-Tester</strong><span>Dein erstes Abenteuer beginnt hier.</span></div></div>
+        <div class="page-intro profile-intro"><div class="section-overline">DEIN STEP<span class="profile-step-logo">GO</span> PROFIL</div><h1>Dein Profil.<br><em>Deine City.</em></h1><p>Dein Spielername, deine E-Mail-Adresse und deine Fortschritte an einem Ort.</p></div>
+        <section class="profile-account-card" aria-labelledby="profileAccountHeading">
+          <div class="profile-account-top"><span>👤 SPIELERPROFIL</span><span id="profileAccountBadge" class="profile-account-badge">NICHT ANGEMELDET</span></div>
+          <div class="profile-account-identity">
+            <div class="profile-avatar" id="profileAvatar" aria-hidden="true">👟</div>
+            <div class="profile-identity-text"><h2 id="profileAccountHeading">Dein Spielerprofil</h2><p id="profileDisplayEmail">Noch keine E-Mail-Adresse hinterlegt</p></div>
+          </div>
+          <div class="profile-account-metrics">
+            <div><strong id="profileStepsToday">0</strong><span>Schritte heute</span></div>
+            <div><strong id="profileCoins">0</strong><span>Stadtmünzen</span></div>
+            <div><strong id="profileBuildings">1 / 9</strong><span>Gebäude</span></div>
+          </div>
+          <div class="profile-account-actions">
+            <button type="button" id="profileEditButton" class="profile-account-primary">✏️ Testprofil einrichten</button>
+            <button type="button" id="profileLoginButton" class="profile-account-secondary" aria-controls="profileLoginInfo" aria-expanded="false">🔑 Anmelden</button>
+          </div>
+          <p class="profile-local-note" id="profileAccountNote">Du spielst bisher ohne Benutzerkonto. Ein Testprofil kannst du hier auf diesem Gerät speichern.</p>
+        </section>
+        <form id="profileForm" class="profile-edit-panel" aria-labelledby="profileFormTitle" novalidate hidden>
+          <div class="profile-panel-heading"><h2 id="profileFormTitle">✏️ Dein Testprofil</h2><span>LOKAL</span></div>
+          <label for="profileName">Spielername</label>
+          <input id="profileName" name="playerName" type="text" autocomplete="nickname" maxlength="32" placeholder="Dein Spielername" required />
+          <label for="profileEmail">E-Mail-Adresse</label>
+          <input id="profileEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="name@beispiel.de" required />
+          <p class="profile-form-help">Diese Angaben werden nur in diesem Browser gespeichert. Es wird noch kein echtes Konto erstellt und keine E-Mail versendet.</p>
+          <p id="profileFormError" class="profile-form-error" role="alert" hidden></p>
+          <div class="profile-form-actions">
+            <button type="submit" class="profile-account-primary">💾 Profil speichern</button>
+            <button type="button" id="profileCancelButton" class="profile-account-secondary">Abbrechen</button>
+          </div>
+          <button type="button" id="profileRemoveButton" class="profile-remove-button" hidden>Gespeicherte Profilangaben löschen</button>
+        </form>
+        <section id="profileLoginInfo" class="profile-login-info" aria-labelledby="profileLoginHeading" hidden>
+          <div class="profile-panel-heading"><h2 id="profileLoginHeading">🔐 Registrierung & Anmeldung</h2><span>IN PLANUNG</span></div>
+          <p>Später legst du dein StepGo-Konto mit einer E-Mail-Adresse an, bestätigst sie über einen Link und kannst dich auf anderen Geräten wieder anmelden.</p>
+          <div class="profile-login-steps">
+            <div><b>1</b><span>E-Mail-Adresse eingeben</span></div>
+            <div><b>2</b><span>Bestätigungslink erhalten</span></div>
+            <div><b>3</b><span>Sicher anmelden und Spielstand synchronisieren</span></div>
+          </div>
+          <p class="profile-login-warning">Aktuell ist keine echte Registrierung oder Anmeldung aktiv. Dafür muss noch ein sicherer Kontodienst angebunden werden. Bitte hier kein Passwort eingeben.</p>
+          <button type="button" id="profileLoginCloseButton" class="profile-account-secondary">Verstanden</button>
+        </section>
+        <div class="profile-section-label"><strong>⚙️ Meine Einstellungen</strong><span>Schritte &amp; Datenschutz</span></div>
         <div class="settings-card"><div class="settings-head"><strong>Tägliches Schrittziel</strong><span id="goalSettingLabel">15.000</span></div><input id="goalRange" type="range" min="3000" max="30000" step="1000" value="15000" aria-label="Tägliches Schrittziel" /><div class="range-hints"><span>3.000</span><span>30.000</span></div></div>
         <div class="goal-preset-card" aria-label="Schnelle Zielauswahl">
           <div class="goal-preset-heading"><strong>Wähle dein Tempo</strong><span>+20 Stadtmünzen beim Tagesziel</span></div>
@@ -288,7 +330,7 @@
           </div>
           <p>Oder passe dein Ziel mit dem Regler darüber individuell an. Boni werden einmal am Tag beim Bestätigen vergeben.</p>
         </div>
-        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte kannst du manuell aus Apple Health übernehmen; Stadtmünzen sind reine Spielwährung. Die Daten werden lokal auf diesem Gerät gespeichert und nicht an einen Server gesendet.</p></div>
+        <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte und Stadtmünzen sowie ein freiwilliger Spielername und eine E-Mail-Adresse werden in dieser Testversion nur lokal in deinem Browser gespeichert. Es gibt noch keinen Server, kein echtes Benutzerkonto und keine geräteübergreifende Anmeldung.</p></div>
         <button id="clearAll" class="danger-button">Alle Testdaten löschen</button>
       </section>
     </main>
@@ -306,6 +348,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=paths2"></script>
+  <script src="app.js?v=profile1"></script>
 </body>
 </html>
