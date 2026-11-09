@@ -844,3 +844,126 @@ test('The vanished home city button is also hidden defensively by stylesheet',()
   assert.match(css,/#openCityBtn,\s*\.city-teaser-button\{display:none!important\}/);
   assert.match(html,/data-tab="city"/);
 });
+
+
+test('Video-inspired settings list opens and closes with existing profile intact',()=>{
+  const initial=baseState();
+  initial.profile={name:'Lina',email:'lina@example.com'};
+  initial.cityBuildings=['park','bakery'];
+  initial.wallet=311;
+  const app=harness(initial);
+  const before=app.state();
+  assert.equal(app.get('profileOverview').hidden,false);
+  app.event('openSettingsButton');
+  assert.equal(app.get('profileOverview').hidden,true);
+  assert.equal(app.get('profileSettings').hidden,false);
+  assert.equal(app.get('settingsDetail').hidden,true);
+  assert.equal(app.get('settingsEmailValue').textContent,'lina@example.com');
+  assert.match(html,/Freund:innen/);
+  assert.match(html,/Support &amp; Rechtliches/);
+  assert.match(html,/Maßeinheit &amp; Entfernung/);
+  app.event('settingsBackButton');
+  assert.equal(app.get('profileSettings').hidden,true);
+  assert.equal(app.get('profileOverview').hidden,false);
+  assert.deepEqual(app.state(),before);
+});
+
+test('Settings email editor opens existing local profile editor, then returns to settings',()=>{
+  const initial=baseState();
+  initial.profile={name:'Mia',email:'mia@example.net'};
+  const app=harness(initial);
+  app.event('openSettingsButton');
+  app.event('settingsEmailButton');
+  assert.equal(app.get('profileOverview').hidden,false);
+  assert.equal(app.get('profileSettings').hidden,true);
+  assert.equal(app.get('profileForm').hidden,false);
+  assert.equal(app.get('profileEmail').value,'mia@example.net');
+  app.get('profileEmail').value='mia@new.example';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.equal(app.state().profile.email,'mia@new.example');
+  app.event('openSettingsButton');
+  assert.equal(app.get('settingsEmailValue').textContent,'mia@new.example');
+});
+
+test('Settings submenu gives meaningful behavior without pretending online accounts exist',()=>{
+  const app=harness();
+  app.event('openSettingsButton');
+  app.event('settingsLoginButton');
+  assert.equal(app.get('profileSettings').hidden,true);
+  assert.equal(app.get('settingsDetail').hidden,false);
+  assert.equal(app.get('settingsLoginContent').hidden,false);
+  assert.equal(app.get('settingsGoalContent').hidden,true);
+  assert.match(html,/noch keine echte Kontoanmeldung/);
+  app.event('settingsDetailBackButton');
+  assert.equal(app.get('profileSettings').hidden,false);
+  app.event('settingsLogoutButton');
+  assert.match(app.get('settingsDetailText').textContent,/nicht mit einem Online-Konto angemeldet/);
+  app.event('settingsDetailBackButton');
+  app.event('settingsInviteButton');
+  assert.match(app.get('settingsDetailText').textContent,/noch nicht/);
+  app.event('settingsDetailBackButton');
+  app.event('settingsPrivacyButton');
+  assert.equal(app.get('settingsPrivacyContent').hidden,false);
+  assert.equal(app.get('settingsLoginContent').hidden,true);
+});
+
+test('Daily goal remains adjustable within new settings subpage',()=>{
+  const app=harness();
+  app.event('openSettingsButton');
+  app.event('settingsGoalButton');
+  assert.equal(app.get('settingsGoalContent').hidden,false);
+  assert.equal(app.get('settingsDetailHeading').textContent,'Schrittziel');
+  assert.equal(app.get('goalRange').value,'15000');
+  app.get('goalRange').value='12000';
+  app.event('goalRange','input',{target:{value:'12000'}});
+  assert.equal(app.state().goal,12000);
+  app.event('settingsDetailBackButton');
+  assert.equal(app.get('profileSettings').hidden,false);
+  assert.equal(app.state().wallet,170);
+  assert.equal(app.get('cityMap').children.length,9);
+});
+
+test('Delete local profile through settings retains city and money',()=>{
+  const initial=baseState();
+  initial.wallet=402;
+  initial.profile={name:'Mia',email:'mia@example.net'};
+  initial.cityBuildings=['home','clinic'];
+  initial.cityUpgrades={clinic:2};
+  const app=harness(initial);
+  app.event('openSettingsButton');
+  app.event('settingsRemoveProfileButton');
+  assert.equal(app.state().profile,null);
+  assert.equal(app.state().wallet,402);
+  assert.deepEqual(app.state().cityBuildings,['home','clinic']);
+  assert.deepEqual(app.state().cityUpgrades,{clinic:2});
+  assert.equal(app.get('profileSettings').hidden,false);
+});
+
+test('Delete all local data via settings uses original confirmation and reset',()=>{
+  const initial=baseState();
+  initial.profile={name:'Mia',email:'mia@example.net'};
+  initial.wallet=299;
+  initial.cityBuildings=['park'];
+  const app=harness(initial);
+  app.event('openSettingsButton');
+  app.event('settingsClearButton');
+  assert.equal(app.state().profile,null);
+  assert.equal(app.state().wallet,0);
+  assert.deepEqual(app.state().cityBuildings,[]);
+  assert.equal(app.get('profileSettings').hidden,true);
+  assert.equal(app.get('profileOverview').hidden,false);
+});
+
+test('Settings are separate from profile and show only real capabilities',()=>{
+  assert.match(html,/id="profileSettings"/);
+  assert.match(html,/id="settingsDetail"/);
+  assert.match(html,/id="settingsBackButton"/);
+  assert.match(html,/id="settingsEmailButton"/);
+  assert.match(html,/id="settingsInviteButton"/);
+  assert.match(html,/id="settingsLogoutButton"/);
+  assert.match(html,/id="settingsPrivacyButton"/);
+  assert.match(html,/id="settingsGoalContent"/);
+  assert.match(html,/styles\.css\?v=settings1/);
+  assert.match(html,/app\.js\?v=settings1/);
+  assert.doesNotMatch(html,/type="password"/);
+});
