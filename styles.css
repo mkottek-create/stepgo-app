@@ -2494,3 +2494,8 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 @media(prefers-reduced-motion:reduce){
   .profile-account-primary:active,.profile-account-secondary:active{transform:none}
 }
+
+
+/* Navigations-Feinschliff: Der Stadt-Button auf der Startseite wird nicht mehr gebraucht. */
+#openCityBtn,
+.city-teaser-button{display:none!important}
