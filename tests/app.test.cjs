@@ -591,7 +591,7 @@ test('Natural town background replaces raster with winding footpaths, pond and t
     'Town should have enough decorative trees and flowers to read as a living landscape');
   assert.doesNotMatch(town,/repeating-linear-gradient\(0deg/);
   assert.match(html,/natürlichen Wegen/);
-  assert.match(html,/styles\.css\?v=paths2/);
+  assert.match(html,/styles\.css\?v=profile1/);
 });
 
 
@@ -673,7 +673,7 @@ test('Town buildings have organic fixed positions while coins, levels and Rathau
   assert.equal(app.state().wallet,360);
   assert.deepEqual(app.state().cityBuildings,['park','home','clinic']);
   assert.deepEqual(app.state().cityUpgrades,{home:3,clinic:2});
-  assert.match(html,/styles\.css\?v=paths2/);
+  assert.match(html,/styles\.css\?v=profile1/);
 });
 
 
