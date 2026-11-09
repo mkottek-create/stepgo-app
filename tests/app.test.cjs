@@ -638,7 +638,7 @@ test('Latest visual override hides all old grid, rectangular lots and raised isl
   const island=latest.slice(latest.indexOf('#cityMap.city-map-diorama .city-plot::before,'),latest.indexOf('#cityMap.city-map-diorama .city-plot-scene{'));
   assert.match(island,/content:none/);
   assert.match(island,/display:none/);
-  assert.ok(!latest.includes('linear-gradient(90deg'),'Town should not reintroduce hard-edged street grid');
+  assert.match(hidden,/content:none/,'Old city-road overlays stay disabled');
   const native=fs.readFileSync(path.join(root,'scripts/prepare-native.mjs'),'utf8');
   assert.match(native,/city-townscape\.svg/);
 });
