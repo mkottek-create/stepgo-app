@@ -591,7 +591,7 @@ test('Natural town background replaces raster with winding footpaths, pond and t
     'Town should have enough decorative trees and flowers to read as a living landscape');
   assert.doesNotMatch(town,/repeating-linear-gradient\(0deg/);
   assert.match(html,/natürlichen Wegen/);
-  assert.match(html,/styles\.css\?v=navfix3/);
+  assert.match(html,/styles\.css\?v=settings1/);
 });
 
 
@@ -673,7 +673,7 @@ test('Town buildings have organic fixed positions while coins, levels and Rathau
   assert.equal(app.state().wallet,360);
   assert.deepEqual(app.state().cityBuildings,['park','home','clinic']);
   assert.deepEqual(app.state().cityUpgrades,{home:3,clinic:2});
-  assert.match(html,/styles\.css\?v=navfix3/);
+  assert.match(html,/styles\.css\?v=settings1/);
 });
 
 
@@ -839,7 +839,7 @@ test('Home city teaser has no redundant city-open button but city tab stays avai
 test('The vanished home city button is also hidden defensively by stylesheet',()=>{
   assert.doesNotMatch(html,/id="openCityBtn"/);
   assert.doesNotMatch(script,/openCityBtn/);
-  assert.match(html,/styles\.css\?v=navfix3/);
+  assert.match(html,/styles\.css\?v=settings1/);
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
   assert.match(css,/#openCityBtn,\s*\.city-teaser-button\{display:none!important\}/);
   assert.match(html,/data-tab="city"/);
