@@ -584,14 +584,14 @@ test('Natural town background replaces raster with winding footpaths, pond and t
   assert.match(graphic,/<svg xmlns="http:\/\/www\.w3\.org\/2000\/svg"/);
   assert.match(graphic,/viewBox="0 0 480 630"/);
   assert.match(graphic,/stroke-linecap="round"/);
-  assert.match(graphic,/C115 118 137 184/);
+  assert.match(graphic,/C110 137 142 179/);
   assert.match(graphic,/linearGradient id="water"/);
   assert.match(graphic,/circle cx=/);
   assert.ok((graphic.match(/<g transform="translate\(/g)||[]).length>=35,
     'Town should have enough decorative trees and flowers to read as a living landscape');
   assert.doesNotMatch(town,/repeating-linear-gradient\(0deg/);
   assert.match(html,/natürlichen Wegen/);
-  assert.match(html,/styles\.css\?v=town1/);
+  assert.match(html,/styles\.css\?v=paths2/);
 });
 
 
@@ -669,10 +669,56 @@ test('Town buildings have organic fixed positions while coins, levels and Rathau
   assert.equal(app.get('cityMap').children[4].children[1].textContent,'Rathaus');
   assert.equal(app.get('cityMap').children[1].children[2].textContent,'★ 3');
   assert.equal(app.get('cityMap').children[7].children[2].textContent,'★ 2');
-  assert.equal(app.get('cityMap').children[5].children[0].children[0].textContent,'＋');
+  assert.equal(app.get('cityMap').children[5].children[0].children[0].textContent,'BAU');
   assert.equal(app.state().wallet,360);
   assert.deepEqual(app.state().cityBuildings,['park','home','clinic']);
   assert.deepEqual(app.state().cityUpgrades,{home:3,clinic:2});
-  assert.match(html,/styles\.css\?v=town1/);
+  assert.match(html,/styles\.css\?v=paths2/);
 });
 
+
+
+test('Town fine tune has thinner calm footpaths and a landscaped shoreline',()=>{
+  const graphic=fs.readFileSync(path.join(root,'city-townscape.svg'),'utf8');
+  const main=graphic.match(/M32 108 C110 137 142 179 209 194[\s\S]*?S356 198 438 267/g)||[];
+  assert.equal(main.length,3,'Main path has a gentle three-layer sand stroke');
+  assert.match(graphic,/stroke-width="37"/);
+  assert.match(graphic,/stroke-width="29"/);
+  assert.match(graphic,/stroke-width="23"/);
+  assert.doesNotMatch(graphic,/stroke-width="49"/);
+  assert.doesNotMatch(graphic,/stroke-width="39"/);
+  assert.match(graphic,/id="lake-shore"/);
+  assert.match(graphic,/fill="#e4d9ab" stroke="#bbbd83"/);
+  assert.match(graphic,/stroke="#3f9b62"/);
+  assert.match(graphic,/fill="url\(#water\)"/);
+  assert.match(graphic,/cx="380" cy="445"/);
+  assert.ok(graphic.indexOf('id="lake-shore"')<graphic.indexOf('<!-- Borders / hedges'),"Water edge integrated below trees");
+});
+
+test('Empty building sites display wooden BAU signs instead of plus circles',()=>{
+  const state=baseState();
+  state.wallet=180;
+  const app=harness(state);
+  const before=app.state();
+  const plots=app.get('cityMap').children;
+  assert.equal(plots.length,9);
+  for(let i=0;i<9;i++){
+    if(i===4)continue;
+    assert.equal(plots[i].children[0].children[0].textContent,'BAU');
+    assert.match(plots[i].className,/city-plot-locked/);
+  }
+  assert.deepEqual(app.state(),before,'Pure decoration must never alter city state');
+  const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
+  const last=css.slice(css.indexOf('/* StepGo City V16 – NATUERLICHE DETAILS'));
+  assert.match(last,/background-image:url\("city-townscape\.svg\?v=paths2"\)/);
+  assert.match(last,/\.city-plot-locked \.city-plot-art\{/);
+  assert.match(last,/\.city-plot-locked \.city-plot-art::after\{/);
+  assert.match(last,/\.city-plot-locked\.city-plot-lake \.city-plot-art\{/);
+  assert.match(last,/\.city-plot-locked\.city-plot-lake \.city-plot-scene::after,/);
+  const park=app.get('cityBuildList').children[0].children[2];
+  assert.equal(park.disabled,false);
+  park.click();
+  assert.equal(app.state().wallet,155);
+  assert.equal(app.get('cityMap').children[0].children[0].children[0].textContent,'🌳');
+  assert.equal(app.get('cityMap').children[1].children[0].children[0].textContent,'BAU');
+});
