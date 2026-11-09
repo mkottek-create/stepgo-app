@@ -4,11 +4,21 @@
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null});
+  // Das lokale Testprofil ist KEIN echtes Login. Niemals Passwoerter speichern.
+  const normalizeProfile = raw => {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
+    const name = typeof raw.name==='string' ? raw.name.trim() : '';
+    const email = typeof raw.email==='string' ? raw.email.trim().toLowerCase() : '';
+    if (name.length<2 || name.length>32 || /[<>\x00-\x1f]/.test(name)) return null;
+    if (email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
+    return {name,email};
+  };
   let state;
   try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fresh(); } catch { state = fresh(); }
   if (!state || typeof state!=='object') state = fresh();
   if (!Array.isArray(state.ledger)) state.ledger = [];
+  state.profile = normalizeProfile(state.profile);
   if (!Array.isArray(state.cityBuildings)) state.cityBuildings = [];
   state.cityBuildings = [...new Set(state.cityBuildings.filter(item=>typeof item==='string'))];
   // Alte Spielstände hatten keine Gebäude-Stufen. Bereits gebaute Gebäude bleiben Stufe 1.
@@ -210,6 +220,23 @@
   const currentEntry = () => state.ledger.find(x=>x.date===todayKey());
   const coinsAvailable = () => currentEntry() ? 0 : coinBreakdown(state.steps,state.goal).total;
   const dateLabel = key => {const d=new Date(`${key}T12:00:00`);return new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long',year:'numeric'}).format(d);};
+  function renderProfile(){
+    const profile=state.profile;
+    $('profileAccountBadge').textContent=profile?'LOKALES TESTPROFIL':'NICHT ANGEMELDET';
+    $('profileAccountBadge').classList.toggle('has-profile',!!profile);
+    $('profileAccountHeading').textContent=profile?profile.name:'Dein Spielerprofil';
+    $('profileDisplayEmail').textContent=profile?profile.email:'Noch keine E-Mail-Adresse hinterlegt';
+    $('profileAvatar').textContent=profile?profile.name.slice(0,1).toLocaleUpperCase('de-DE'):'👟';
+    $('profileStepsToday').textContent=fmt(state.steps);
+    $('profileCoins').textContent=fmt(state.wallet);
+    $('profileBuildings').textContent=(state.cityBuildings.length+1)+' / 9';
+    $('profileEditButton').textContent=profile?'✏️ Profil bearbeiten':'✏️ Testprofil einrichten';
+    $('profileRemoveButton').hidden=!profile;
+    $('profileAccountNote').textContent=profile
+      ? 'Nur auf diesem Gerät gespeichert. Deine E-Mail ist noch nicht verifiziert; eine echte Anmeldung ist noch nicht aktiviert.'
+      : 'Du spielst bisher ohne Benutzerkonto. Ein Testprofil kannst du hier auf diesem Gerät speichern.';
+  }
+
   function render(){
     const pct=Math.min(100,Math.round(state.steps/state.goal*100));
     const remaining=Math.max(0,state.goal-state.steps);
@@ -280,6 +307,7 @@
              : 'Alle fünf Meilensteine erreicht! 👑';
 
     renderCity();
+    renderProfile();
     const claimed=!!currentEntry();
     $('claimBtn').disabled=claimed || state.steps<100;
     $('claimBtnText').textContent=claimed?'Heute bereits bestätigt ✓':state.steps<100?'Mindestens 100 Schritte nötig':'Schritte bestätigen';
@@ -356,6 +384,58 @@
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
   $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
+  $('profileEditButton').addEventListener('click',()=>{
+    $('profileLoginInfo').hidden=true;
+    $('profileLoginButton').setAttribute('aria-expanded','false');
+    $('profileName').value=state.profile?state.profile.name:'';
+    $('profileEmail').value=state.profile?state.profile.email:'';
+    $('profileFormError').textContent='';
+    $('profileFormError').hidden=true;
+    $('profileForm').hidden=false;
+    $('profileName').focus();
+  });
+  $('profileCancelButton').addEventListener('click',()=>{
+    $('profileForm').hidden=true;
+    $('profileFormError').hidden=true;
+  });
+  $('profileForm').addEventListener('submit',event=>{
+    event.preventDefault();
+    const candidate={
+      name:String($('profileName').value??'').trim(),
+      email:String($('profileEmail').value??'').trim()
+    };
+    const profile=normalizeProfile(candidate);
+    if(!profile){
+      $('profileFormError').textContent='Bitte gib einen Spielernamen (2–32 Zeichen) und eine gültige E-Mail-Adresse ein.';
+      $('profileFormError').hidden=false;
+      return;
+    }
+    state.profile=profile;
+    $('profileFormError').hidden=true;
+    $('profileForm').hidden=true;
+    render();
+    toast('Testprofil lokal gespeichert – noch kein echtes Konto.');
+  });
+  $('profileRemoveButton').addEventListener('click',()=>{
+    if(!state.profile) return;
+    if(!confirm('Nur deinen gespeicherten Spielernamen und die E-Mail-Adresse löschen? Stadt und Münzen bleiben erhalten.'))return;
+    state.profile=null;
+    $('profileForm').hidden=true;
+    $('profileLoginInfo').hidden=true;
+    $('profileLoginButton').setAttribute('aria-expanded','false');
+    render();
+    toast('Lokale Profilangaben gelöscht. Deine Stadt bleibt erhalten.');
+  });
+  $('profileLoginButton').addEventListener('click',()=>{
+    const show=$('profileLoginInfo').hidden;
+    $('profileForm').hidden=true;
+    $('profileLoginInfo').hidden=!show;
+    $('profileLoginButton').setAttribute('aria-expanded',String(show));
+  });
+  $('profileLoginCloseButton').addEventListener('click',()=>{
+    $('profileLoginInfo').hidden=true;
+    $('profileLoginButton').setAttribute('aria-expanded','false');
+  });
   $('openCityBtn').addEventListener('click',()=>switchTab('city'));
   $('openCompetitionBtn').addEventListener('click',()=>switchTab('competitions'));
   $('openStepsBtn').addEventListener('click',()=>switchTab('activity'));
