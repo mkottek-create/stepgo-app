@@ -722,3 +722,98 @@ test('Empty building sites display wooden BAU signs instead of plus circles',()=
   assert.equal(app.get('cityMap').children[0].children[0].children[0].textContent,'🌳');
   assert.equal(app.get('cityMap').children[1].children[0].children[0].textContent,'BAU');
 });
+
+
+test('Profile setup saves name and email locally, without changing wallet or city',()=>{
+  const initial=baseState();
+  initial.cityBuildings=['park','home'];
+  initial.cityUpgrades={home:3};
+  const app=harness(initial);
+  assert.equal(app.get('profileAccountBadge').textContent,'NICHT ANGEMELDET');
+  assert.equal(app.get('profileDisplayEmail').textContent,'Noch keine E-Mail-Adresse hinterlegt');
+  assert.equal(app.get('profileBuildings').textContent,'3 / 9');
+  assert.equal(app.get('profileCoins').textContent,'170');
+  app.event('profileEditButton');
+  assert.equal(app.get('profileForm').hidden,false);
+  app.get('profileName').value='  Lina  ';
+  app.get('profileEmail').value=' LINA@Example.com ';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.deepEqual(app.state().profile,{name:'Lina',email:'lina@example.com'});
+  assert.equal(app.get('profileAccountHeading').textContent,'Lina');
+  assert.equal(app.get('profileDisplayEmail').textContent,'lina@example.com');
+  assert.equal(app.get('profileAvatar').textContent,'L');
+  assert.equal(app.get('profileAccountBadge').textContent,'LOKALES TESTPROFIL');
+  assert.equal(app.get('profileForm').hidden,true);
+  assert.equal(app.state().wallet,170);
+  assert.deepEqual(app.state().cityBuildings,['park','home']);
+  assert.deepEqual(app.state().cityUpgrades,{home:3});
+});
+
+test('Profile form rejects invalid emails or short names without saving data',()=>{
+  const app=harness();
+  app.event('profileEditButton');
+  app.get('profileName').value='A';
+  app.get('profileEmail').value='not-an-email';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.equal(app.state().profile,null);
+  assert.equal(app.get('profileForm').hidden,false);
+  assert.equal(app.get('profileFormError').hidden,false);
+  app.get('profileName').value='Lina';
+  app.get('profileEmail').value='not-an-email';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.equal(app.state().profile,null);
+  app.get('profileEmail').value='lina@example.com';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.equal(app.state().profile.email,'lina@example.com');
+  assert.equal(app.get('profileFormError').hidden,true);
+});
+
+test('Existing profile survives a reload and can be edited or deleted separately',()=>{
+  const initial=baseState();
+  initial.profile={name:'Jonas',email:'jonas@example.com'};
+  initial.wallet=284;
+  initial.cityBuildings=['park','clinic'];
+  const app=harness(initial);
+  assert.equal(app.get('profileDisplayEmail').textContent,'jonas@example.com');
+  app.event('profileEditButton');
+  assert.equal(app.get('profileName').value,'Jonas');
+  assert.equal(app.get('profileEmail').value,'jonas@example.com');
+  app.get('profileName').value='Jo';
+  app.get('profileEmail').value='new@example.com';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.equal(app.state().profile.name,'Jo');
+  app.event('profileEditButton');
+  assert.equal(app.get('profileRemoveButton').hidden,false);
+  app.event('profileRemoveButton');
+  assert.equal(app.state().profile,null);
+  assert.equal(app.get('profileDisplayEmail').textContent,'Noch keine E-Mail-Adresse hinterlegt');
+  assert.equal(app.state().wallet,284);
+  assert.deepEqual(app.state().cityBuildings,['park','clinic']);
+});
+
+test('Login button provides an honest registration guide and never stores credentials',()=>{
+  const app=harness();
+  assert.match(html,/Aktuell ist keine echte Registrierung oder Anmeldung aktiv/);
+  assert.match(html,/kein echtes Konto erstellt/);
+  assert.match(html,/type="email"/);
+  assert.doesNotMatch(html,/type="password"/);
+  app.event('profileLoginButton');
+  assert.equal(app.get('profileLoginInfo').hidden,false);
+  assert.equal(app.get('profileLoginButton').attributes['aria-expanded'],'true');
+  app.event('profileLoginCloseButton');
+  assert.equal(app.get('profileLoginInfo').hidden,true);
+  assert.equal(app.get('profileLoginButton').attributes['aria-expanded'],'false');
+  assert.equal(app.state().profile,null);
+});
+
+test('Invalid legacy profile data is discarded and reset clears local profile',()=>{
+  const bad=baseState();bad.profile={name:'X',email:'not-an-email'};
+  const app=harness(bad);
+  assert.equal(app.state().profile,null);
+  const good=baseState();good.profile={name:'Mia',email:'mia@example.net'};
+  const saved=harness(good);
+  assert.equal(saved.get('profileAccountHeading').textContent,'Mia');
+  saved.event('clearAll');
+  assert.equal(saved.state().profile,null);
+  assert.equal(saved.get('profileAccountBadge').textContent,'NICHT ANGEMELDET');
+});
