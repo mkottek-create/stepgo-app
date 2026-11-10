@@ -6,7 +6,7 @@
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR,distanceUnit:'km'});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR,distanceUnit:'km',nameChange:{lastName:'',at:0}});
   // Das lokale Testprofil ist KEIN echtes Login. Niemals Passwoerter speichern.
   const normalizeProfile = raw => {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
@@ -21,6 +21,13 @@
   if (!state || typeof state!=='object') state = fresh();
   if (!Array.isArray(state.ledger)) state.ledger = [];
   state.profile = normalizeProfile(state.profile);
+  // Bestehende Profile aus alten Versionen dürfen ihren Namen einmal ohne Sperre ändern.
+  const savedNameChange = state.nameChange;
+  state.nameChange = savedNameChange && typeof savedNameChange==='object'
+    && typeof savedNameChange.lastName==='string' && savedNameChange.lastName.length<=32
+    && Number.isFinite(savedNameChange.at) && savedNameChange.at>=0
+    ? {lastName:savedNameChange.lastName,at:savedNameChange.at}
+    : {lastName:state.profile?.name||'',at:0};
   state.avatar = PROFILE_AVATARS.includes(state.avatar)?state.avatar:DEFAULT_AVATAR;
   state.distanceUnit = state.distanceUnit==='mi'?'mi':'km';
   if (!Array.isArray(state.cityBuildings)) state.cityBuildings = [];
@@ -45,6 +52,13 @@
   state.goal=Math.min(30000,Math.max(3000,state.goal));
   const $ = id => document.getElementById(id);
   const persist = () => {try {localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}};
+  const NAME_CHANGE_COOLDOWN = 30*24*60*60*1000;
+  const nameChangeDeadline = () => state.nameChange.at+NAME_CHANGE_COOLDOWN;
+  const nameIsLocked = () => state.nameChange.at>0 && Date.now()<nameChangeDeadline();
+  const nextNameChangeDate = () => new Intl.DateTimeFormat('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}).format(new Date(nameChangeDeadline()));
+  const nameChangeMessage = () => nameIsLocked()
+    ? 'Spielername bis '+nextNameChangeDate()+' gesperrt (30 Tage nach der letzten Änderung).'
+    : 'Spielername kann jetzt festgelegt oder geändert werden. Danach gilt eine Sperre von 30 Tagen.';
   const formatDistance = steps => { const km=Math.max(0,steps)*0.00075; const value=state.distanceUnit==='mi'?km/1.609344:km; return new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2}).format(value)+' '+(state.distanceUnit==='mi'?'mi':'km'); };
   let toastTimer;
   const toast = s => { const t=$('toast');t.textContent=s;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),2700); };
@@ -316,6 +330,7 @@
     $('profileBuildings').textContent=(state.cityBuildings.length+1)+' / 9';
     $('profileEditButton').textContent=profile?'✏️ Profil bearbeiten':'✏️ Testprofil einrichten';
     $('profileRemoveButton').hidden=!profile;
+    $('profileNameChangeHint').textContent=nameChangeMessage();
     $('profileAccountNote').textContent=profile
       ? 'Nur auf diesem Gerät gespeichert. Deine E-Mail ist noch nicht verifiziert; eine echte Anmeldung ist noch nicht aktiviert.'
       : 'Du spielst bisher ohne Benutzerkonto. Ein Testprofil kannst du hier auf diesem Gerät speichern.';
@@ -595,12 +610,15 @@
   $('profileEditButton').addEventListener('click',()=>{
     $('profileLoginInfo').hidden=true;
     $('profileLoginButton').setAttribute('aria-expanded','false');
-    $('profileName').value=state.profile?state.profile.name:'';
+    $('profileName').value=state.profile?state.profile.name:state.nameChange.lastName;
+    $('profileName').readOnly=nameIsLocked();
+    $('profileName').setAttribute('aria-readonly',String(nameIsLocked()));
+    $('profileNameChangeHint').textContent=nameChangeMessage();
     $('profileEmail').value=state.profile?state.profile.email:'';
     $('profileFormError').textContent='';
     $('profileFormError').hidden=true;
     $('profileForm').hidden=false;
-    $('profileName').focus();
+    (nameIsLocked() ? $('profileEmail') : $('profileName')).focus();
   });
   $('profileCancelButton').addEventListener('click',()=>{
     $('profileForm').hidden=true;
@@ -618,6 +636,16 @@
       $('profileFormError').hidden=false;
       return;
     }
+    // Nie allein der schreibgeschützten Eingabe vertrauen; serverseitige Prüfung folgt mit echten Konten.
+    const changedName = profile.name!==state.nameChange.lastName;
+    if(changedName && nameIsLocked()){
+      $('profileFormError').textContent='Deinen Spielernamen kannst du erst ab dem '+nextNameChangeDate()+' wieder ändern. Deine E-Mail darfst du weiterhin bearbeiten.';
+      $('profileFormError').hidden=false;
+      return;
+    }
+    if(changedName){
+      state.nameChange={lastName:profile.name,at:Date.now()};
+    }
     state.profile=profile;
     $('profileFormError').hidden=true;
     $('profileForm').hidden=true;
@@ -628,6 +656,7 @@
     if(!state.profile) return;
     if(!confirm('Nur deinen gespeicherten Spielernamen und die E-Mail-Adresse löschen? Stadt und Münzen bleiben erhalten.'))return;
     state.profile=null;
+    // Die Namenssperre bleibt beim Löschen lokaler Profilangaben erhalten.
     $('profileForm').hidden=true;
     $('profileLoginInfo').hidden=true;
     $('profileLoginButton').setAttribute('aria-expanded','false');
