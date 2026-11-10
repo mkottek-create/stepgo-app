@@ -2799,3 +2799,11 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 /* Startseite: nur relevante Informationen; Verlauf als einfacher Link */
 .home-history-link{margin:8px 17px 4px;display:flex;justify-content:flex-end}
 .home-history-link .steps-detail-link{min-height:42px;padding:9px 12px}
+
+/* Zahlungen und Mitgliedschaft: sichere, rein informative Vorschau */
+.profile-membership-preview{display:flex;align-items:center;flex-wrap:wrap;gap:7px 11px;margin:12px 0 13px;padding:12px 13px;background:#eff9e7;border:1px solid #b4d5a5;border-radius:13px;color:#27543c;font-size:12px;font-weight:850}
+.profile-membership-preview strong{margin-left:auto;background:#fff;border:1px solid #b4d5a5;border-radius:999px;padding:5px 10px;font-size:11px}
+.profile-membership-preview small{flex-basis:100%;color:#65836c;font-size:10px;font-weight:650}
+#screen-profile #settingsPaymentsContent[hidden]{display:none!important}
+.payment-preview p{margin:0 0 14px;line-height:1.65}
+.payment-preview p:last-child{margin-bottom:0}
