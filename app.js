@@ -531,7 +531,6 @@
     $('profileEditButton').click();
   };
   $('settingsEmailButton').addEventListener('click',openProfileEditFromSettings);
-  $('settingsNameButton').addEventListener('click',openProfileEditFromSettings);
   $('settingsLocalProfileButton').addEventListener('click',openProfileEditFromSettings);
   $('settingsInviteButton').addEventListener('click',()=>openSettingsDetail('Freund:innen einladen','text','Freunde-Einladungen gibt es in der Testversion noch nicht. Dafür brauchen wir zuerst echte Benutzerkonten und eine sichere Einladung.'));
   $('settingsBlockedButton').addEventListener('click',()=>openSettingsDetail('Blockierte Personen','text','Bisher gibt es keine echten Kontakte oder Spielergegner, die du blockieren könntest. Diese Verwaltung folgt mit den Online-Konten.'));
