@@ -98,7 +98,6 @@
     $('cityAvailablePoints').textContent=fmt(pts);
     $('cityBuiltCount').textContent=(owned.size+1)+' / 9';
     $('cityLevel').textContent='STUFE '+cityLevel();
-    $('cityMapProgress').textContent=owned.size+' von 8 gebaut · '+state.cityBuildings.reduce((sum,id)=>sum+buildingLevel(id)-1,0)+' Ausbauten';
     const grid=$('cityMap');
     grid.replaceChildren();
     for(let pos=0;pos<9;pos++){
