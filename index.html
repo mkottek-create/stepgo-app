@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=settings1" />
+  <link rel="stylesheet" href="styles.css?v=player1" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -283,6 +283,18 @@
             <div class="profile-avatar" id="profileAvatar" aria-hidden="true">👟</div>
             <div class="profile-identity-text"><h2 id="profileAccountHeading">Dein Spielerprofil</h2><p id="profileDisplayEmail">Noch keine E-Mail-Adresse hinterlegt</p></div>
           </div>
+          <div class="profile-avatar-bar">
+            <button type="button" id="profileAvatarButton" class="profile-avatar-button" aria-controls="profileAvatarChooser" aria-expanded="false">🎭 Avatar auswählen <span aria-hidden="true">›</span></button>
+          </div>
+          <div id="profileAvatarChooser" class="profile-avatar-chooser" hidden>
+            <p>Wähle deinen Spieler-Avatar. Die Auswahl bleibt auf diesem Gerät.</p>
+            <div id="profileAvatarChoices" class="profile-avatar-grid" role="group" aria-label="Spieler-Avatar auswählen"></div>
+          </div>
+          <div class="profile-level-card">
+            <div class="profile-level-top"><span>⭐ SPIELERLEVEL</span><strong id="profileLevel">Level 1</strong></div>
+            <div class="profile-level-track" role="progressbar" id="profileLevelTrack" aria-label="Fortschritt zum nächsten Spielerlevel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="profileLevelFill"></span></div>
+            <div class="profile-level-bottom"><span id="profileLifetimeSteps">0 bestätigte Schritte</span><span id="profileLevelNext">Noch 10.000 Schritte</span></div>
+          </div>
           <div class="profile-account-metrics">
             <div><strong id="profileStepsToday">0</strong><span>Schritte heute</span></div>
             <div><strong id="profileCoins">0</strong><span>Stadtmünzen</span></div>
@@ -294,13 +306,19 @@
           </div>
           <p class="profile-local-note" id="profileAccountNote">Du spielst bisher ohne Benutzerkonto. Ein Testprofil kannst du hier auf diesem Gerät speichern.</p>
         </section>
+        <section class="profile-achievements" aria-labelledby="profileAchievementsTitle">
+          <div class="profile-achievements-head"><div><span>DEINE MEILENSTEINE</span><h2 id="profileAchievementsTitle">🏆 Erfolge &amp; Abzeichen</h2></div><strong id="profileAchievementCount">0 / 6</strong></div>
+          <p>Schalte Abzeichen durch bestätigte Schritte und den Ausbau deiner Stadt frei.</p>
+          <div id="profileAchievementList" class="profile-achievement-grid"></div>
+          <p class="profile-achievements-note">Fortschritte basieren auf den bestätigten Tagen und Gebäuden in dieser Testversion.</p>
+        </section>
         <form id="profileForm" class="profile-edit-panel" aria-labelledby="profileFormTitle" novalidate hidden>
           <div class="profile-panel-heading"><h2 id="profileFormTitle">✏️ Dein Testprofil</h2><span>LOKAL</span></div>
           <label for="profileName">Spielername</label>
           <input id="profileName" name="playerName" type="text" autocomplete="nickname" maxlength="32" placeholder="Dein Spielername" required />
           <label for="profileEmail">E-Mail-Adresse</label>
-          <input id="profileEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="name@beispiel.de" required />
-          <p class="profile-form-help">Diese Angaben werden nur in diesem Browser gespeichert. Es wird noch kein echtes Konto erstellt und keine E-Mail versendet.</p>
+          <input id="profileEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Optional: name@beispiel.de" />
+          <p class="profile-form-help">Der Spielername genügt; die E-Mail ist optional. Alles bleibt nur auf diesem Gerät. Es wird kein echtes Konto erstellt und keine E-Mail versendet.</p>
           <p id="profileFormError" class="profile-form-error" role="alert" hidden></p>
           <div class="profile-form-actions">
             <button type="submit" class="profile-account-primary">💾 Profil speichern</button>
@@ -403,6 +421,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=settings1"></script>
+  <script src="app.js?v=player1"></script>
 </body>
 </html>
