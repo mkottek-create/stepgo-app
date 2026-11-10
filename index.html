@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=city6" />
+  <link rel="stylesheet" href="styles.css?v=payments7" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -277,6 +277,7 @@
             <div><strong id="profileCoins">0</strong><span>Stadtmünzen</span></div>
             <div><strong id="profileBuildings">1 / 9</strong><span>Gebäude</span></div>
           </div>
+          <div class="profile-membership-preview" aria-label="Deine Mitgliedschaft"><span>👑 Mitgliedschaft</span><strong>Kostenlos</strong><small>Wettkampf-Pass noch nicht verfügbar</small></div>
           <div class="profile-account-actions">
             <button type="button" id="profileEditButton" class="profile-account-primary">✏️ Testprofil einrichten</button>
             <button type="button" id="profileLoginButton" class="profile-account-secondary" aria-controls="profileLoginInfo" aria-expanded="false">🔑 Anmelden</button>
@@ -334,6 +335,13 @@
             <button type="button" id="settingsLoginButton" class="app-settings-row"><span>Anmelden &amp; registrieren</span><span aria-hidden="true">›</span></button>
             <button type="button" id="settingsLogoutButton" class="app-settings-row"><span>Ausloggen</span><span aria-hidden="true">›</span></button>
           </section>
+          <section class="app-settings-group" aria-label="Zahlungen und Mitgliedschaft">
+            <h3>Zahlungen &amp; Mitgliedschaft</h3>
+            <button type="button" id="settingsMembershipButton" class="app-settings-row"><span>👑 Mitgliedschaft verwalten</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsPaymentButton" class="app-settings-row"><span>💳 Zahlungsmethoden</span><span aria-hidden="true">›</span></button>
+            <button type="button" id="settingsReceiptsButton" class="app-settings-row"><span>🧾 Käufe &amp; Rechnungen</span><span aria-hidden="true">›</span></button>
+            <p class="app-settings-note">Nur Vorschau: keine Zahlungen, keine aktiven Abos und keine gespeicherten Zahlungsdaten.</p>
+          </section>
           <section class="app-settings-group" aria-label="App-Einstellungen">
             <h3>Einstellungen</h3>
             <button type="button" id="settingsGoalButton" class="app-settings-row"><span>Schrittziel festlegen</span><span aria-hidden="true">›</span></button>
@@ -378,6 +386,7 @@
             <p>Du kannst bereits ein lokales Profil einrichten, aber bitte hier keine Passwörter eingeben.</p>
             <button type="button" id="settingsLocalProfileButton" class="app-settings-cta">Lokales Testprofil bearbeiten</button>
           </div>
+          <div id="settingsPaymentsContent" class="app-settings-explanation payment-preview" hidden></div>
         </div>
         <button id="clearAll" hidden class="danger-button">Alle Testdaten löschen</button>
 
@@ -397,6 +406,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=city6"></script>
+  <script src="app.js?v=payments7"></script>
 </body>
 </html>
