@@ -1,17 +1,19 @@
 (() => {
   'use strict';
   const STORAGE_KEY = 'stepgo-demo-v1';
+  const PROFILE_AVATARS = Object.freeze(['👟','🏃','🚴','🦊','🐼','🐱','🤖','👑']);
+  const DEFAULT_AVATAR = '👟';
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR});
   // Das lokale Testprofil ist KEIN echtes Login. Niemals Passwoerter speichern.
   const normalizeProfile = raw => {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
     const name = typeof raw.name==='string' ? raw.name.trim() : '';
     const email = typeof raw.email==='string' ? raw.email.trim().toLowerCase() : '';
     if (name.length<2 || name.length>32 || /[<>\x00-\x1f]/.test(name)) return null;
-    if (email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
+    if (email && (email.length>254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) return null;
     return {name,email};
   };
   let state;
@@ -19,6 +21,7 @@
   if (!state || typeof state!=='object') state = fresh();
   if (!Array.isArray(state.ledger)) state.ledger = [];
   state.profile = normalizeProfile(state.profile);
+  state.avatar = PROFILE_AVATARS.includes(state.avatar)?state.avatar:DEFAULT_AVATAR;
   if (!Array.isArray(state.cityBuildings)) state.cityBuildings = [];
   state.cityBuildings = [...new Set(state.cityBuildings.filter(item=>typeof item==='string'))];
   // Alte Spielstände hatten keine Gebäude-Stufen. Bereits gebaute Gebäude bleiben Stufe 1.
@@ -220,13 +223,93 @@
   const currentEntry = () => state.ledger.find(x=>x.date===todayKey());
   const coinsAvailable = () => currentEntry() ? 0 : coinBreakdown(state.steps,state.goal).total;
   const dateLabel = key => {const d=new Date(`${key}T12:00:00`);return new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long',year:'numeric'}).format(d);};
+  // Spielerlevel gibt es nur fuer bestaetigte Schritte, nie fuer unbestaetigte Demo-Eingaben.
+  const confirmedSteps = () => state.ledger.reduce((sum,entry)=>{
+    const steps=Number(entry && entry.steps);
+    return sum+(Number.isFinite(steps)?Math.max(0,Math.min(100000,Math.floor(steps))):0);
+  },0);
+  const PLAYER_STEPS_PER_LEVEL = 10000;
+  const PLAYER_MAX_LEVEL = 50;
+  const playerLevel = total => Math.min(PLAYER_MAX_LEVEL,1+Math.floor(total/PLAYER_STEPS_PER_LEVEL));
+  const ACHIEVEMENTS = Object.freeze([
+    {id:'first-city',icon:'🏠',name:'Grundstein',hint:'Dein erstes Gebäude errichten',
+      progress:()=>state.cityBuildings.length,target:1,unit:'Gebäude'},
+    {id:'first-walk',icon:'👟',name:'Losgelaufen',hint:'Einen Tag mit mindestens 5.000 Schritten bestätigen',
+      progress:()=>state.ledger.some(e=>Number(e.steps)>=5000)?1:0,target:1,unit:'Tag'},
+    {id:'three-city',icon:'🏙️',name:'Stadt wächst',hint:'Drei Gebäude errichten',
+      progress:()=>state.cityBuildings.length,target:3,unit:'Gebäude'},
+    {id:'ten-k',icon:'🏅',name:'10.000er',hint:'Einen Tag mit 10.000 Schritten bestätigen',
+      progress:()=>state.ledger.some(e=>Number(e.steps)>=10000)?1:0,target:1,unit:'Tag'},
+    {id:'three-days',icon:'🔥',name:'Dranbleiben',hint:'An drei Tagen Schritte bestätigen',
+      progress:()=>new Set(state.ledger.map(e=>e.date).filter(d=>typeof d==='string')).size,target:3,unit:'Tage'},
+    {id:'upgrade',icon:'🏗️',name:'Baumeister',hint:'Ein Gebäude auf Stufe 3 ausbauen',
+      progress:()=>state.cityBuildings.some(id=>buildingLevel(id)>=3)?1:0,target:1,unit:'Gebäude'}
+  ]);
+  function renderAvatarChoices(){
+    const chooser=$('profileAvatarChoices');
+    chooser.replaceChildren();
+    PROFILE_AVATARS.forEach((avatar,index)=>{
+      const button=document.createElement('button');
+      button.className='profile-avatar-option'+(state.avatar===avatar?' chosen':'');
+      button.textContent=avatar;
+      button.setAttribute('type','button');
+      button.setAttribute('aria-label','Avatar '+(index+1)+' auswählen: '+avatar);
+      button.setAttribute('aria-pressed',String(state.avatar===avatar));
+      button.addEventListener('click',()=>{
+        state.avatar=avatar;
+        render();
+        toast('Avatar gespeichert');
+      });
+      chooser.append(button);
+    });
+  }
+  function renderAchievements(){
+    const list=$('profileAchievementList');
+    list.replaceChildren();
+    let earned=0;
+    ACHIEVEMENTS.forEach(item=>{
+      const amount=Math.max(0,Math.min(item.target,Number(item.progress())||0));
+      const unlocked=amount>=item.target;
+      if(unlocked) earned++;
+      const card=document.createElement('div');
+      card.className='profile-achievement'+(unlocked?' unlocked':' locked');
+      const badge=document.createElement('span');
+      badge.className='profile-achievement-icon';
+      badge.setAttribute('aria-hidden','true');
+      badge.textContent=unlocked?item.icon:'🔒';
+      const detail=document.createElement('div');
+      detail.className='profile-achievement-info';
+      const title=document.createElement('strong');
+      title.textContent=item.name;
+      const hint=document.createElement('span');
+      hint.textContent=item.hint;
+      const status=document.createElement('small');
+      status.textContent=unlocked?'Freigeschaltet ✓':amount+' / '+item.target+' '+item.unit;
+      detail.append(title,hint,status);
+      card.append(badge,detail);
+      list.append(card);
+    });
+    $('profileAchievementCount').textContent=earned+' / '+ACHIEVEMENTS.length;
+  }
   function renderProfile(){
     const profile=state.profile;
     $('profileAccountBadge').textContent=profile?'LOKALES TESTPROFIL':'NICHT ANGEMELDET';
     $('profileAccountBadge').classList.toggle('has-profile',!!profile);
     $('profileAccountHeading').textContent=profile?profile.name:'Dein Spielerprofil';
-    $('profileDisplayEmail').textContent=profile?profile.email:'Noch keine E-Mail-Adresse hinterlegt';
-    $('profileAvatar').textContent=profile?profile.name.slice(0,1).toLocaleUpperCase('de-DE'):'👟';
+    $('profileDisplayEmail').textContent=profile?(profile.email||'Keine E-Mail-Adresse hinterlegt'):'Noch keine E-Mail-Adresse hinterlegt';
+    $('profileAvatar').textContent=state.avatar;
+    renderAvatarChoices();
+    const total=confirmedSteps();
+    const level=playerLevel(total);
+    const maxed=level===PLAYER_MAX_LEVEL;
+    const next=maxed?0:PLAYER_STEPS_PER_LEVEL-(total%PLAYER_STEPS_PER_LEVEL);
+    const fraction=maxed?100:Math.floor((total%PLAYER_STEPS_PER_LEVEL)/PLAYER_STEPS_PER_LEVEL*100);
+    $('profileLevel').textContent='Level '+level;
+    $('profileLifetimeSteps').textContent=fmt(total)+' bestätigte Schritte';
+    $('profileLevelNext').textContent=maxed?'Maximales Level erreicht':'Noch '+fmt(next)+' Schritte';
+    $('profileLevelFill').style.width=fraction+'%';
+    $('profileLevelTrack').setAttribute('aria-valuenow',String(fraction));
+    renderAchievements();
     $('profileStepsToday').textContent=fmt(state.steps);
     $('profileCoins').textContent=fmt(state.wallet);
     $('profileBuildings').textContent=(state.cityBuildings.length+1)+' / 9';
@@ -235,7 +318,7 @@
     $('profileAccountNote').textContent=profile
       ? 'Nur auf diesem Gerät gespeichert. Deine E-Mail ist noch nicht verifiziert; eine echte Anmeldung ist noch nicht aktiviert.'
       : 'Du spielst bisher ohne Benutzerkonto. Ein Testprofil kannst du hier auf diesem Gerät speichern.';
-    $('settingsEmailValue').textContent=profile?profile.email:'E-Mail-Adresse hinterlegen';
+    $('settingsEmailValue').textContent=profile&&profile.email?profile.email:'E-Mail-Adresse hinterlegen';
   }
 
   function render(){
@@ -438,6 +521,11 @@
   });
   $('settingsClearButton').addEventListener('click',()=>$('clearAll').click());
 
+  $('profileAvatarButton').addEventListener('click',()=>{
+    const open=$('profileAvatarChooser').hidden;
+    $('profileAvatarChooser').hidden=!open;
+    $('profileAvatarButton').setAttribute('aria-expanded',String(open));
+  });
   $('profileEditButton').addEventListener('click',()=>{
     $('profileLoginInfo').hidden=true;
     $('profileLoginButton').setAttribute('aria-expanded','false');
@@ -460,7 +548,7 @@
     };
     const profile=normalizeProfile(candidate);
     if(!profile){
-      $('profileFormError').textContent='Bitte gib einen Spielernamen (2–32 Zeichen) und eine gültige E-Mail-Adresse ein.';
+      $('profileFormError').textContent='Bitte gib einen Spielernamen (2–32 Zeichen) und – falls eingetragen – eine gültige E-Mail-Adresse ein.';
       $('profileFormError').hidden=false;
       return;
     }
