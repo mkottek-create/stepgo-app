@@ -335,8 +335,6 @@
     $('percentPill').textContent=`${pct} % vom Tagesziel`;
     $('earnableCoins').textContent=fmt(coinsAvailable());
     $('walletCoins').textContent=fmt(state.wallet);
-    $('statSteps').textContent=fmt(state.steps);
-    $('statDays').textContent=fmt(state.ledger.length);
     $('activitySteps').textContent=fmt(state.steps);
     $('activityStepSource').textContent=state.stepSource==='health-import'?'Aus Apple Health übernommen (manuell)':'Schritte im Testmodus';
     $('healthImportHint').textContent=state.stepSource==='health-import'?'Zuletzt übernommen: '+fmt(state.steps)+' Schritte · '+(state.importedAt ? new Date(state.importedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'heute')+'. Nur Spielwährung.':'Noch keine Health-Schritte für heute übernommen.';
@@ -607,7 +605,6 @@
     $('profileLoginInfo').hidden=true;
     $('profileLoginButton').setAttribute('aria-expanded','false');
   });
-  $('openCompetitionBtn').addEventListener('click',()=>switchTab('competitions'));
   $('openStepsBtn').addEventListener('click',()=>switchTab('activity'));
   $('add1k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+1000);state.stepSource='demo';state.importedAt=null;render();toast('+1.000 Demo-Schritte hinzugefügt');});
   $('add5k').addEventListener('click',()=>{state.steps=Math.min(100000,state.steps+5000);state.stepSource='demo';state.importedAt=null;render();toast('+5.000 Demo-Schritte hinzugefügt');});
