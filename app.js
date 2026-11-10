@@ -549,9 +549,10 @@
     'Dies ist nur eine Vorschau. Es wird kein Probeabo gestartet und nichts berechnet.'
   ]));
   $('settingsPaymentButton').addEventListener('click',()=>showPaymentPreview('Zahlungsmethoden',[
-    'Noch keine Zahlungsmethode hinterlegt – StepGo City speichert keine Kartendaten.',
-    'Für die spätere iPhone-App sind Apple-In-App-Käufe vorgesehen. Verfügbare Zahlungsarten werden von Apple verwaltet.',
-    'In dieser Testversion kannst du keine Zahlungsdaten eingeben und keine Käufe durchführen.'
+    'Geplant für den Wettkampf-Pass: Bezahlung über den Apple-App-Store (In-App-Kauf).',
+    'In Deutschland unterstützt der Apple Account unter anderem Apple Pay, die meisten Kredit- und Debitkarten, PayPal, Apple-Account-Guthaben und die Abrechnung über unterstützte Mobilfunkanbieter. Welche Methode du verwenden kannst, hängt von deinem Apple Account ab.',
+    'Du verwaltest deine Zahlungsart später direkt bei Apple. StepGo City speichert keine Karten- oder PayPal-Daten.',
+    'Nur Vorschau: Hier lässt sich derzeit weder eine Zahlungsmethode auswählen noch ein Kauf durchführen.'
   ]));
   $('settingsReceiptsButton').addEventListener('click',()=>showPaymentPreview('Käufe & Rechnungen',[
     'Noch keine Käufe oder Rechnungen vorhanden.',
