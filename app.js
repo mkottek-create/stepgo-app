@@ -485,6 +485,7 @@
     $('settingsGoalContent').hidden=kind!=='goal';
     $('settingsPrivacyContent').hidden=kind!=='privacy';
     $('settingsLoginContent').hidden=kind!=='login';
+    $('settingsPaymentsContent').hidden=kind!=='payments';
     if(kind==='text') $('settingsDetailText').textContent=message;
   };
   // Hamburger-Menü oben rechts: Einstellungen sind ausschließlich hier erreichbar.
@@ -530,6 +531,33 @@
   $('settingsBlockedButton').addEventListener('click',()=>openSettingsDetail('Blockierte Personen','text','Bisher gibt es keine echten Kontakte oder Spielergegner, die du blockieren könntest. Diese Verwaltung folgt mit den Online-Konten.'));
   $('settingsLoginButton').addEventListener('click',()=>openSettingsDetail('Anmelden & registrieren','login'));
   $('settingsLogoutButton').addEventListener('click',()=>openSettingsDetail('Ausloggen','text','Du bist noch nicht mit einem Online-Konto angemeldet. Ein lokales Testprofil ist keine Anmeldung. Deshalb gibt es zurzeit nichts auszuloggen.'));
+  // Reine Vorschau: keine Bezahldaten, keine Checkout-URL und keine Abo-Aktivierung.
+  const showPaymentPreview=(heading,lines)=>{
+    openSettingsDetail(heading,'payments');
+    const container=$('settingsPaymentsContent');
+    container.replaceChildren();
+    for(const line of lines){
+      const p=document.createElement('p');
+      p.textContent=line;
+      container.append(p);
+    }
+  };
+  $('settingsMembershipButton').addEventListener('click',()=>showPaymentPreview('Mitgliedschaft verwalten',[
+    'Dein Status: Kostenlos · Kein aktives Abo.',
+    'Geplant: StepGo Wettkampf-Pass – 1 Monat kostenlos testen, danach voraussichtlich 6,99 € pro Monat.',
+    'Später kannst du deine Mitgliedschaft über Apple verwalten, verlängern oder kündigen.',
+    'Dies ist nur eine Vorschau. Es wird kein Probeabo gestartet und nichts berechnet.'
+  ]));
+  $('settingsPaymentButton').addEventListener('click',()=>showPaymentPreview('Zahlungsmethoden',[
+    'Noch keine Zahlungsmethode hinterlegt – StepGo City speichert keine Kartendaten.',
+    'Für die spätere iPhone-App sind Apple-In-App-Käufe vorgesehen. Verfügbare Zahlungsarten werden von Apple verwaltet.',
+    'In dieser Testversion kannst du keine Zahlungsdaten eingeben und keine Käufe durchführen.'
+  ]));
+  $('settingsReceiptsButton').addEventListener('click',()=>showPaymentPreview('Käufe & Rechnungen',[
+    'Noch keine Käufe oder Rechnungen vorhanden.',
+    'Spätere App-Store-Käufe und Belege kannst du über deinen Apple-Account einsehen.',
+    'Die Testversion stellt keine Rechnungen aus und löst keine Zahlungen aus.'
+  ]));
   $('settingsGoalButton').addEventListener('click',()=>openSettingsDetail('Schrittziel','goal'));
   $('settingsUnitsButton').addEventListener('click',()=>openSettingsDetail('Maßeinheit & Entfernung','text','StepGo City zählt im Moment Schritte. Eine umschaltbare Entfernungsanzeige in Kilometern oder Meilen ist für eine spätere Version geplant.'));
   $('settingsNotificationsButton').addEventListener('click',()=>openSettingsDetail('Benachrichtigungen','text','Push-Mitteilungen werden in dieser Testversion nicht verschickt. Später kannst du Erinnerungen und Wettkampfmeldungen hier selbst ein- und ausschalten.'));
