@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=name12" />
+  <link rel="stylesheet" href="styles.css?v=missions13" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -59,6 +59,14 @@
           <p id="challengeGoalText" class="challenge-goal-text">Noch ein paar Schritte bis zum Ziel!</p>
           <div class="challenge-track" role="progressbar" id="challengeTrack" aria-label="Tagesziel-Fortschritt" aria-valuemin="0" aria-valuemax="15000" aria-valuenow="0"><div id="challengeFill" class="challenge-fill"></div></div>
           <div class="challenge-footer"><span id="challengeProgress">0 / 15.000 Schritte</span><strong><span aria-hidden="true">✦</span> +20 Stadtmünzen bei Zielerreichung</strong></div>
+        </section>
+        <section class="missions-section" aria-labelledby="missionsHeading">
+          <div class="missions-heading"><div><span class="section-overline">DEINE AUFGABEN</span><h2 id="missionsHeading">🎯 Missionen</h2></div><span class="missions-tag">Extra-Münzen</span></div>
+          <div class="missions-group-title"><strong>Heute</strong><span id="dailyMissionPeriod">Täglich neu</span></div>
+          <div id="dailyMissionList" class="missions-list"></div>
+          <div class="missions-group-title missions-week-title"><strong>Diese Woche</strong><span id="weeklyMissionPeriod">Montag bis Sonntag</span></div>
+          <div id="weeklyMissionList" class="missions-list"></div>
+          <p class="missions-footnote">Tagesmissionen starten täglich neu, Wochenmissionen montags. Schritte erst bestätigen, dann freigeschaltete Belohnung einmalig abholen. Münzen sind reine Spielwährung.</p>
         </section>
         <section class="milestone-section" aria-label="Schritt-Bonus-Meilensteine">
           <div class="section-heading milestone-heading"><h2>🏆 Bonus-Meilensteine</h2><span>Extra-Münzen</span></div>
@@ -423,6 +431,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=name12"></script>
+  <script src="app.js?v=missions13"></script>
 </body>
 </html>
