@@ -390,10 +390,17 @@
 
           </div>
           <div id="settingsLoginContent" class="app-settings-explanation" hidden>
-            <h3>Konto erstellen und anmelden</h3>
-            <p>Für eine echte Anmeldung brauchen wir einen sicheren Kontodienst mit E-Mail-Bestätigung. Diese Funktion ist noch nicht aktiv. Dein Spielstand bleibt vorerst auf diesem Gerät.</p>
-            <p>Du kannst bereits ein lokales Profil einrichten, aber bitte hier keine Passwörter eingeben.</p>
+            <h3>Wie möchtest du dich anmelden?</h3>
+            <p class="login-preview-notice">🔒 Anmeldung in Vorbereitung – die folgenden Möglichkeiten werden erst mit einem sicheren Kontodienst freigeschaltet.</p>
+            <div class="login-provider-options" aria-label="Geplante Anmeldearten">
+              <button type="button" class="login-provider login-provider-apple" disabled aria-label="Mit Apple anmelden – noch nicht verfügbar"><span class="login-provider-icon" aria-hidden="true">●</span> Mit Apple anmelden <small>Bald</small></button>
+              <button type="button" class="login-provider login-provider-google" disabled aria-label="Mit Google anmelden – noch nicht verfügbar"><span class="login-provider-icon google-g" aria-hidden="true">G</span> Mit Google anmelden <small>Bald</small></button>
+              <button type="button" class="login-provider login-provider-email" disabled aria-label="Mit E-Mail registrieren – noch nicht verfügbar"><span class="login-provider-icon" aria-hidden="true">✉</span> Mit E-Mail registrieren <small>Bald</small></button>
+            </div>
+            <p class="login-preview-help">Google umfasst auch Gmail-Adressen. Für E-Mail wird später ein sicherer Bestätigungsprozess benötigt. Aktuell wird kein echtes Konto angelegt und kein Passwort abgefragt.</p>
+            <div class="login-local-divider">Schon jetzt nutzbar</div>
             <button type="button" id="settingsLocalProfileButton" class="app-settings-cta">Lokales Testprofil bearbeiten</button>
+            <p class="login-local-hint">Dein Testprofil und dein Spielstand bleiben auf diesem Gerät.</p>
           </div>
           <div id="settingsPaymentsContent" class="app-settings-explanation payment-preview" hidden></div>
         </div>
