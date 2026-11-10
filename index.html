@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=login11" />
+  <link rel="stylesheet" href="styles.css?v=name12" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -294,6 +294,7 @@
           <div class="profile-panel-heading"><h2 id="profileFormTitle">✏️ Dein Testprofil</h2><span>LOKAL</span></div>
           <label for="profileName">Spielername</label>
           <input id="profileName" name="playerName" type="text" autocomplete="nickname" maxlength="32" placeholder="Dein Spielername" required />
+          <p id="profileNameChangeHint" class="profile-name-change-hint" aria-live="polite">Spielername nur einmal alle 30 Tage änderbar.</p>
           <label for="profileEmail">E-Mail-Adresse</label>
           <input id="profileEmail" name="email" type="email" autocomplete="email" inputmode="email" maxlength="254" placeholder="Optional: name@beispiel.de" />
           <p class="profile-form-help">Der Spielername genügt; die E-Mail ist optional. Alles bleibt nur auf diesem Gerät. Es wird kein echtes Konto erstellt und keine E-Mail versendet.</p>
@@ -422,6 +423,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=profile10"></script>
+  <script src="app.js?v=name12"></script>
 </body>
 </html>
