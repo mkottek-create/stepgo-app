@@ -6,7 +6,7 @@
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR,distanceUnit:'km',nameChange:{lastName:'',at:0}});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR,distanceUnit:'km',nameChange:{lastName:'',at:0},missionClaims:{}});
   // Das lokale Testprofil ist KEIN echtes Login. Niemals Passwoerter speichern.
   const normalizeProfile = raw => {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
@@ -20,6 +20,8 @@
   try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || fresh(); } catch { state = fresh(); }
   if (!state || typeof state!=='object') state = fresh();
   if (!Array.isArray(state.ledger)) state.ledger = [];
+  if (!state.missionClaims || typeof state.missionClaims!=='object' || Array.isArray(state.missionClaims)) state.missionClaims = {};
+  state.missionClaims = Object.fromEntries(Object.entries(state.missionClaims).filter(([key,val])=>/^(daily|weekly):[0-9]{4}-[0-9]{2}-[0-9]{2}:[a-z0-9-]+$/.test(key) && val===true));
   state.profile = normalizeProfile(state.profile);
   // Bestehende Profile aus alten Versionen dürfen ihren Namen einmal ohne Sperre ändern.
   const savedNameChange = state.nameChange;
@@ -238,6 +240,93 @@
   const currentEntry = () => state.ledger.find(x=>x.date===todayKey());
   const coinsAvailable = () => currentEntry() ? 0 : coinBreakdown(state.steps,state.goal).total;
   const dateLabel = key => {const d=new Date(`${key}T12:00:00`);return new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long',year:'numeric'}).format(d);};
+
+  // Missionsbelohnungen sind getrennt vom Tagesziel-Bonus und werden nur einmal pro Zeitraum bezahlt.
+  // Tagesmissionen setzen einen bestaetigten Tag voraus; Wochenmissionen bestaetigte Tage.
+  const MISSIONS = Object.freeze([
+    {id:'daily-7500',period:'daily',icon:'👟',name:'7.500 Schritte sammeln',target:7500,unit:'Schritte',coins:15},
+    {id:'daily-12000',period:'daily',icon:'🔥',name:'12.000 Schritte sammeln',target:12000,unit:'Schritte',coins:25},
+    {id:'weekly-3days',period:'weekly',icon:'📅',name:'An 3 Tagen Schritte bestätigen',target:3,unit:'Tage',coins:60},
+    {id:'weekly-25000',period:'weekly',icon:'🏁',name:'25.000 Schritte sammeln',target:25000,unit:'Schritte',coins:80}
+  ]);
+  const mondayKey = (date=new Date()) => {
+    const day=new Date(date.getFullYear(),date.getMonth(),date.getDate(),12);
+    const weekday=(day.getDay()+6)%7;
+    day.setDate(day.getDate()-weekday);
+    return [day.getFullYear(),String(day.getMonth()+1).padStart(2,'0'),String(day.getDate()).padStart(2,'0')].join('-');
+  };
+  const missionPeriodKey = mission => mission.period==='daily'?todayKey():mondayKey();
+  const missionClaimKey = mission => mission.period+':'+missionPeriodKey(mission)+':'+mission.id;
+  const weekEntries = () => {
+    const start=mondayKey();
+    const end=new Date(start+'T12:00:00');end.setDate(end.getDate()+7);
+    const endKey=[end.getFullYear(),String(end.getMonth()+1).padStart(2,'0'),String(end.getDate()).padStart(2,'0')].join('-');
+    return state.ledger.filter(entry=>entry && typeof entry.date==='string' && entry.date>=start && entry.date<endKey);
+  };
+  const missionProgress = mission => {
+    if(mission.period==='daily'){
+      const entry=currentEntry();
+      return entry ? Math.max(0,Number(entry.steps)||0) : Math.max(0,state.steps);
+    }
+    const entries=weekEntries();
+    if(mission.id==='weekly-3days')return new Set(entries.map(e=>e.date)).size;
+    return entries.reduce((total,e)=>total+Math.max(0,Number(e.steps)||0),0);
+  };
+  const missionCanClaim = mission => {
+    if(state.missionClaims[missionClaimKey(mission)])return false;
+    if(mission.period==='daily'&&!currentEntry())return false;
+    return missionProgress(mission)>=mission.target;
+  };
+  const createMissionCard = mission => {
+    const progress=missionProgress(mission);
+    const amount=Math.min(mission.target,progress);
+    const claimed=!!state.missionClaims[missionClaimKey(mission)];
+    const eligible=missionCanClaim(mission);
+    const card=document.createElement('article');card.className='mission-card'+(claimed?' mission-claimed':'');
+    const top=document.createElement('div');top.className='mission-top';
+    const icon=document.createElement('span');icon.className='mission-icon';icon.textContent=mission.icon;
+    const content=document.createElement('div');content.className='mission-content';
+    const title=document.createElement('strong');title.textContent=mission.name;
+    const label=document.createElement('span');label.className='mission-progress-label';
+    label.textContent=fmt(amount)+' / '+fmt(mission.target)+' '+mission.unit;
+    content.append(title,label);
+    const reward=document.createElement('span');reward.className='mission-reward';reward.textContent='✦ +'+mission.coins;
+    top.append(icon,content,reward);
+    const progressbar=document.createElement('div');progressbar.className='mission-progress-track';
+    progressbar.setAttribute('role','progressbar');progressbar.setAttribute('aria-label',mission.name);
+    progressbar.setAttribute('aria-valuemin','0');progressbar.setAttribute('aria-valuemax',String(mission.target));
+    progressbar.setAttribute('aria-valuenow',String(amount));
+    const fill=document.createElement('span');fill.style.width=(100*amount/mission.target)+'%';progressbar.append(fill);
+    const bottom=document.createElement('div');bottom.className='mission-bottom';
+    const status=document.createElement('span');status.className='mission-status';
+    status.textContent=claimed?'✓ Belohnung abgeholt':eligible?'Geschafft! Belohnung bereit':progress>=mission.target&&mission.period==='daily'?'Erst Schritte bestätigen':'Noch '+fmt(mission.target-amount)+' '+mission.unit;
+    const button=document.createElement('button');button.type='button';button.className='mission-claim-button';
+    button.textContent=claimed?'Abgeholt ✓':eligible?'Abholen':'Gesperrt';
+    button.disabled=!eligible;
+    button.setAttribute('aria-label',mission.name+': '+button.textContent);
+    button.addEventListener('click',()=>claimMission(mission.id));
+    bottom.append(status,button);card.append(top,progressbar,bottom);
+    return card;
+  };
+  function renderMissions(){
+    const daily=$('dailyMissionList'),weekly=$('weeklyMissionList');
+    daily.replaceChildren();weekly.replaceChildren();
+    $('dailyMissionPeriod').textContent=dateLabel(todayKey());
+    const monday=mondayKey();
+    const sunday=new Date(monday+'T12:00:00');sunday.setDate(sunday.getDate()+6);
+    $('weeklyMissionPeriod').textContent=dateLabel(monday)+' – '+new Intl.DateTimeFormat('de-DE',{day:'numeric',month:'long'}).format(sunday);
+    MISSIONS.forEach(mission=>(mission.period==='daily'?daily:weekly).append(createMissionCard(mission)));
+  }
+  function claimMission(id){
+    const mission=MISSIONS.find(item=>item.id===id);
+    if(!mission||!missionCanClaim(mission)){toast('Mission noch nicht freigeschaltet oder bereits abgeholt.');renderMissions();return;}
+    // Erst kennzeichnen, dann auszahlen. Mehrfachklicks erhalten damit keine zweite Belohnung.
+    state.missionClaims[missionClaimKey(mission)]=true;
+    state.wallet+=mission.coins;
+    render();
+    toast('🎯 Mission geschafft! +'+mission.coins+' Stadtmünzen');
+  }
+
   // Spielerlevel gibt es nur fuer bestaetigte Schritte, nie fuer unbestaetigte Demo-Eingaben.
   const confirmedSteps = () => state.ledger.reduce((sum,entry)=>{
     const steps=Number(entry && entry.steps);
@@ -351,6 +440,7 @@
     $('percentPill').textContent=`${pct} % vom Tagesziel`;
     $('earnableCoins').textContent=fmt(coinsAvailable());
     $('walletCoins').textContent=fmt(state.wallet);
+    renderMissions();
     $('activitySteps').textContent=fmt(state.steps);
     $('activityDistance').textContent='Geschätzte Entfernung: '+formatDistance(state.steps);
     $('unitsPreview').textContent='10.000 Schritte ≈ '+formatDistance(10000);
