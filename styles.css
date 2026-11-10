@@ -2627,3 +2627,159 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   .app-settings-header h2{font-size:23px}
   .app-settings-row{min-height:48px;font-size:12px}
 }
+
+
+/* StepGo City V19 – AVATARE, LEVEL & ERFOLGE
+   Mehr Spielfreude in der Profilansicht ohne Serverkonto oder Extra-Datenquelle. */
+.profile-avatar-bar{display:flex;justify-content:flex-start;padding:11px 0 0}
+.profile-avatar-button{
+  display:inline-flex;align-items:center;justify-content:space-between;gap:9px;
+  padding:8px 11px;border:2px solid #8bac81;border-radius:11px;
+  background:#f3ffe6;color:#345b3d;font:inherit;font-size:11px;font-weight:900;
+  cursor:pointer;box-shadow:0 2px 0 #c3daba;
+}
+.profile-avatar-button>span{font-size:19px;line-height:14px}
+.profile-avatar-chooser{
+  margin:10px 0 4px;padding:12px 10px 14px;
+  border:2px solid #bfd8b1;border-radius:13px;
+  background:#f5fff0;
+}
+.profile-avatar-chooser>p{
+  font-size:11px;color:#637f69;line-height:1.5;
+  margin:0 1px 10px;
+}
+.profile-avatar-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;
+}
+.profile-avatar-option{
+  min-height:54px;padding:4px;
+  border:2px solid #c1d7b4;border-radius:13px;
+  background:linear-gradient(145deg,#fff,#ebf8df);
+  font-size:27px;cursor:pointer;
+  box-shadow:0 2px 0 #c8daba;
+}
+.profile-avatar-option.chosen{
+  border:3px solid #2d7947;
+  background:linear-gradient(145deg,#e2ffb7,#b6e880);
+  box-shadow:0 3px 0 #72a35f;
+}
+.profile-level-card{
+  margin-top:15px;padding:12px 13px;
+  border:2px solid #dfcf9f;border-radius:14px;
+  background:linear-gradient(140deg,#fff9df,#f1ffd9);
+  box-shadow:0 3px 0 #e8dfb1;
+}
+.profile-level-top,.profile-level-bottom{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+}
+.profile-level-top>span{
+  font-size:10px;font-weight:950;color:#7c6c37;letter-spacing:1px;
+}
+.profile-level-top>strong{
+  white-space:nowrap;
+  color:#305b36;font-weight:950;font-size:15px;
+}
+.profile-level-track{
+  box-sizing:border-box;
+  width:100%;height:14px;margin:12px 0 8px;
+  border:2px solid #85a56e;border-radius:999px;
+  background:#d7eac3;overflow:hidden;
+  box-shadow:inset 0 1px 3px #506f4359;
+}
+#profileLevelFill{
+  display:block;height:100%;min-width:0;width:0%;
+  border-radius:99px;
+  background:linear-gradient(90deg,#9ed65c,#55b67b);
+  box-shadow:inset 0 2px 0 #d9ffa16b;
+  transition:width .25s ease;
+}
+.profile-level-bottom{align-items:flex-start;flex-wrap:wrap}
+.profile-level-bottom span{
+  color:#66816d;font-size:10px;font-weight:800;
+  font-variant-numeric:tabular-nums;
+}
+.profile-level-bottom span:last-child{color:#476d46}
+.profile-achievements{
+  margin:20px 17px 24px;
+  padding:17px 14px 15px;
+  border:3px solid #28543b;border-radius:22px;
+  background:linear-gradient(155deg,#fffef5,#f1fbe8);
+  box-shadow:0 5px 0 #b9d8ae,0 9px 15px #29563117;
+}
+.profile-achievements-head{
+  display:flex;align-items:center;justify-content:space-between;gap:9px;
+}
+.profile-achievements-head>div{min-width:0}
+.profile-achievements-head>div>span{
+  color:#70916e;font-size:9px;letter-spacing:1px;font-weight:950;
+}
+.profile-achievements-head h2{
+  font-size:17px;line-height:1.3;font-weight:950;color:#244c35;
+  margin:4px 0 0;
+}
+#profileAchievementCount{
+  white-space:nowrap;
+  background:#ffe49b;border:2px solid #b58b39;
+  color:#6d4c1a;border-radius:999px;
+  padding:6px 9px;font-size:11px;font-weight:950;
+}
+.profile-achievements>p{
+  color:#66816a;font-size:11px;line-height:1.5;
+  margin:10px 0 13px;
+}
+.profile-achievement-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:9px;
+}
+.profile-achievement{
+  box-sizing:border-box;
+  display:flex;align-items:flex-start;gap:8px;
+  min-width:0;padding:11px 8px 10px;
+  border:2px solid #dce1d8;border-radius:13px;
+  background:#f1f3ef;
+}
+.profile-achievement.unlocked{
+  border-color:#a4ca7a;background:linear-gradient(135deg,#fffad8,#e5f8d5);
+  box-shadow:0 3px 0 #b9d89d;
+}
+.profile-achievement-icon{
+  flex-shrink:0;display:grid;place-items:center;
+  width:30px;height:30px;
+  border-radius:10px;background:#e4e7e2;
+  font-size:19px;
+}
+.profile-achievement.unlocked .profile-achievement-icon{
+  background:#fff0b3;border:1px solid #edcb6b;
+}
+.profile-achievement-info{
+  display:flex;flex-direction:column;gap:3px;min-width:0;
+}
+.profile-achievement-info strong{
+  font-size:11px;line-height:1.25;font-weight:950;color:#314e3d;
+}
+.profile-achievement-info>span{
+  color:#748777;font-size:9px;line-height:1.38;
+}
+.profile-achievement-info>small{
+  font-size:9px;line-height:1.3;font-weight:950;
+  color:#768c77;
+}
+.profile-achievement.unlocked .profile-achievement-info>small{color:#398355}
+.profile-achievements .profile-achievements-note{
+  margin:14px 2px 0;
+  font-size:10px;color:#799182;
+}
+.profile-avatar-button:focus-visible,.profile-avatar-option:focus-visible{
+  outline:3px solid #398a51;outline-offset:3px;
+}
+@media(max-width:380px){
+  .profile-achievements{padding:13px 10px}
+  .profile-achievement{padding:9px 6px;gap:5px}
+  .profile-achievement-icon{width:27px;height:27px;font-size:17px}
+  .profile-achievements-head h2{font-size:16px}
+  .profile-achievement-grid{gap:7px}
+  .profile-achievement-info strong{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  #profileLevelFill{transition:none}
+}
