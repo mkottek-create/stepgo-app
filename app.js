@@ -466,8 +466,8 @@
   renderDemoDuel();
 
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
-  document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>switchTab(b.dataset.tab)));
-  $('profileShortcut').addEventListener('click',()=>switchTab('profile'));
+  document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>{closeSettings();switchTab(b.dataset.tab);}));
+  $('profileShortcut').addEventListener('click',()=>{closeSettings();switchTab('profile');});
   // Einstellungen im Profil: eigene App-Ansicht statt verschachtelter Karten.
   const closeSettings=()=>{
     $('profileOverview').hidden=false;
@@ -490,7 +490,36 @@
     $('settingsLoginContent').hidden=kind!=='login';
     if(kind==='text') $('settingsDetailText').textContent=message;
   };
-  $('openSettingsButton').addEventListener('click',openSettings);
+  // Hamburger-Menü oben rechts: Einstellungen sind ausschließlich hier erreichbar.
+  const menuButton=$('headerMenuButton');
+  const menu=$('headerMenu');
+  const closeHeaderMenu=()=>{
+    menu.hidden=true;
+    menuButton.setAttribute('aria-expanded','false');
+    menuButton.setAttribute('aria-label','Menü öffnen');
+  };
+  menuButton.addEventListener('click',()=>{
+    const willOpen=menu.hidden;
+    menu.hidden=!willOpen;
+    menuButton.setAttribute('aria-expanded',String(willOpen));
+    menuButton.setAttribute('aria-label',willOpen?'Menü schließen':'Menü öffnen');
+  });
+  $('menuSettingsButton').addEventListener('click',()=>{
+    closeHeaderMenu();
+    switchTab('profile');
+    openSettings();
+  });
+  $('menuProfileButton').addEventListener('click',()=>{
+    closeHeaderMenu();
+    closeSettings();
+    switchTab('profile');
+  });
+  document.addEventListener('click',event=>{
+    if(!event.target.closest('.header-menu-wrap'))closeHeaderMenu();
+  });
+  document.addEventListener('keydown',event=>{
+    if(event.key==='Escape'&&!menu.hidden){closeHeaderMenu();menuButton.focus();}
+  });
   $('settingsBackButton').addEventListener('click',closeSettings);
   $('settingsDetailBackButton').addEventListener('click',openSettings);
   const openProfileEditFromSettings=()=>{
