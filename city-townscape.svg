@@ -96,4 +96,62 @@
 <ellipse cx="322" cy="566" rx="6" ry="3" fill="#f9ecc6" opacity=".8"/>
 <ellipse cx="190" cy="47" rx="4" ry="2" fill="#f9ecc6" opacity=".8"/>
 <g fill="#4eaa63" opacity=".8"><path d="M72 249l4-8 4 8m-4-8v15 M460 465l4-8 4 8m-4-8v15 M178 464l4-8 4 8m-4-8v15 M322 119l4-8 4 8m-4-8v15" stroke="#4eaa63" stroke-width="2" fill="none"/></g>
+<!-- City-Look V1: street life, garden details and polished village scenery. -->
+<defs>
+  <linearGradient id="lamp-post" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#405d59"/><stop offset=".55" stop-color="#93aca3"/><stop offset="1" stop-color="#334b47"/>
+  </linearGradient>
+  <linearGradient id="paved-plaza" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#fff4d2"/><stop offset="1" stop-color="#e5cfa0"/>
+  </linearGradient>
+</defs>
+<!-- Quiet stone borders: these remain outside the road centerlines. -->
+<g opacity=".72" fill="none" stroke="#fcf0cb" stroke-linecap="round">
+  <path d="M37 90 Q110 111 139 143" stroke-width="2.4" stroke-dasharray="5 8"/>
+  <path d="M303 392 Q242 418 177 444" stroke-width="2.4" stroke-dasharray="5 9"/>
+  <path d="M163 541 Q215 554 310 565" stroke-width="2.4" stroke-dasharray="5 9"/>
+</g>
+<!-- Small hedgerows and flower gardens. Keep building positions clear. -->
+<g id="city-gardens">
+  <g fill="#397d4b" opacity=".25"><ellipse cx="65" cy="373" rx="28" ry="10"/><ellipse cx="304" cy="93" rx="29" ry="10"/><ellipse cx="446" cy="566" rx="23" ry="9"/></g>
+  <g fill="#57aa62" stroke="#338751" stroke-width="1.2">
+    <circle cx="46" cy="366" r="6"/><circle cx="57" cy="361" r="8"/><circle cx="70" cy="364" r="7"/><circle cx="83" cy="362" r="6"/>
+    <circle cx="283" cy="90" r="7"/><circle cx="296" cy="87" r="9"/><circle cx="310" cy="88" r="8"/><circle cx="323" cy="91" r="6"/>
+    <circle cx="428" cy="559" r="6"/><circle cx="438" cy="557" r="7"/><circle cx="450" cy="560" r="6"/>
+  </g>
+  <g stroke="#499756" stroke-width="1.5" stroke-linecap="round">
+    <path d="M51 393v9 M60 394v8 M72 394v9 M80 395v7 M294 114v9 M304 114v9 M312 113v9 M437 581v8 M449 581v8"/>
+  </g>
+  <g fill="#fff4a9" stroke="#e6ad54" stroke-width=".7">
+    <circle cx="51" cy="393" r="3.2"/><circle cx="72" cy="394" r="3.2"/><circle cx="294" cy="114" r="3"/><circle cx="437" cy="581" r="3"/>
+  </g>
+  <g fill="#ffbccd" stroke="#e48a9b" stroke-width=".6">
+    <circle cx="60" cy="394" r="2.8"/><circle cx="80" cy="395" r="2.8"/><circle cx="304" cy="114" r="3"/><circle cx="312" cy="113" r="2.8"/><circle cx="449" cy="581" r="2.8"/>
+  </g>
+</g>
+<!-- Miniature streetlights near, not in, the walkways. -->
+<g id="city-lamps">
+  <g transform="translate(80 153)"><ellipse cx="3" cy="3" rx="7" ry="3" fill="#345946" opacity=".25"/><path d="M0 0V-24" stroke="url(#lamp-post)" stroke-width="3.5" stroke-linecap="round"/><path d="M0-24Q4-28 9-26" fill="none" stroke="#425b51" stroke-width="3"/><circle cx="10" cy="-25" r="5" fill="#ffe8a6" stroke="#9c793f" stroke-width="1.7"/><circle cx="10" cy="-25" r="8" fill="#ffeec2" opacity=".23"/></g>
+  <g transform="translate(319 185)"><ellipse cx="3" cy="3" rx="7" ry="3" fill="#345946" opacity=".25"/><path d="M0 0V-25" stroke="url(#lamp-post)" stroke-width="3.5" stroke-linecap="round"/><path d="M0-25Q4-29 9-27" fill="none" stroke="#425b51" stroke-width="3"/><circle cx="10" cy="-26" r="5" fill="#ffe8a6" stroke="#9c793f" stroke-width="1.7"/><circle cx="10" cy="-26" r="8" fill="#ffeec2" opacity=".23"/></g>
+  <g transform="translate(187 396)"><ellipse cx="3" cy="3" rx="7" ry="3" fill="#345946" opacity=".25"/><path d="M0 0V-23" stroke="url(#lamp-post)" stroke-width="3.5" stroke-linecap="round"/><path d="M0-23Q4-27 9-25" fill="none" stroke="#425b51" stroke-width="3"/><circle cx="10" cy="-24" r="5" fill="#ffe8a6" stroke="#9c793f" stroke-width="1.7"/><circle cx="10" cy="-24" r="8" fill="#ffeec2" opacity=".23"/></g>
+  <g transform="translate(365 543)"><ellipse cx="3" cy="3" rx="7" ry="3" fill="#345946" opacity=".25"/><path d="M0 0V-24" stroke="url(#lamp-post)" stroke-width="3.5" stroke-linecap="round"/><path d="M0-24Q4-28 9-26" fill="none" stroke="#425b51" stroke-width="3"/><circle cx="10" cy="-25" r="5" fill="#ffe8a6" stroke="#9c793f" stroke-width="1.7"/><circle cx="10" cy="-25" r="8" fill="#ffeec2" opacity=".23"/></g>
+</g>
+<!-- Benches: tiny shadows, wood planks and iron legs. -->
+<g id="city-benches">
+  <g transform="translate(157 250) rotate(-18)"><ellipse cx="1" cy="8" rx="14" ry="5" fill="#365c3c" opacity=".22"/><path d="M-10 1v8 M10 1v8" stroke="#4c584d" stroke-width="2.5"/><rect x="-13" y="-7" width="26" height="7" rx="2" fill="#a66d43" stroke="#6e4937" stroke-width="1.1"/><rect x="-13" y="2" width="26" height="5" rx="1.5" fill="#dcac6c" stroke="#986338" stroke-width=".9"/><path d="M-7 -6v5 M6 -6v5" stroke="#f8d29d" stroke-width=".9"/></g>
+  <g transform="translate(307 457) rotate(24)"><ellipse cx="1" cy="8" rx="13" ry="4" fill="#365c3c" opacity=".24"/><path d="M-10 1v8 M10 1v8" stroke="#4c584d" stroke-width="2.5"/><rect x="-13" y="-7" width="26" height="7" rx="2" fill="#a66d43" stroke="#6e4937" stroke-width="1.1"/><rect x="-13" y="2" width="26" height="5" rx="1.5" fill="#dcac6c" stroke="#986338" stroke-width=".9"/></g>
+</g>
+<!-- Lake upgrade: soft sparkle, water rings, a duck and natural stones. -->
+<g id="city-lake-details">
+  <path d="M367 413q14-7 26-2 M394 438q13 3 23-3" fill="none" stroke="#f8ffff" stroke-width="2.3" stroke-linecap="round" opacity=".85"/>
+  <ellipse cx="383" cy="430" rx="17" ry="6" fill="none" stroke="#d8ffff" stroke-width="1.5" opacity=".6"/>
+  <g transform="translate(386 422)"><ellipse cx="1" cy="6" rx="12" ry="3" fill="#4bafcd" opacity=".38"/><ellipse cx="0" cy="0" rx="8" ry="5" fill="#fff9e8" stroke="#c7b88f" stroke-width="1"/><circle cx="6" cy="-6" r="4" fill="#fff9e8" stroke="#c7b88f" stroke-width=".8"/><path d="M9-5l5 2-5 2Z" fill="#f1ae55"/><circle cx="7" cy="-7" r="1" fill="#354e49"/></g>
+  <g fill="#b3b89a" stroke="#e7e5c5" stroke-width=".8"><ellipse cx="355" cy="460" rx="5" ry="3"/><ellipse cx="437" cy="465" rx="6" ry="3.5"/><ellipse cx="347" cy="394" rx="4.5" ry="2.5"/></g>
+  <path d="M350 389q-4-12-1-19 M354 392q1-14 7-20 M431 469q4 13 9 16" fill="none" stroke="#3a9a63" stroke-width="2.4" stroke-linecap="round"/>
+</g>
+<!-- Wooden town sign and a few simple fence posts. -->
+<g id="city-signs">
+  <g transform="translate(57 236) rotate(-8)"><ellipse cx="2" cy="9" rx="16" ry="5" fill="#35693b" opacity=".25"/><path d="M0 8V-24" stroke="#795439" stroke-width="5" stroke-linecap="round"/><rect x="-28" y="-35" width="56" height="20" rx="4" fill="#fff0bb" stroke="#936b3e" stroke-width="2"/><text x="0" y="-22" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#436343" text-anchor="middle">STEPGO</text></g>
+  <g fill="none" stroke="#cfb486" stroke-width="3" stroke-linecap="round"><path d="M112 586v13 M132 589v13 M152 591v13 M112 592l40 4 M112 598l40 4"/></g>
+</g>
 </svg>
