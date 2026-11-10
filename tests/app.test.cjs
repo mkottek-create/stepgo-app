@@ -591,7 +591,7 @@ test('Natural town background replaces raster with winding footpaths, pond and t
     'Town should have enough decorative trees and flowers to read as a living landscape');
   assert.doesNotMatch(town,/repeating-linear-gradient\(0deg/);
   assert.match(html,/natürlichen Wegen/);
-  assert.match(html,/styles\.css\?v=settings1/);
+  assert.match(html,/styles\.css\?v=player1/);
 });
 
 
@@ -673,7 +673,7 @@ test('Town buildings have organic fixed positions while coins, levels and Rathau
   assert.equal(app.state().wallet,360);
   assert.deepEqual(app.state().cityBuildings,['park','home','clinic']);
   assert.deepEqual(app.state().cityUpgrades,{home:3,clinic:2});
-  assert.match(html,/styles\.css\?v=settings1/);
+  assert.match(html,/styles\.css\?v=player1/);
 });
 
 
@@ -741,7 +741,7 @@ test('Profile setup saves name and email locally, without changing wallet or cit
   assert.deepEqual(app.state().profile,{name:'Lina',email:'lina@example.com'});
   assert.equal(app.get('profileAccountHeading').textContent,'Lina');
   assert.equal(app.get('profileDisplayEmail').textContent,'lina@example.com');
-  assert.equal(app.get('profileAvatar').textContent,'L');
+  assert.equal(app.get('profileAvatar').textContent,'👟');
   assert.equal(app.get('profileAccountBadge').textContent,'LOKALES TESTPROFIL');
   assert.equal(app.get('profileForm').hidden,true);
   assert.equal(app.state().wallet,170);
@@ -839,7 +839,7 @@ test('Home city teaser has no redundant city-open button but city tab stays avai
 test('The vanished home city button is also hidden defensively by stylesheet',()=>{
   assert.doesNotMatch(html,/id="openCityBtn"/);
   assert.doesNotMatch(script,/openCityBtn/);
-  assert.match(html,/styles\.css\?v=settings1/);
+  assert.match(html,/styles\.css\?v=player1/);
   const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');
   assert.match(css,/#openCityBtn,\s*\.city-teaser-button\{display:none!important\}/);
   assert.match(html,/data-tab="city"/);
@@ -963,7 +963,125 @@ test('Settings are separate from profile and show only real capabilities',()=>{
   assert.match(html,/id="settingsLogoutButton"/);
   assert.match(html,/id="settingsPrivacyButton"/);
   assert.match(html,/id="settingsGoalContent"/);
-  assert.match(html,/styles\.css\?v=settings1/);
-  assert.match(html,/app\.js\?v=settings1/);
+  assert.match(html,/styles\.css\?v=player1/);
+  assert.match(html,/app\.js\?v=player1/);
   assert.doesNotMatch(html,/type="password"/);
+});
+
+
+test('Avatar selector stores choice while city coins and buildings remain unchanged',()=>{
+  const initial=baseState();
+  initial.wallet=234;
+  initial.cityBuildings=['park','home'];
+  const app=harness(initial);
+  assert.equal(app.get('profileAvatar').textContent,'👟');
+  assert.equal(app.get('profileAvatarChooser').hidden,true);
+  app.event('profileAvatarButton');
+  assert.equal(app.get('profileAvatarChooser').hidden,false);
+  assert.equal(app.get('profileAvatarButton').attributes['aria-expanded'],'true');
+  const avatarButtons=app.get('profileAvatarChoices').children;
+  assert.equal(avatarButtons.length,8);
+  assert.equal(avatarButtons[0].attributes['aria-pressed'],'true');
+  avatarButtons[7].click();
+  assert.equal(app.state().avatar,'👑');
+  assert.equal(app.get('profileAvatar').textContent,'👑');
+  assert.equal(app.get('profileAvatarChoices').children[7].attributes['aria-pressed'],'true');
+  assert.equal(app.state().wallet,234);
+  assert.deepEqual(app.state().cityBuildings,['park','home']);
+  app.event('profileAvatarButton');
+  assert.equal(app.get('profileAvatarChooser').hidden,true);
+});
+
+test('Old saved profile still loads and player name now works without email',()=>{
+  const old=baseState();
+  old.profile={name:'Mia',email:'mia@example.com'};
+  const app=harness(old);
+  assert.equal(app.get('profileAccountHeading').textContent,'Mia');
+  assert.equal(app.state().avatar,'👟');
+  app.event('profileEditButton');
+  app.get('profileName').value='Marcel';
+  app.get('profileEmail').value='';
+  app.event('profileForm','submit',{preventDefault(){}});
+  assert.deepEqual(app.state().profile,{name:'Marcel',email:''});
+  assert.equal(app.get('profileDisplayEmail').textContent,'Keine E-Mail-Adresse hinterlegt');
+  assert.equal(app.get('settingsEmailValue').textContent,'E-Mail-Adresse hinterlegen');
+  assert.equal(app.state().wallet,170);
+});
+
+test('Player level counts only confirmed steps and updates after new day claim',()=>{
+  const initial=baseState();
+  initial.steps=99000; // not confirmed
+  const app=harness(initial);
+  assert.equal(app.get('profileLevel').textContent,'Level 1');
+  assert.equal(app.get('profileLifetimeSteps').textContent,'0 bestätigte Schritte');
+  assert.equal(app.get('profileLevelNext').textContent,'Noch 10.000 Schritte');
+  assert.equal(app.get('profileLevelTrack').attributes['aria-valuenow'],'0');
+  app.event('claimBtn');
+  assert.equal(app.get('profileLevel').textContent,'Level 10');
+  assert.equal(app.get('profileLifetimeSteps').textContent,'99.000 bestätigte Schritte');
+  assert.equal(app.get('profileLevelTrack').attributes['aria-valuenow'],'90');
+  assert.equal(app.get('profileLevelNext').textContent,'Noch 1.000 Schritte');
+});
+
+test('Player level derives exclusively from confirmed history and stays within upper bound',()=>{
+  const initial=baseState();
+  initial.steps=13000;
+  initial.ledger=[{date:'2026-08-08',steps:5000,coins:50},{date:'2026-08-09',steps:8000,coins:80}];
+  const app=harness(initial);
+  assert.equal(app.get('profileLevel').textContent,'Level 2');
+  assert.equal(app.get('profileLifetimeSteps').textContent,'13.000 bestätigte Schritte');
+  assert.equal(app.get('profileLevelTrack').attributes['aria-valuenow'],'30');
+  assert.equal(app.get('profileLevelNext').textContent,'Noch 7.000 Schritte');
+  assert.equal(app.get('profileAchievementCount').textContent,'1 / 6'); // two walk days, one 5k+
+});
+
+test('Achievements unlock based on confirmed daily steps and building upgrades',()=>{
+  const initial=baseState();
+  initial.steps=13000;
+  initial.cityBuildings=['park','home','clinic'];
+  initial.cityUpgrades={clinic:3};
+  initial.ledger=[
+    {date:'2026-09-11',steps:12000,coins:120},
+    {date:'2026-09-12',steps:8500,coins:85},
+    {date:'2026-09-13',steps:9900,coins:99}
+  ];
+  const app=harness(initial);
+  assert.equal(app.get('profileAchievementCount').textContent,'6 / 6');
+  const cards=app.get('profileAchievementList').children;
+  assert.equal(cards.length,6);
+  cards.forEach(card=>assert.match(card.className,/unlocked/));
+  const before=app.state();
+  app.event('openSettingsButton');
+  app.event('settingsBackButton');
+  assert.deepEqual(app.state(),before);
+});
+
+test('Locked achievement shows genuine progress and does not grant coins',()=>{
+  const initial=baseState();
+  initial.cityBuildings=['park'];
+  const app=harness(initial);
+  const cards=app.get('profileAchievementList').children;
+  assert.equal(cards.length,6);
+  assert.equal(app.get('profileAchievementCount').textContent,'1 / 6');
+  assert.match(cards[0].className,/unlocked/);
+  assert.match(cards[2].className,/locked/);
+  assert.match(cards[2].children[1].children[2].textContent,/1 \/ 3 Gebäude/);
+  assert.equal(app.state().wallet,170);
+  assert.equal(app.state().ledger.length,0);
+});
+
+test('Reset clears avatar, player progress and unlocked achievements',()=>{
+  const initial=baseState();
+  initial.avatar='🦊';
+  initial.profile={name:'Mia',email:'mia@example.com'};
+  initial.cityBuildings=['home','park'];
+  initial.ledger=[{date:'2026-09-10',steps:10000,coins:100}];
+  const app=harness(initial);
+  assert.equal(app.get('profileAvatar').textContent,'🦊');
+  assert.equal(app.get('profileLevel').textContent,'Level 2');
+  app.event('clearAll');
+  assert.equal(app.state().avatar,'👟');
+  assert.equal(app.get('profileLevel').textContent,'Level 1');
+  assert.equal(app.get('profileAchievementCount').textContent,'0 / 6');
+  assert.deepEqual(app.state().cityBuildings,[]);
 });
