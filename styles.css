@@ -2795,3 +2795,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .header-menu button{border:0;background:transparent;color:#183b2a;padding:13px 11px;font-size:14px;font-weight:800;text-align:left;border-radius:9px;cursor:pointer}
 .header-menu button:active,.header-menu button:hover{background:#dff5d5}
 @media(max-width:380px){.header-right{gap:7px}.header-menu-button{width:38px;height:38px}}
+
+/* Startseite: nur relevante Informationen; Verlauf als einfacher Link */
+.home-history-link{margin:8px 17px 4px;display:flex;justify-content:flex-end}
+.home-history-link .steps-detail-link{min-height:42px;padding:9px 12px}
