@@ -2865,18 +2865,10 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .missions-footnote{color:#728775;font-size:10px;line-height:1.55;margin:13px 2px 0}
 @media(max-width:370px){.missions-section{margin-left:12px;margin-right:12px;padding:14px 10px}.mission-card{padding:10px}.mission-content strong{font-size:11px}.mission-claim-button{min-width:69px;padding:7px}}
 
-/* Lebendige Stadt: animierte Spaziergaenger und Fahrzeuge auf transparentem Overlay.
-   Zeigerereignisse bleiben fuer den Stadtplan frei, keine WebGL-Bibliothek noetig. */
-#cityMap.city-map-diorama .city-life-layer{position:absolute;inset:0;z-index:12;pointer-events:none;overflow:hidden;isolation:isolate}
-#cityMap.city-map-diorama .city-life-actor{position:absolute;left:var(--life-x0);top:var(--life-y0);display:block;white-space:nowrap;line-height:1;font-size:17px;transform:translate(-50%,-50%);filter:drop-shadow(0 2px 1px #1e3d3266);will-change:left,top;animation:city-life-route 20s linear infinite;pointer-events:none}
-#cityMap.city-map-diorama .city-life-car{font-size:21px;filter:drop-shadow(0 3px 2px #1a443b7a)}
-@keyframes city-life-route{
-  0%{left:var(--life-x0);top:var(--life-y0)}
-  25%{left:var(--life-x1);top:var(--life-y1)}
-  50%{left:var(--life-x2);top:var(--life-y2)}
-  75%{left:var(--life-x3);top:var(--life-y3)}
-  100%{left:var(--life-x4);top:var(--life-y4)}
-}
+/* Lebendige Stadt V2: Figuren bewegen sich auf denselben SVG-Pfaden wie die
+   sichtbaren Sandwege im Hintergrund. Die Grafik wird proportional exakt mitgedehnt. */
+#cityMap.city-map-diorama svg.city-life-layer{position:absolute;inset:0;width:100%;height:100%;z-index:12;pointer-events:none;overflow:hidden}
+#cityMap.city-map-diorama .city-life-actor{pointer-events:none;paint-order:stroke fill;stroke:#335c3870;stroke-width:.65px;filter:drop-shadow(0 2px 1px #1e3d3266)}
+#cityMap.city-map-diorama .city-life-car{filter:drop-shadow(0 3px 2px #1a443b7a)}
 .city-life-caption{text-align:center;margin:13px 3px 0;color:#315b3e;font-weight:850;font-size:11px;line-height:1.5}
-#screen-city:not(.active) .city-life-actor{animation-play-state:paused}
-@media(prefers-reduced-motion:reduce){#cityMap.city-map-diorama .city-life-actor{animation:none!important;will-change:auto}}
+@media(prefers-reduced-motion:reduce){#cityMap.city-map-diorama svg.city-life-layer{display:none}}
