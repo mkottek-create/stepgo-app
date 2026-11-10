@@ -2833,3 +2833,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .login-local-divider{display:flex;align-items:center;gap:10px;color:#7a7e82;font-weight:800;font-size:11px;margin:22px 0 12px}
 .login-local-divider::before,.login-local-divider::after{content:"";height:1px;background:#d2d6d9;flex:1}
 .login-local-hint{margin-top:9px!important;margin-bottom:0!important}
+
+/* Namensänderung: einmal alle 30 Tage, E-Mail weiterhin editierbar */
+.profile-name-change-hint{margin:4px 0 11px;font-size:11px;line-height:1.5;color:#54715a}
+#profileName[readonly]{background:#e9eee8;color:#657168;border-color:#c7d2c6;cursor:not-allowed}
