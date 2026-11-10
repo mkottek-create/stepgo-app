@@ -2012,7 +2012,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   perspective:none;
   transform:none;
   background-color:#91d47c;
-  background-image:url("city-townscape.svg?v=cozy17");
+  background-image:url("city-townscape.svg?v=graphics18");
   background-size:100% 100%;
   background-position:center;
   background-repeat:no-repeat;
@@ -2213,7 +2213,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
    Freie Bauplaetze zeigen statt eines UI-Plus-Kreises ein Holzschild
    auf einer dezenten, in die Landschaft integrierten Baustelle. */
 #cityMap.city-map-diorama{
-  background-image:url("city-townscape.svg?v=cozy17");
+  background-image:url("city-townscape.svg?v=graphics18");
 }
 /* Ein kleiner Fleck mit Fundamentspuren, kein schwebendes Oval oder Kachelrahmen. */
 #cityMap.city-map-diorama .city-plot-locked .city-plot-scene::after{
@@ -2884,3 +2884,17 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 #screen-city #cityMap.city-map-diorama{border-color:#548a62;box-shadow:inset 0 3px 0 #ffffff88,0 5px 0 #76a578,0 11px 20px #36553c29}
 #screen-city .city-map-head h2{color:#28533a;letter-spacing:-.3px}
 #screen-city .city-life-caption{color:#426b4b}
+
+/* City Graphics V2: crisp illustrated houses, soft depth and improved roof lighting.
+   These visual rules do not change plot positions or the animation path geometry. */
+#screen-city #cityMap.city-map-diorama{background-color:#9bcf7c;image-rendering:auto;box-shadow:inset 0 2px 0 #fff9,0 6px 0 #649d67,0 14px 26px #24533b38;border:3px solid #447e60}
+#screen-city .city-map-card{background:linear-gradient(150deg,#fff8dc 0%,#e8f3d6 54%,#c4e5b8 100%);box-shadow:0 7px 0 #8db67a,0 15px 26px #27563829}
+#screen-city #cityMap.city-map-diorama .city-model{filter:drop-shadow(3px 7px 3px #234b366e)}
+#screen-city #cityMap.city-map-diorama .city-model-roof{background:linear-gradient(130deg,#fff8de55 0%,var(--roof-highlight) 15%,var(--roof) 60%,#6e4638 100%);filter:drop-shadow(0 2px 1px #663e3144)}
+#screen-city #cityMap.city-map-diorama .city-model-front{background:linear-gradient(110deg,#fffdf98a 0%,transparent 39%,#6b623919 100%),var(--wall);filter:brightness(1.04)}
+#screen-city #cityMap.city-map-diorama .city-model-side{background:linear-gradient(115deg,var(--side),#3f43334d)}
+#screen-city #cityMap.city-map-diorama .city-model-window{background:linear-gradient(145deg,#f2ffff 0%,#bde5ef 48%,#63a5ba 100%);border-color:#fff8dd;box-shadow:inset 1px 1px 0 #fff9,13px 3px 0 -1px #92c3d1}
+#screen-city #cityMap.city-map-diorama .city-model-level-2 .city-model-roof{background:linear-gradient(125deg,#fff6cd,var(--roof-highlight) 21%,var(--roof) 70%,#6e4638)}
+#screen-city #cityMap.city-map-diorama .city-model-level-3 .city-model-roof{background:linear-gradient(125deg,#fffbe0 0%,var(--roof-highlight) 25%,var(--roof) 72%,#704436)}
+#screen-city #cityMap.city-map-diorama .city-plot-scene::before{background:#244e374c;filter:blur(4px)}
+#screen-city #cityMap.city-map-diorama .city-plot-locked .city-plot-scene::before{background:#427d4430;filter:blur(3px)}
