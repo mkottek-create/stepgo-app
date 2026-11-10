@@ -2837,3 +2837,30 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 /* Namensänderung: einmal alle 30 Tage, E-Mail weiterhin editierbar */
 .profile-name-change-hint{margin:4px 0 11px;font-size:11px;line-height:1.5;color:#54715a}
 #profileName[readonly]{background:#e9eee8;color:#657168;border-color:#c7d2c6;cursor:not-allowed}
+
+/* Missionen: kompakt und mobil, keine weitere Navigationsebene */
+.missions-section{margin:20px 17px 13px;padding:17px 13px 15px;background:linear-gradient(145deg,#f3fbed,#fff);border:1px solid #d6e9d1;border-radius:20px;box-shadow:0 5px 16px #203d1810}
+.missions-heading{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:17px}
+.missions-heading h2{font-size:18px;letter-spacing:-.4px;margin:5px 0 0;color:#234c32}
+.missions-tag{background:#e0f2d9;color:#347549;border:1px solid #beddb5;border-radius:999px;padding:6px 9px;font-size:10px;font-weight:900;white-space:nowrap}
+.missions-group-title{display:flex;align-items:baseline;justify-content:space-between;gap:6px;margin:0 2px 9px}
+.missions-group-title strong{font-size:13px;color:#244632}
+.missions-group-title span{font-size:10px;color:#718a75;text-align:right}
+.missions-week-title{margin-top:18px}
+.missions-list{display:grid;gap:9px}
+.mission-card{background:#fff;border:1px solid #e0e9dd;border-radius:14px;padding:12px;min-width:0}
+.mission-claimed{background:#f1f6ee}
+.mission-top{display:flex;align-items:center;gap:9px;min-width:0}
+.mission-icon{display:grid;place-items:center;flex:0 0 31px;height:31px;border-radius:9px;background:#eaf6e4;font-size:18px}
+.mission-content{display:flex;flex:1;min-width:0;flex-direction:column;gap:4px}
+.mission-content strong{font-size:12px;line-height:1.4;color:#284734}
+.mission-progress-label{font-size:10px;color:#80907d}
+.mission-reward{white-space:nowrap;color:#a17412;background:#fff3d8;border-radius:999px;padding:5px 7px;font-weight:900;font-size:11px}
+.mission-progress-track{height:7px;border-radius:999px;background:#e7eee4;margin:11px 0 9px;overflow:hidden}
+.mission-progress-track span{display:block;height:100%;background:linear-gradient(90deg,#8ac768,#3f9863);border-radius:999px;transition:width .25s ease}
+.mission-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:0}
+.mission-status{font-size:10px;line-height:1.4;color:#687d6d}
+.mission-claim-button{border:0;border-radius:9px;padding:8px 10px;background:#297447;color:#fff;font:inherit;font-weight:850;font-size:10px;min-width:76px;cursor:pointer}
+.mission-claim-button:disabled{color:#7a8b7c;background:#e6ece4;cursor:default}
+.missions-footnote{color:#728775;font-size:10px;line-height:1.55;margin:13px 2px 0}
+@media(max-width:370px){.missions-section{margin-left:12px;margin-right:12px;padding:14px 10px}.mission-card{padding:10px}.mission-content strong{font-size:11px}.mission-claim-button{min-width:69px;padding:7px}}
