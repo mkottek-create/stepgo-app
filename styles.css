@@ -2012,7 +2012,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
   perspective:none;
   transform:none;
   background-color:#91d47c;
-  background-image:url("city-townscape.svg");
+  background-image:url("city-townscape.svg?v=cozy17");
   background-size:100% 100%;
   background-position:center;
   background-repeat:no-repeat;
@@ -2213,7 +2213,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
    Freie Bauplaetze zeigen statt eines UI-Plus-Kreises ein Holzschild
    auf einer dezenten, in die Landschaft integrierten Baustelle. */
 #cityMap.city-map-diorama{
-  background-image:url("city-townscape.svg?v=paths2");
+  background-image:url("city-townscape.svg?v=cozy17");
 }
 /* Ein kleiner Fleck mit Fundamentspuren, kein schwebendes Oval oder Kachelrahmen. */
 #cityMap.city-map-diorama .city-plot-locked .city-plot-scene::after{
@@ -2877,3 +2877,10 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
    kurvenfolgende Top-Down-Autos in lesbarer Groesse. */
 #cityMap.city-map-diorama .city-life-resident{font-size:14px;stroke:none;paint-order:normal;filter:drop-shadow(0 1px 1px #23493266)}
 #cityMap.city-map-diorama .city-life-car{stroke:none;paint-order:normal;filter:drop-shadow(0 2px 2px #183a3388)}
+
+/* City-Look V1: warmer Rahmen und angenehme Miniaturstadt-Tiefe.
+   SVG-Bauplaetze und Bewegungsrouten bleiben geometrisch unveraendert. */
+#screen-city .city-map-card{background:linear-gradient(155deg,#fff8d7 0%,#e5f5da 61%,#cfecc4 100%);border-color:#396b4a;box-shadow:0 7px 0 #88b579,0 12px 23px #1b50342b}
+#screen-city #cityMap.city-map-diorama{border-color:#548a62;box-shadow:inset 0 3px 0 #ffffff88,0 5px 0 #76a578,0 11px 20px #36553c29}
+#screen-city .city-map-head h2{color:#28533a;letter-spacing:-.3px}
+#screen-city .city-life-caption{color:#426b4b}
