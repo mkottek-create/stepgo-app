@@ -110,6 +110,42 @@
   const cityLevel = () => 1+Math.floor(
     (state.cityBuildings.length + state.cityBuildings.reduce((sum,id)=>sum+buildingLevel(id)-1,0))/2
   );
+  // Bewohnende und Fahrzeuge sind rein dekorativ: kein Eingriff in Schritte, Stadtmuenzen oder Bauen.
+  // Die Routen folgen den sichtbaren Wegen zwischen den festen Bauplaetzen.
+  const CITY_LIFE_ROUTES = Object.freeze([
+    {kind:'resident',icon:'🚶',x:['48%','58%','69%','54%','48%'],y:['28%','34%','43%','52%','28%'],duration:18,delay:-2},
+    {kind:'resident',icon:'🚶‍♀️',x:['31%','43%','53%','39%','31%'],y:['44%','35%','43%','55%','44%'],duration:22,delay:-9},
+    {kind:'resident',icon:'🚶',x:['68%','59%','44%','57%','68%'],y:['49%','57%','46%','34%','49%'],duration:19,delay:-6},
+    {kind:'resident',icon:'🚶‍♀️',x:['44%','35%','27%','39%','44%'],y:['60%','50%','43%','34%','60%'],duration:24,delay:-13},
+    {kind:'resident',icon:'🚶',x:['54%','65%','73%','61%','54%'],y:['60%','51%','45%','37%','60%'],duration:21,delay:-15},
+    {kind:'car',icon:'🚗',x:['25%','37%','50%','62%','75%'],y:['43%','36%','43%','50%','43%'],duration:12,delay:-4},
+    {kind:'car',icon:'🚙',x:['72%','61%','50%','39%','28%'],y:['54%','61%','54%','47%','54%'],duration:15,delay:-10}
+  ]);
+  function renderCityLife(map,buildingCount){
+    const residents=Math.min(5,2+Math.floor(buildingCount/2));
+    const cars=buildingCount>=5?2:buildingCount>=2?1:0;
+    const overlay=document.createElement('div');
+    overlay.className='city-life-layer';
+    overlay.setAttribute('aria-hidden','true');
+    const activeRoutes=[
+      ...CITY_LIFE_ROUTES.filter(route=>route.kind==='resident').slice(0,residents),
+      ...CITY_LIFE_ROUTES.filter(route=>route.kind==='car').slice(0,cars)
+    ];
+    activeRoutes.forEach(route=>{
+      const actor=document.createElement('span');
+      actor.className='city-life-actor city-life-'+route.kind;
+      actor.textContent=route.icon;
+      for(let i=0;i<5;i++){
+        actor.style.setProperty('--life-x'+i,route.x[i]);
+        actor.style.setProperty('--life-y'+i,route.y[i]);
+      }
+      actor.style.animationDuration=route.duration+'s';
+      actor.style.animationDelay=route.delay+'s';
+      overlay.append(actor);
+    });
+    map.append(overlay);
+    $('cityLifeCount').textContent=residents+' Einwohner unterwegs · '+(cars===0?'Noch keine Fahrzeuge':cars+' '+(cars===1?'Fahrzeug':'Fahrzeuge'));
+  }
   function renderCity(){
     const owned=new Set(state.cityBuildings);
     const pts=cityAvailable();
@@ -175,6 +211,7 @@
       }
       grid.append(tile);
     }
+    renderCityLife(grid,owned.size);
     const list=$('cityBuildList');
     list.replaceChildren();
     CITY_BUILDINGS.forEach(item=>{
