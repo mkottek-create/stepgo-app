@@ -116,13 +116,13 @@
   // SVG-Bewegung und Hintergrund verwenden denselben 480x630-Koordinatenraum.
   const CITY_ROAD_PATHS = Object.freeze(["M32 108 C110 137 142 179 209 194 S356 198 438 267 C462 295 363 349 274 383 C176 422 120 437 109 488 C101 528 191 544 345 559","M209 194 C192 235 204 273 238 303 Q260 337 274 383","M274 383 C336 423 371 465 421 517","M128 455 C114 383 94 322 49 303","M348 213 Q374 163 430 153"]);
   const CITY_LIFE_ROUTES = Object.freeze([
-    {kind:'resident',icon:'🚶',road:0,duration:29,delay:-3},
-    {kind:'resident',icon:'🚶‍♀️',road:1,duration:14,delay:-7},
-    {kind:'resident',icon:'🚶',road:3,duration:17,delay:-10},
-    {kind:'resident',icon:'🚶‍♀️',road:2,duration:16,delay:-5},
-    {kind:'resident',icon:'🚶',road:4,duration:13,delay:-9},
-    {kind:'car',icon:'🚗',road:0,duration:22,delay:-12},
-    {kind:'car',icon:'🚙',road:0,duration:26,delay:-20}
+    {kind:'resident',icon:'🚶',road:0,duration:31,delay:-3},
+    {kind:'resident',icon:'🚶‍♀️',road:1,duration:19,delay:-7},
+    {kind:'resident',icon:'🚶',road:3,duration:23,delay:-10},
+    {kind:'resident',icon:'🚶‍♀️',road:2,duration:17,delay:-5},
+    {kind:'resident',icon:'🚶',road:4,duration:21,delay:-9},
+    {kind:'car',color:'#ea6a45',road:0,duration:19,delay:-12},
+    {kind:'car',color:'#4b95d4',road:0,duration:24,delay:-20}
   ]);
   function renderCityLife(map,buildingCount){
     const residents=Math.min(5,2+Math.floor(buildingCount/2));
@@ -139,12 +139,31 @@
       ...CITY_LIFE_ROUTES.filter(route=>route.kind==='car').slice(0,cars)
     ];
     activeRoutes.forEach(route=>{
-      const actor=document.createElementNS(ns,'text');
+      const isCar=route.kind==='car';
+      const actor=document.createElementNS(ns,isCar?'g':'text');
       actor.classList.add('city-life-actor','city-life-'+route.kind);
-      actor.textContent=route.icon;
-      actor.setAttribute('text-anchor','middle');
-      actor.setAttribute('dominant-baseline','central');
-      actor.setAttribute('font-size',route.kind==='car'?'25':'20');
+      if(isCar){
+        // Kleine Draufsicht-Autos zeigen nach rechts. SVG dreht sie passend zur Kurve.
+        const shape=(tag,attributes)=>{
+          const el=document.createElementNS(ns,tag);
+          Object.entries(attributes).forEach(([key,value])=>el.setAttribute(key,String(value)));
+          actor.append(el);
+        };
+        shape('rect',{x:-11,y:-6,width:22,height:12,rx:4,fill:route.color,stroke:'#364b48','stroke-width':1.3});
+        shape('rect',{x:-1,y:-4.4,width:7,height:8.8,rx:2,fill:'#a9e8f5'});
+        shape('rect',{x:-8,y:-4,width:4,height:8,rx:1.5,fill:'#fce9bd'});
+        shape('rect',{x:-6,y:-7.4,width:5,height:2.4,rx:1,fill:'#263c42'});
+        shape('rect',{x:-6,y:5,width:5,height:2.4,rx:1,fill:'#263c42'});
+        shape('rect',{x:5,y:-7.4,width:5,height:2.4,rx:1,fill:'#263c42'});
+        shape('rect',{x:5,y:5,width:5,height:2.4,rx:1,fill:'#263c42'});
+        shape('circle',{cx:10,cy:-3.5,r:1.2,fill:'#fff6cb'});
+        shape('circle',{cx:10,cy:3.5,r:1.2,fill:'#fff6cb'});
+      }else{
+        actor.textContent=route.icon;
+        actor.setAttribute('text-anchor','middle');
+        actor.setAttribute('dominant-baseline','central');
+        actor.setAttribute('font-size','14');
+      }
       const motion=document.createElementNS(ns,'animateMotion');
       motion.setAttribute('path',CITY_ROAD_PATHS[route.road]);
       motion.setAttribute('dur',route.duration+'s');
@@ -154,7 +173,7 @@
       // Hin- und Rueckweg statt Teleport beim Neustart.
       motion.setAttribute('keyPoints','0;1;0');
       motion.setAttribute('keyTimes','0;0.5;1');
-      motion.setAttribute('rotate','0');
+      motion.setAttribute('rotate',isCar?'auto':'0');
       actor.append(motion);
       overlay.append(actor);
     });
