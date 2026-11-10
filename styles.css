@@ -2872,3 +2872,8 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 #cityMap.city-map-diorama .city-life-car{filter:drop-shadow(0 3px 2px #1a443b7a)}
 .city-life-caption{text-align:center;margin:13px 3px 0;color:#315b3e;font-weight:850;font-size:11px;line-height:1.5}
 @media(prefers-reduced-motion:reduce){#cityMap.city-map-diorama svg.city-life-layer{display:none}}
+
+/* Feinschliff der Einwohner und Fahrzeuge: kleine Fussgaenger,
+   kurvenfolgende Top-Down-Autos in lesbarer Groesse. */
+#cityMap.city-map-diorama .city-life-resident{font-size:14px;stroke:none;paint-order:normal;filter:drop-shadow(0 1px 1px #23493266)}
+#cityMap.city-map-diorama .city-life-car{stroke:none;paint-order:normal;filter:drop-shadow(0 2px 2px #183a3388)}
