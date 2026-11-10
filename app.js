@@ -112,35 +112,50 @@
   );
   // Bewohnende und Fahrzeuge sind rein dekorativ: kein Eingriff in Schritte, Stadtmuenzen oder Bauen.
   // Die Routen folgen den sichtbaren Wegen zwischen den festen Bauplaetzen.
+  // Genau die Vektor-Wege aus city-townscape.svg, damit keine Figur durchs Gras laeuft.
+  // SVG-Bewegung und Hintergrund verwenden denselben 480x630-Koordinatenraum.
+  const CITY_ROAD_PATHS = Object.freeze(["M32 108 C110 137 142 179 209 194 S356 198 438 267 C462 295 363 349 274 383 C176 422 120 437 109 488 C101 528 191 544 345 559","M209 194 C192 235 204 273 238 303 Q260 337 274 383","M274 383 C336 423 371 465 421 517","M128 455 C114 383 94 322 49 303","M348 213 Q374 163 430 153"]);
   const CITY_LIFE_ROUTES = Object.freeze([
-    {kind:'resident',icon:'🚶',x:['48%','58%','69%','54%','48%'],y:['28%','34%','43%','52%','28%'],duration:18,delay:-2},
-    {kind:'resident',icon:'🚶‍♀️',x:['31%','43%','53%','39%','31%'],y:['44%','35%','43%','55%','44%'],duration:22,delay:-9},
-    {kind:'resident',icon:'🚶',x:['68%','59%','44%','57%','68%'],y:['49%','57%','46%','34%','49%'],duration:19,delay:-6},
-    {kind:'resident',icon:'🚶‍♀️',x:['44%','35%','27%','39%','44%'],y:['60%','50%','43%','34%','60%'],duration:24,delay:-13},
-    {kind:'resident',icon:'🚶',x:['54%','65%','73%','61%','54%'],y:['60%','51%','45%','37%','60%'],duration:21,delay:-15},
-    {kind:'car',icon:'🚗',x:['25%','37%','50%','62%','75%'],y:['43%','36%','43%','50%','43%'],duration:12,delay:-4},
-    {kind:'car',icon:'🚙',x:['72%','61%','50%','39%','28%'],y:['54%','61%','54%','47%','54%'],duration:15,delay:-10}
+    {kind:'resident',icon:'🚶',road:0,duration:29,delay:-3},
+    {kind:'resident',icon:'🚶‍♀️',road:1,duration:14,delay:-7},
+    {kind:'resident',icon:'🚶',road:3,duration:17,delay:-10},
+    {kind:'resident',icon:'🚶‍♀️',road:2,duration:16,delay:-5},
+    {kind:'resident',icon:'🚶',road:4,duration:13,delay:-9},
+    {kind:'car',icon:'🚗',road:0,duration:22,delay:-12},
+    {kind:'car',icon:'🚙',road:0,duration:26,delay:-20}
   ]);
   function renderCityLife(map,buildingCount){
     const residents=Math.min(5,2+Math.floor(buildingCount/2));
     const cars=buildingCount>=5?2:buildingCount>=2?1:0;
-    const overlay=document.createElement('div');
-    overlay.className='city-life-layer';
+    const ns='http://www.w3.org/2000/svg';
+    const overlay=document.createElementNS(ns,'svg');
+    overlay.classList.add('city-life-layer');
+    overlay.setAttribute('viewBox','0 0 480 630');
+    overlay.setAttribute('preserveAspectRatio','none');
     overlay.setAttribute('aria-hidden','true');
+    overlay.setAttribute('focusable','false');
     const activeRoutes=[
       ...CITY_LIFE_ROUTES.filter(route=>route.kind==='resident').slice(0,residents),
       ...CITY_LIFE_ROUTES.filter(route=>route.kind==='car').slice(0,cars)
     ];
     activeRoutes.forEach(route=>{
-      const actor=document.createElement('span');
-      actor.className='city-life-actor city-life-'+route.kind;
+      const actor=document.createElementNS(ns,'text');
+      actor.classList.add('city-life-actor','city-life-'+route.kind);
       actor.textContent=route.icon;
-      for(let i=0;i<5;i++){
-        actor.style.setProperty('--life-x'+i,route.x[i]);
-        actor.style.setProperty('--life-y'+i,route.y[i]);
-      }
-      actor.style.animationDuration=route.duration+'s';
-      actor.style.animationDelay=route.delay+'s';
+      actor.setAttribute('text-anchor','middle');
+      actor.setAttribute('dominant-baseline','central');
+      actor.setAttribute('font-size',route.kind==='car'?'25':'20');
+      const motion=document.createElementNS(ns,'animateMotion');
+      motion.setAttribute('path',CITY_ROAD_PATHS[route.road]);
+      motion.setAttribute('dur',route.duration+'s');
+      motion.setAttribute('begin',route.delay+'s');
+      motion.setAttribute('repeatCount','indefinite');
+      motion.setAttribute('calcMode','linear');
+      // Hin- und Rueckweg statt Teleport beim Neustart.
+      motion.setAttribute('keyPoints','0;1;0');
+      motion.setAttribute('keyTimes','0;0.5;1');
+      motion.setAttribute('rotate','0');
+      actor.append(motion);
       overlay.append(actor);
     });
     map.append(overlay);
