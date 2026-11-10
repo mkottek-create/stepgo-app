@@ -8,7 +8,7 @@
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.png" type="image/png" />
   <link rel="apple-touch-icon" href="icon.png" />
-  <link rel="stylesheet" href="styles.css?v=payments7" />
+  <link rel="stylesheet" href="styles.css?v=units9" />
   <title>StepGo City – Jeder Schritt baut deine Welt</title>
 </head>
 <body>
@@ -113,7 +113,7 @@
 
       <section class="screen" id="screen-activity" aria-label="Schrittübersicht">
         <div class="page-intro"><div class="section-overline">DEINE BEWEGUNG</div><h1>Jeder Schritt zählt.</h1><p>Ob Spazieren, Walking oder Joggen – für StepGo spielt die Art deiner Bewegung keine Rolle.</p></div>
-        <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small id="activityStepSource">Schritte im Testmodus</small></div></div>
+        <div class="detail-tile"><div class="detail-icon">↟</div><div><span>Heute insgesamt</span><strong id="activitySteps">12.458</strong><small id="activityStepSource">Schritte im Testmodus</small><small id="activityDistance" class="activity-distance">Geschätzte Entfernung: –</small></div></div>
         <div class="section-heading"><h2>Bestätigte Tage</h2><span id="historyCount">0 Einträge</span></div>
         <div id="historyList" class="history-list"><div class="empty">Noch keine Tage bestätigt. Deine ersten Stadtmünzen warten auf dich!</div></div>
         <p class="info-note">Hinweis: Du kannst die heutigen Schritte aus Apple Health übernehmen. Die Daten werden nur auf diesem Gerät gespeichert; Stadtmünzen haben keinen Geldwert.</p>
@@ -376,6 +376,16 @@
         </div>
 
           </div>
+          <div id="settingsUnitsContent" class="units-settings" hidden>
+            <p class="units-settings-intro">Wähle deine Entfernungseinheit. Die Schrittzahl und deine Stadtmünzen bleiben gleich.</p>
+            <fieldset class="units-choice">
+              <legend>Entfernung anzeigen in</legend>
+              <label><input type="radio" name="distanceUnit" value="km" checked><span>Kilometer (km)</span></label>
+              <label><input type="radio" name="distanceUnit" value="mi"><span>Meilen (mi)</span></label>
+            </fieldset>
+            <div class="units-preview">👟 <span id="unitsPreview">10.000 Schritte ≈ 7,50 km</span></div>
+            <p class="units-note">Die Strecke ist nur ein Schätzwert (0,75 m pro Schritt), keine GPS-Messung. Die Einstellung wird auf diesem Gerät gespeichert.</p>
+          </div>
           <div id="settingsPrivacyContent" hidden>
         <div class="settings-card"><strong>Datenschutz im Prototyp</strong><p>Schritte und Stadtmünzen sowie ein freiwilliger Spielername und eine E-Mail-Adresse werden in dieser Testversion nur lokal in deinem Browser gespeichert. Es gibt noch keinen Server, kein echtes Benutzerkonto und keine geräteübergreifende Anmeldung.</p></div>
 
@@ -406,6 +416,6 @@
   <div id="modalBackdrop" class="modal-backdrop" aria-hidden="true">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-medal">✦</div><h2 id="modalTitle">Stadtmünzen gesammelt!</h2><p id="modalText">Deine Schritte wurden bestätigt.</p><button id="modalClose" class="claim-btn">Super, weiter geht’s!</button></div>
   </div>
-  <script src="app.js?v=payments8"></script>
+  <script src="app.js?v=units9"></script>
 </body>
 </html>
