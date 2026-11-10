@@ -1,12 +1,20 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="480" height="630" viewBox="0 0 480 630" role="img" aria-label="Comic-Stadtlandschaft mit schmalen Spazierwegen, Baeumen, Blumen und einem natuerlichen See">
 <defs>
-  <linearGradient id="grass" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#b8ec94"/><stop offset=".6" stop-color="#94d57a"/><stop offset="1" stop-color="#74c177"/></linearGradient>
+  <linearGradient id="grass" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#d2f2a8"/><stop offset=".36" stop-color="#b1e18c"/><stop offset=".72" stop-color="#91ca75"/><stop offset="1" stop-color="#6fae68"/></linearGradient>
+  <radialGradient id="sun-glow" cx=".2" cy=".13" r=".85"><stop offset="0" stop-color="#fff6c4" stop-opacity=".58"/><stop offset=".65" stop-color="#fff3ce" stop-opacity=".07"/><stop offset="1" stop-color="#fff3ce" stop-opacity="0"/></radialGradient>
+  <linearGradient id="lake-depth" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b7f5fd" stop-opacity=".4"/><stop offset=".5" stop-color="#53b7d8" stop-opacity=".11"/><stop offset="1" stop-color="#1a83b3" stop-opacity=".4"/></linearGradient>
+  <pattern id="lawn-detail" width="38" height="34" patternUnits="userSpaceOnUse">
+    <path d="M9 12l3-5m-3 5-2-4 M30 26l3-5m-3 5-3-3" stroke="#5aa95e" stroke-width="1.1" opacity=".28" fill="none"/>
+    <circle cx="20" cy="9" r="1.25" fill="#ebfac5" opacity=".75"/>
+  </pattern>
   <linearGradient id="water" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#b8faff"/><stop offset="1" stop-color="#56bde2"/></linearGradient>
   <pattern id="specks" width="47" height="41" patternUnits="userSpaceOnUse"><path d="M10 16 l3 -5 m-3 5 l-3 -3 M34 32 l3 -4" stroke="#62b565" stroke-width="1.6" opacity=".37"/><circle cx="21" cy="29" r="2" fill="#e0f7aa" opacity=".8"/></pattern>
 </defs>
 <rect width="480" height="630" rx="18" fill="#91d47c"/>
 <rect x="7" y="7" width="466" height="616" rx="20" fill="url(#grass)" stroke="#5ba66f" stroke-width="2"/>
 <rect x="10" y="10" width="460" height="610" rx="18" fill="url(#specks)" opacity=".65"/>
+<rect x="10" y="10" width="460" height="610" rx="18" fill="url(#lawn-detail)" opacity=".78"/>
+<rect x="10" y="10" width="460" height="610" rx="18" fill="url(#sun-glow)"/>
 <!-- Friendly, narrower pedestrian routes: connected but not oversized -->
 <g fill="none" stroke-linecap="round" stroke-linejoin="round">
   <path d="M32 108 C110 137 142 179 209 194 S356 198 438 267 C462 295 363 349 274 383 C176 422 120 437 109 488 C101 528 191 544 345 559" stroke="#8c9465" stroke-width="37" opacity=".27"/>
@@ -31,6 +39,7 @@
     fill="#429dbe" opacity=".33" transform="translate(0 3)"/>
   <path d="M353 409 C358 395 376 394 394 392 C415 385 431 394 437 404 C446 417 440 430 433 442 C423 454 408 457 389 453 C366 456 354 444 353 432 C349 420 349 418 353 409Z"
     fill="url(#water)" stroke="#429fc4" stroke-width="2.4" stroke-linejoin="round"/>
+  <path d="M353 409 C358 395 376 394 394 392 C415 385 431 394 437 404 C446 417 440 430 433 442 C423 454 408 457 389 453 C366 456 354 444 353 432 C349 420 349 418 353 409Z" fill="url(#lake-depth)" opacity=".65"/>
   <path d="M368 409 Q383 396 407 402 M371 433 Q391 442 413 436" fill="none" stroke="#e8ffff" stroke-width="3.4" stroke-linecap="round" opacity=".78"/>
   <path d="M412 417 q7 -4 12 1" fill="none" stroke="#b7eff7" stroke-width="2" stroke-linecap="round"/>
   <ellipse cx="380" cy="445" rx="9" ry="4.5" fill="#67ad6f" stroke="#448958" stroke-width="1.3"/>
@@ -153,5 +162,49 @@
 <g id="city-signs">
   <g transform="translate(57 236) rotate(-8)"><ellipse cx="2" cy="9" rx="16" ry="5" fill="#35693b" opacity=".25"/><path d="M0 8V-24" stroke="#795439" stroke-width="5" stroke-linecap="round"/><rect x="-28" y="-35" width="56" height="20" rx="4" fill="#fff0bb" stroke="#936b3e" stroke-width="2"/><text x="0" y="-22" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#436343" text-anchor="middle">STEPGO</text></g>
   <g fill="none" stroke="#cfb486" stroke-width="3" stroke-linecap="round"><path d="M112 586v13 M132 589v13 M152 591v13 M112 592l40 4 M112 598l40 4"/></g>
+</g>
+<!-- City-Graphics V2: subtle ground depth, miniature garden corners and
+     polished scene props. Existing roads and the 480x630 viewBox remain untouched. -->
+<g id="city-depth-details" pointer-events="none">
+  <g fill="none" stroke="#e5f5ae" opacity=".48" stroke-width="2.4" stroke-linecap="round">
+    <path d="M18 94q18-11 34-9 M236 70q22-12 48-8 M16 347q18-13 36-12"/>
+    <path d="M262 515q22-8 36-4 M200 603q22-8 49-5 M375 78q20-9 35-5"/>
+  </g>
+  <g fill="#488c55" opacity=".15">
+    <ellipse cx="192" cy="89" rx="44" ry="13"/>
+    <ellipse cx="314" cy="320" rx="27" ry="11"/>
+    <ellipse cx="204" cy="491" rx="42" ry="15"/>
+    <ellipse cx="416" cy="574" rx="28" ry="10"/>
+  </g>
+  <g fill="none" stroke="#559b60" stroke-width="1.5" opacity=".6" stroke-linecap="round">
+    <path d="M153 92q4-11 7-13m-7 13q-1-12-5-15 M342 348q5-11 9-14m-9 14q0-11-4-15 M282 568q5-11 8-12m-8 12q-2-12-6-14"/>
+  </g>
+  <g fill="#f9ecb2" stroke="#d6ad6e" stroke-width="1">
+    <ellipse cx="166" cy="292" rx="5" ry="3" transform="rotate(16 166 292)"/>
+    <ellipse cx="289" cy="260" rx="5" ry="2.5" transform="rotate(-14 289 260)"/>
+    <ellipse cx="189" cy="475" rx="4" ry="3"/>
+    <ellipse cx="315" cy="523" rx="4" ry="2.5"/>
+  </g>
+</g>
+<!-- Boutique street furniture: handrail, planters and a little notice board. -->
+<g id="city-premium-props" pointer-events="none">
+  <g transform="translate(170 348)">
+    <ellipse rx="13" ry="4" cy="7" fill="#2b5e3a" opacity=".24"/>
+    <path d="M-8 4v-12 M8 4v-12" stroke="#7a5e44" stroke-width="3"/>
+    <rect x="-12" y="-12" width="24" height="7" rx="2" fill="#c29162" stroke="#7c5b3b" stroke-width="1.2"/>
+    <path d="M-9-10h18" stroke="#f6d9a4" stroke-width="1"/>
+  </g>
+  <g transform="translate(307 315)">
+    <ellipse cx="0" cy="5" rx="12" ry="4" fill="#386b44" opacity=".2"/>
+    <path d="M-8-2l2 9h12l2-9Z" fill="#bc8d5c" stroke="#895d3a" stroke-width="1"/>
+    <path d="M-7-2q-2-10 3-12m4 12q-2-12 2-15m5 15q0-10 3-12" fill="none" stroke="#387b52" stroke-width="2"/>
+    <circle cx="-4" cy="-12" r="4" fill="#f3bf65"/><circle cx="2" cy="-14" r="4" fill="#ffc7d4"/><circle cx="8" cy="-12" r="4" fill="#ffe69b"/>
+  </g>
+  <g transform="translate(102 551)">
+    <ellipse cx="0" cy="6" rx="12" ry="4" fill="#386b44" opacity=".2"/>
+    <path d="M-7-3l2 9h10l2-9Z" fill="#bd905e" stroke="#895d3a" stroke-width="1"/>
+    <path d="M-4-4q-5-11-1-13 M2-4q1-13 4-16" stroke="#387b52" fill="none" stroke-width="2"/>
+    <circle cx="-5" cy="-16" r="4" fill="#ffc3a8"/><circle cx="6" cy="-17" r="4" fill="#fff0a7"/>
+  </g>
 </g>
 </svg>
