@@ -2819,3 +2819,17 @@ button:focus-visible,input:focus-visible,summary:focus-visible{
 .units-preview{border-radius:12px;padding:13px;background:#dff3d5;font-weight:900;font-size:13px;margin:8px 0 12px}
 .units-note{margin-bottom:0}
 .activity-distance{display:block;color:#296d4a!important;font-weight:800}
+
+/* StepGo City: geplante Login-Provider, bis zur Auth-Anbindung bewusst deaktiviert */
+.login-preview-notice{background:#e4f3e0;border:1px solid #c3e1bc;border-radius:11px;padding:12px;color:#345840!important;font-weight:750}
+.login-provider-options{display:grid;gap:10px;margin:18px 0 14px}
+.login-provider{width:100%;min-height:51px;display:flex;align-items:center;gap:12px;border:1px solid #d6d9de;border-radius:12px;background:#fff;color:#25272c;font:inherit;font-size:13px;font-weight:850;padding:11px 12px;text-align:left;opacity:.78;cursor:not-allowed}
+.login-provider-apple{background:#242424;color:white;border-color:#242424}
+.login-provider-icon{flex:none;width:25px;text-align:center;font-size:19px;font-weight:950}
+.login-provider .google-g{color:#4285f4;font-size:21px}
+.login-provider small{margin-left:auto;font-size:10px;font-weight:800;color:#7b8088}
+.login-provider-apple small{color:#e1e1e1}
+.login-preview-help,.login-local-hint{font-size:11px!important;line-height:1.6!important;color:#707980!important}
+.login-local-divider{display:flex;align-items:center;gap:10px;color:#7a7e82;font-weight:800;font-size:11px;margin:22px 0 12px}
+.login-local-divider::before,.login-local-divider::after{content:"";height:1px;background:#d2d6d9;flex:1}
+.login-local-hint{margin-top:9px!important;margin-bottom:0!important}
