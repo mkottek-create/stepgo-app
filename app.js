@@ -467,7 +467,7 @@
 
   function switchTab(tab){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='screen-'+tab));document.querySelectorAll('.nav-link').forEach(b=>{const active=b.dataset.tab===tab;b.classList.toggle('active',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});scrollTo({top:0,behavior:'smooth'});}
   document.querySelectorAll('.nav-link').forEach(b=>b.addEventListener('click',()=>{closeSettings();switchTab(b.dataset.tab);}));
-  $('profileShortcut').addEventListener('click',()=>{closeSettings();switchTab('profile');});
+
   // Einstellungen im Profil: eigene App-Ansicht statt verschachtelter Karten.
   const closeSettings=()=>{
     $('profileOverview').hidden=false;
