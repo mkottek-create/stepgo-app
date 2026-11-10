@@ -6,7 +6,7 @@
   const DEMO_START_STEPS = 12458;
   const fmt = n => new Intl.NumberFormat('de-DE').format(n);
   const todayKey = () => {const d = new Date(); return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-');};
-  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR});
+  const fresh = () => ({date:todayKey(),steps:DEMO_START_STEPS,goal:15000,wallet:0,ledger:[],cityBuildings:[],cityUpgrades:{},stepSource:'demo',importedAt:null,profile:null,avatar:DEFAULT_AVATAR,distanceUnit:'km'});
   // Das lokale Testprofil ist KEIN echtes Login. Niemals Passwoerter speichern.
   const normalizeProfile = raw => {
     if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return null;
@@ -22,6 +22,7 @@
   if (!Array.isArray(state.ledger)) state.ledger = [];
   state.profile = normalizeProfile(state.profile);
   state.avatar = PROFILE_AVATARS.includes(state.avatar)?state.avatar:DEFAULT_AVATAR;
+  state.distanceUnit = state.distanceUnit==='mi'?'mi':'km';
   if (!Array.isArray(state.cityBuildings)) state.cityBuildings = [];
   state.cityBuildings = [...new Set(state.cityBuildings.filter(item=>typeof item==='string'))];
   // Alte Spielstände hatten keine Gebäude-Stufen. Bereits gebaute Gebäude bleiben Stufe 1.
@@ -44,6 +45,7 @@
   state.goal=Math.min(30000,Math.max(3000,state.goal));
   const $ = id => document.getElementById(id);
   const persist = () => {try {localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}catch{}};
+  const formatDistance = steps => { const km=Math.max(0,steps)*0.00075; const value=state.distanceUnit==='mi'?km/1.609344:km; return new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2}).format(value)+' '+(state.distanceUnit==='mi'?'mi':'km'); };
   let toastTimer;
   const toast = s => { const t=$('toast');t.textContent=s;t.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('visible'),2700); };
   // StepGo City: Stadtmuenzen sind reine, lokale Spielwaehrung ohne Geldwert.
@@ -335,6 +337,9 @@
     $('earnableCoins').textContent=fmt(coinsAvailable());
     $('walletCoins').textContent=fmt(state.wallet);
     $('activitySteps').textContent=fmt(state.steps);
+    $('activityDistance').textContent='Geschätzte Entfernung: '+formatDistance(state.steps);
+    $('unitsPreview').textContent='10.000 Schritte ≈ '+formatDistance(10000);
+    document.querySelectorAll('input[name="distanceUnit"]').forEach(input=>{input.checked=input.value===state.distanceUnit;});
     $('activityStepSource').textContent=state.stepSource==='health-import'?'Aus Apple Health übernommen (manuell)':'Schritte im Testmodus';
     $('healthImportHint').textContent=state.stepSource==='health-import'?'Zuletzt übernommen: '+fmt(state.steps)+' Schritte · '+(state.importedAt ? new Date(state.importedAt).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'})+' Uhr':'heute')+'. Nur Spielwährung.':'Noch keine Health-Schritte für heute übernommen.';
     $('historyCount').textContent=`${state.ledger.length} ${state.ledger.length===1?'Eintrag':'Einträge'}`;
@@ -395,7 +400,7 @@
     $('claimCaption').textContent=claimed?'Morgen warten neue Stadtmünzen auf dich.':'1 Stadtmünze / 100 Schritte (max. 200) + Tagesziel- und Meilenstein-Boni · kein Geldwert';
     const history=$('historyList');history.replaceChildren();
     if (!state.ledger.length){const el=document.createElement('div');el.className='empty';el.textContent='Noch keine Tage bestätigt. Deine ersten Stadtmünzen warten auf dich!';history.append(el);}
-    else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte`+(Number.isFinite(entry.milestoneCoins)?` · Bonus +${entry.milestoneCoins+entry.goalCoins} Stadtmünzen`:'');left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
+    else state.ledger.slice().reverse().forEach(entry=>{const el=document.createElement('div');el.className='history-entry';const left=document.createElement('div');const date=document.createElement('span');date.className='date';date.textContent=dateLabel(entry.date);const steps=document.createElement('div');steps.className='step-detail';steps.textContent=`${fmt(entry.steps)} Schritte · ca. ${formatDistance(entry.steps)}`+(Number.isFinite(entry.milestoneCoins)?` · Bonus +${entry.milestoneCoins+entry.goalCoins} Stadtmünzen`:'');left.append(date,steps);const coin=document.createElement('strong');coin.textContent=`+${fmt(entry.coins)} ✦`;el.append(left,coin);history.append(el);});
     persist();
   }
 
@@ -486,6 +491,7 @@
     $('settingsPrivacyContent').hidden=kind!=='privacy';
     $('settingsLoginContent').hidden=kind!=='login';
     $('settingsPaymentsContent').hidden=kind!=='payments';
+    $('settingsUnitsContent').hidden=kind!=='units';
     if(kind==='text') $('settingsDetailText').textContent=message;
   };
   // Hamburger-Menü oben rechts: Einstellungen sind ausschließlich hier erreichbar.
@@ -560,7 +566,13 @@
     'Die Testversion stellt keine Rechnungen aus und löst keine Zahlungen aus.'
   ]));
   $('settingsGoalButton').addEventListener('click',()=>openSettingsDetail('Schrittziel','goal'));
-  $('settingsUnitsButton').addEventListener('click',()=>openSettingsDetail('Maßeinheit & Entfernung','text','StepGo City zählt im Moment Schritte. Eine umschaltbare Entfernungsanzeige in Kilometern oder Meilen ist für eine spätere Version geplant.'));
+  $('settingsUnitsButton').addEventListener('click',()=>openSettingsDetail('Maßeinheit & Entfernung','units'));
+  document.querySelectorAll('input[name="distanceUnit"]').forEach(input=>input.addEventListener('change',()=>{
+    if(!input.checked)return;
+    state.distanceUnit=input.value==='mi'?'mi':'km';
+    render();
+    toast(state.distanceUnit==='mi'?'Entfernung jetzt in Meilen':'Entfernung jetzt in Kilometern');
+  }));
   $('settingsNotificationsButton').addEventListener('click',()=>openSettingsDetail('Benachrichtigungen','text','Push-Mitteilungen werden in dieser Testversion nicht verschickt. Später kannst du Erinnerungen und Wettkampfmeldungen hier selbst ein- und ausschalten.'));
   $('settingsSupportButton').addEventListener('click',()=>openSettingsDetail('Support kontaktieren','text','Der offizielle StepGo-Supportkanal ist noch nicht eingerichtet. In dieser Testversion werden keine Nachrichten versendet.'));
   $('settingsTermsButton').addEventListener('click',()=>openSettingsDetail('Nutzungsbedingungen','text','StepGo City ist derzeit ein lokaler Spielprototyp. Es gibt noch keine abgeschlossene Konto-Registrierung, keine kostenpflichtige Mitgliedschaft und keine Gewinne mit Geldwert. Verbindliche Nutzungsbedingungen werden vor dem öffentlichen Start bereitgestellt.'));
