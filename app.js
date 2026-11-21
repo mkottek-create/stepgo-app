@@ -211,7 +211,7 @@
         const model=document.createElement('div');
         model.className='city-model city-model-'+(pos===4?'hall':item.id)+' city-model-level-'+level;
         model.setAttribute('aria-hidden','true');
-        ['roof','front','side','window','door','canopy','chimney','trim','flowerbox'].forEach(part=>{
+        ['foundation','roof-depth','roof','gable','front','side','window','window-frame','door','doorstep','canopy','chimney','trim','flowerbox','roof-lines','signboard'].forEach(part=>{
           const layer=document.createElement('span');
           layer.className='city-model-'+part;
           model.append(layer);
